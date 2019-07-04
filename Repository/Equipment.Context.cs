@@ -25,7 +25,6 @@ namespace Repository
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Area> AreaSet { get; set; }
-        public virtual DbSet<Position> PositionSet { get; set; }
+        public virtual DbSet<Position> Positions { get; set; }
     }
 }

@@ -2,25 +2,16 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ControlTemplate x:Key="PositionsTree">
-        <Border Padding="10">
-            <StackPanel>
-
-                <TextBox Margin="10"/>
-
-                <TreeView Margin="10">
-                    <TreeViewItem Header="Fruit">
-                        <TreeViewItem Header="Lime"></TreeViewItem>
-                        <TreeViewItem Header="Orange"></TreeViewItem>
-                        <TreeViewItem Header="Apple"></TreeViewItem>
-                    </TreeViewItem>
-                    <TreeViewItem Header="Colors">
-                        <TreeViewItem Header="Red"></TreeViewItem>
-                        <TreeViewItem Header="Orange"></TreeViewItem>
-                        <TreeViewItem Header="Green"></TreeViewItem>
-                    </TreeViewItem>
-                </TreeView>
-            </StackPanel>
-        </Border>
+        <ListBox ItemsSource="{Binding PositionsTree.Positions}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" Margin="10,0,10,0"></TextBlock>
+                        <TextBlock Text="{Binding Title}" Margin="10,0,10,0"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </ControlTemplate>
 
 </ResourceDictionary>

@@ -50,9 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Area.cs">
-      <DependentUpon>Equipment.tt</DependentUpon>
-    </Compile>
     <Compile Include="Equipment.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

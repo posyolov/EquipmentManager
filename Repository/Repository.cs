@@ -10,11 +10,11 @@ namespace Repository
 {
     public static class RepositoryData
     {
-        public static ObservableCollection<Area> GetAreas()
+        public static ObservableCollection<Position> GetPositions()
         {
             EquipmentContainer context = new EquipmentContainer();
-            context.AreaSet.Load();
-            var data = context.AreaSet.Local;
+            context.Positions.Load();
+            var data = context.Positions.Local;
             return data;
         }
     }

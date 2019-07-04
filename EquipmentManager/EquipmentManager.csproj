@@ -116,6 +116,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EquipmentManagerVM\EquipmentManagerVM.csproj">
+      <Project>{6fe48d29-5b8a-43f4-a1e2-d1e596164d5a}</Project>
+      <Name>EquipmentManagerVM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Repository\Repository.csproj">
       <Project>{9170FA04-FF19-4947-8E63-E959FA76099B}</Project>
       <Name>Repository</Name>

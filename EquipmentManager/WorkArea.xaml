@@ -2,15 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
     <ControlTemplate x:Key="WorkArea">
-        <ListBox ItemsSource="{Binding}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}" Margin="10,0,10,0"></TextBlock>
-                        <TextBlock Text="{Binding Title}" Margin="10,0,10,0"></TextBlock>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+        <ListBox ItemsSource="{Binding WorkArea.Data}">
+            
         </ListBox>
     </ControlTemplate>
 

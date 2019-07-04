@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EquipmentManager", "Equipme
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{9170FA04-FF19-4947-8E63-E959FA76099B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EquipmentManagerVM", "EquipmentManagerVM\EquipmentManagerVM.csproj", "{6FE48D29-5B8A-43F4-A1E2-D1E596164D5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9170FA04-FF19-4947-8E63-E959FA76099B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9170FA04-FF19-4947-8E63-E959FA76099B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9170FA04-FF19-4947-8E63-E959FA76099B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FE48D29-5B8A-43F4-A1E2-D1E596164D5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FE48D29-5B8A-43F4-A1E2-D1E596164D5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FE48D29-5B8A-43F4-A1E2-D1E596164D5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FE48D29-5B8A-43F4-A1E2-D1E596164D5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

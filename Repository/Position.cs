@@ -15,9 +15,8 @@ namespace Repository
     public partial class Position
     {
         public int Id { get; set; }
+        public Nullable<int> ParentId { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
-    
-        public virtual Area Area { get; set; }
     }
 }
