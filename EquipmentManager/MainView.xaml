@@ -1,0 +1,68 @@
+﻿<Window x:Class="EquipmentManager.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EquipmentManager"
+        mc:Ignorable="d"
+       Title="Main">
+    <Window.Resources>
+        <ResourceDictionary>
+            <!--<src:MainVM x:Key="pDataVM"/>-->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="PositionData.xaml" />
+                <ResourceDictionary Source="PositionsTree.xaml" />
+                <ResourceDictionary Source="MainMenu.xaml" />
+                <ResourceDictionary Source="MainStatusBar.xaml" />
+                <ResourceDictionary Source="WorkArea.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <DockPanel>
+        <ContentControl Template="{StaticResource MainMenu}" DockPanel.Dock="Top"/>
+        <ContentControl Template="{StaticResource MainStatusBar}" DockPanel.Dock="Bottom"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <GridSplitter Grid.Column="1" Width="10" VerticalAlignment="Stretch" HorizontalAlignment="Center"></GridSplitter>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <GridSplitter Grid.Row="1" Height="10" VerticalAlignment="Center" HorizontalAlignment="Stretch"></GridSplitter>
+
+                <ContentControl Grid.Row="0" 
+                                Template="{StaticResource PositionsTree}"/>
+                <ContentControl Grid.Row="2" 
+                                Template="{StaticResource PositionData}"/>
+
+
+
+            </Grid>
+
+            <ContentControl Grid.Column="2" Template="{StaticResource WorkArea}" />
+            <!--<TextBlock Grid.Column="2" DataContext="{StaticResource pData}" Text="{Binding Path=Kuku1}"/>-->
+            <!--<TextBlock Grid.Column="2" Text="kukukukuku"/>-->
+            <!--<StackPanel Grid.Column="3" DataContext="{Binding PosDataVM}">
+                <TextBlock Text="kuku:"/>
+                <TextBlock Text="{Binding Path=Kuku1}"/>
+                <TextBlock Text="{Binding Path=Kuku2}"/>
+                <TextBlock Text="{Binding Path=Kuku3}"/>
+            </StackPanel>-->
+
+        </Grid>
+
+
+
+    </DockPanel>
+
+</Window>
