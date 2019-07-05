@@ -18,7 +18,7 @@ namespace EquipmentManager
     {
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            PositionsTreeVM positionsTreeVM = new PositionsTreeVM(RepositoryData.GetPositions());
+            PositionsVM positionsTreeVM = new PositionsVM(RepositoryData.GetPositions());
             WorkAreaVM workAreaVM = new WorkAreaVM(new ObservableCollection<string> { "111111111111111111111", "222222222222222222222222", "3333333333333333333333333", "4444444444444444", "555555555555555555555555555" });
 
             MainVM mainVM = new MainVM(positionsTreeVM, workAreaVM);

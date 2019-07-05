@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ControlTemplate x:Key="Positions">
+        <StackPanel>
+            <TextBlock>Дерево позиций</TextBlock>
+            <!--<ListBox ItemsSource="{Binding Positions}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" Margin="10,0,10,0"></TextBlock>
+                            <TextBlock Text="{Binding Title}" Margin="10,0,10,0"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>-->
+            <TreeView ItemsSource="{Binding PositionsTree}">
+                <TreeView.ItemTemplate>
+                    <!--<DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" Margin="10,0,10,0"></TextBlock>
+                            <TextBlock Text="{Binding Title}" Margin="10,0,10,0"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>-->
+
+                    <HierarchicalDataTemplate>
+                        <TextBlock Text="{Binding Name}"></TextBlock>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </StackPanel>
+    </ControlTemplate>
+
+</ResourceDictionary>

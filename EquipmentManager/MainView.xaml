@@ -10,10 +10,9 @@
         <ResourceDictionary>
             <!--<src:MainVM x:Key="pDataVM"/>-->
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="PositionData.xaml" />
-                <ResourceDictionary Source="PositionsTree.xaml" />
                 <ResourceDictionary Source="MainMenu.xaml" />
                 <ResourceDictionary Source="MainStatusBar.xaml" />
+                <ResourceDictionary Source="Positions.xaml" />
                 <ResourceDictionary Source="WorkArea.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -32,24 +31,14 @@
             </Grid.ColumnDefinitions>
             <GridSplitter Grid.Column="1" Width="10" VerticalAlignment="Stretch" HorizontalAlignment="Center"></GridSplitter>
 
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <GridSplitter Grid.Row="1" Height="10" VerticalAlignment="Center" HorizontalAlignment="Stretch"></GridSplitter>
+            <ContentControl DataContext="{Binding PositionsVM}"  
+                            Template="{StaticResource Positions}"
+                            Grid.Row="0"/>
 
-                <ContentControl Grid.Row="0" 
-                                Template="{StaticResource PositionsTree}"/>
-                <ContentControl Grid.Row="2" 
-                                Template="{StaticResource PositionData}"/>
-
-
-
-            </Grid>
-
-            <ContentControl Grid.Column="2" Template="{StaticResource WorkArea}" />
+            <ContentControl DataContext="{Binding WorkAreaVM}"
+                            Template="{StaticResource WorkArea}" 
+                            Grid.Column="2"/>
+            
             <!--<TextBlock Grid.Column="2" DataContext="{StaticResource pData}" Text="{Binding Path=Kuku1}"/>-->
             <!--<TextBlock Grid.Column="2" Text="kukukukuku"/>-->
             <!--<StackPanel Grid.Column="3" DataContext="{Binding PosDataVM}">

@@ -8,13 +8,13 @@ namespace EquipmentManagerVM
 {
     public class MainVM
     {
-        public PositionsTreeVM PositionsTree { get; }
-        public WorkAreaVM WorkArea { get; }
+        public PositionsVM PositionsVM { get; }
+        public WorkAreaVM WorkAreaVM { get; }
 
-        public MainVM(PositionsTreeVM positionsTree, WorkAreaVM workArea)
+        public MainVM(PositionsVM positionsVM, WorkAreaVM workAreaVM)
         {
-            PositionsTree = positionsTree;
-            WorkArea = workArea;
+            PositionsVM = positionsVM;
+            WorkAreaVM = workAreaVM;
         }
     }
 }
