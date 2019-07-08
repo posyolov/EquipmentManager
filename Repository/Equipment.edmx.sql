@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 07/04/2019 14:23:11
+-- Date Created: 07/08/2019 22:23:53
 -- Generated from EDMX file: D:\Projects\C#\EquipmentManager\Repository\Equipment.edmx
 -- --------------------------------------------------
 
@@ -22,8 +22,8 @@ GO
 -- Dropping existing tables
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[PositionSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[PositionSet];
+IF OBJECT_ID(N'[dbo].[Positions]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Positions];
 GO
 
 -- --------------------------------------------------

@@ -23,7 +23,11 @@ namespace EquipmentManagerVM
             foreach (var pos in positions)
             {
                 if (!pos.ParentId.HasValue)
-                    PositionsTree.Add(new PositionNode(pos));
+                {
+                    PositionNode node = new PositionNode(pos);
+                    node.Nodes = new ObservableCollection<PositionNode>() { null };
+                    PositionsTree.Add(node);
+                }
             }
 
             //добавляем дочерние элементы
