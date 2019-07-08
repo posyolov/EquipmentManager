@@ -16,15 +16,13 @@
             </ListBox>-->
             <TreeView ItemsSource="{Binding PositionsTree}">
                 <TreeView.ItemTemplate>
-                    <!--<DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}" Margin="10,0,10,0"></TextBlock>
-                            <TextBlock Text="{Binding Title}" Margin="10,0,10,0"></TextBlock>
-                        </StackPanel>
-                    </DataTemplate>-->
-
-                    <HierarchicalDataTemplate>
-                        <TextBlock Text="{Binding Name}"></TextBlock>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Nodes}">
+                        <HierarchicalDataTemplate.Triggers>
+                            <!--<DataTrigger Binding="{Binding Path=Marked}" Value="True">
+                                <Setter Property="TextBlock.Foreground" Value="Red"/>
+                            </DataTrigger>-->
+                        </HierarchicalDataTemplate.Triggers>
+                        <TextBlock Text="{Binding Node.Name}"/>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>

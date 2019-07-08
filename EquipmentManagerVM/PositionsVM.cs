@@ -11,20 +11,31 @@ namespace EquipmentManagerVM
     public class PositionsVM
     {
         public ObservableCollection<Position> Positions { get; }
-        public List<TestNode> PositionsTree { get; }
+        public ObservableCollection<PositionNode> PositionsTree { get; }
 
         public PositionsVM(ObservableCollection<Position> positions)
         {
             Positions = positions;
 
-            PositionsTree = new List<TestNode>();
+            PositionsTree = new ObservableCollection<PositionNode>();
 
-            TestNode node = new TestNode("A");
-            node.Nodes.Add(new TestNode("aaa"));
+            //добавляем узлы верхнего уровня
+            foreach (var pos in positions)
+            {
+                if (!pos.ParentId.HasValue)
+                    PositionsTree.Add(new PositionNode(pos));
+            }
 
-            PositionsTree.Add(node);
-            PositionsTree.Add(new TestNode("B"));
-            PositionsTree.Add(new TestNode("C"));
+            //добавляем дочерние элементы
+
+
+
+            //TestNode node = new TestNode("A");
+            //node.Nodes.Add(new TestNode("aaa"));
+
+            //PositionsTree.Add(node);
+            //PositionsTree.Add(new TestNode("B"));
+            //PositionsTree.Add(new TestNode("C"));
         }
     }
 }
