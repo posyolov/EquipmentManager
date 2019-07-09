@@ -14,7 +14,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>-->
-            <TreeView ItemsSource="{Binding PositionsTree}">
+            <TreeView ItemsSource="{Binding PositionsTree}" SelectedValuePath="{Binding SelectedPosNode}">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Nodes}">
                         <HierarchicalDataTemplate.Triggers>
@@ -22,10 +22,13 @@
                                 <Setter Property="TextBlock.Foreground" Value="Red"/>
                             </DataTrigger>-->
                         </HierarchicalDataTemplate.Triggers>
-                        <TextBlock Text="{Binding Node.Name}"/>
+                        <TextBlock Text="{Binding Name}"/>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
+            <Border Width="100" MinHeight="30" Background="Red">
+                <TextBlock Text="{Binding SelectedPosNode}"></TextBlock>
+            </Border>
         </StackPanel>
     </ControlTemplate>
 

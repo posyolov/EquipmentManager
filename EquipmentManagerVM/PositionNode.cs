@@ -8,14 +8,17 @@ using Repository;
 
 namespace EquipmentManagerVM
 {
-    public class PositionNode
+    public class PositionNode : Position
     {
-        public Position Node { get; set; }
+        //public Position Node { get; set; }
         public ObservableCollection<PositionNode> Nodes { get; set; }
 
         public PositionNode(Position position)
         {
-            Node = position;
+            Id = position.Id;
+            ParentId = position.ParentId;
+            Name = position.Name;
+            Title = position.Title;
         }
     }
 }

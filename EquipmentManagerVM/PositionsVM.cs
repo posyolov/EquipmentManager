@@ -12,6 +12,11 @@ namespace EquipmentManagerVM
     {
         public ObservableCollection<Position> Positions { get; }
         public ObservableCollection<PositionNode> PositionsTree { get; }
+        public PositionNode SelectedPosNode
+        {
+            get;
+            set;
+        }
 
         public PositionsVM(ObservableCollection<Position> positions)
         {
@@ -20,15 +25,16 @@ namespace EquipmentManagerVM
             PositionsTree = new ObservableCollection<PositionNode>();
 
             //добавляем узлы верхнего уровня
-            foreach (var pos in positions)
+            foreach (Position pos in positions)
             {
                 if (!pos.ParentId.HasValue)
-                    PositionsTree.Add(new PositionNode(pos));
+                {
+                    //для каждого строим ветвь
+                    PositionNode posNode = new PositionNode(pos);
+                    BuildBranch(posNode, positions);
+                    PositionsTree.Add(posNode);
+                }
             }
-
-            //добавляем дочерние элементы
-
-
 
             //TestNode node = new TestNode("A");
             //node.Nodes.Add(new TestNode("aaa"));
@@ -36,6 +42,21 @@ namespace EquipmentManagerVM
             //PositionsTree.Add(node);
             //PositionsTree.Add(new TestNode("B"));
             //PositionsTree.Add(new TestNode("C"));
+        }
+
+        void BuildBranch(PositionNode positionNode, ObservableCollection<Position> positions)
+        {
+            var childrenPositions = positions.Where(c => c.ParentId == positionNode.Id);
+
+            positionNode.Nodes = new ObservableCollection<PositionNode>();
+
+            foreach (var pos in childrenPositions)
+            {
+                PositionNode posNode = new PositionNode(pos);
+                BuildBranch(posNode, positions);
+                positionNode.Nodes.Add(posNode);
+            }
+
         }
     }
 }
