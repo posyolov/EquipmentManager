@@ -5,17 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using Repository;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace EquipmentManagerVM
 {
-    public class PositionsVM
+    public class PositionsVM : INotifyPropertyChanged
     {
         public ObservableCollection<Position> Positions { get; }
         public ObservableCollection<PositionNode> PositionsTree { get; }
-        public PositionNode SelectedPosNode
+
+        private PositionNode _selectedItem;
+        public PositionNode SelectedItem
         {
-            get;
-            set;
+            get { return _selectedItem; }
+            set { _selectedItem = value; NotifyPropertyChanged(); }
         }
 
         public PositionsVM(ObservableCollection<Position> positions)
@@ -57,6 +61,13 @@ namespace EquipmentManagerVM
                 positionNode.Nodes.Add(posNode);
             }
 
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
