@@ -18,7 +18,9 @@
 
             <!--дерево позиций-->
             <StackPanel Grid.Row="0">
+                
                 <TextBlock>Дерево позиций</TextBlock>
+                
                 <TreeView ItemsSource="{Binding PositionsTree}">
                     <i:Interaction.Behaviors>
                         <local:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
@@ -33,6 +35,32 @@
                             <TextBlock Text="{Binding Name}"/>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
+                    
+                    <TreeView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="{Binding AddRootPositionCommand}"
+                                Header="Добавить корневую позицию"/>
+
+                            <MenuItem Command="{Binding AddChildPositionCommand}">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Добавить позицию в " Margin="0"/>
+                                        <TextBlock Text="{Binding SelectedItem.Name}" Margin="0"/>
+                                    </StackPanel>
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Command="{Binding DeletePositionCommand}">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Удалить позицию " Margin="0"/>
+                                        <TextBlock Text="{Binding SelectedItem.Name}" Margin="0"/>
+                                    </StackPanel>
+                                </MenuItem.Header>
+                            </MenuItem>
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
+                    
                 </TreeView>
             </StackPanel>
 
@@ -52,9 +80,9 @@
                 <TextBlock Grid.Column="0" Grid.Row="0" Text="ID:"></TextBlock>
                 <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Id}"></TextBlock>
                 <TextBlock Grid.Column="0" Grid.Row="1" Text="Обозначение:"></TextBlock>
-                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Name}"></TextBlock>
+                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                 <TextBlock Grid.Column="0" Grid.Row="2" Text="Название:"></TextBlock>
-                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Title}"></TextBlock>
+                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </Grid>
             
         </Grid>

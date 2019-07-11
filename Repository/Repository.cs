@@ -17,5 +17,6 @@ namespace Repository
             var data = context.Positions.Local;
             return data;
         }
+
     }
 }

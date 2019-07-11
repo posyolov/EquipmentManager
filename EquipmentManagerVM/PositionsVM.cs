@@ -15,11 +15,22 @@ namespace EquipmentManagerVM
         public ObservableCollection<Position> Positions { get; }
         public ObservableCollection<PositionNode> PositionsTree { get; }
 
+        public DelegateCommand<object> AddRootPositionCommand { get; }
+        public DelegateCommand<object> AddChildPositionCommand { get; }
+        public DelegateCommand<object> DeletePositionCommand { get; }
+
         private PositionNode _selectedItem;
         public PositionNode SelectedItem
         {
             get { return _selectedItem; }
-            set { _selectedItem = value; NotifyPropertyChanged(); }
+            set
+            {
+                _selectedItem = value;
+                NotifyPropertyChanged();
+
+                AddChildPositionCommand.RiseCanExecuteChanged();
+                DeletePositionCommand.RiseCanExecuteChanged();
+            }
         }
 
         public PositionsVM(ObservableCollection<Position> positions)
@@ -40,12 +51,19 @@ namespace EquipmentManagerVM
                 }
             }
 
-            //TestNode node = new TestNode("A");
-            //node.Nodes.Add(new TestNode("aaa"));
+            AddRootPositionCommand = new DelegateCommand<object>(
+                execute: AddRootPositionExecute
+                );
 
-            //PositionsTree.Add(node);
-            //PositionsTree.Add(new TestNode("B"));
-            //PositionsTree.Add(new TestNode("C"));
+            AddChildPositionCommand = new DelegateCommand<object>(
+                execute: AddChildPositionExecute,
+                canExecute: (s) => { return _selectedItem != null; }
+                );
+
+            DeletePositionCommand = new DelegateCommand<object>(
+                execute: DeletePositionExecute,
+                canExecute: (s) => { return _selectedItem != null; }
+                );
         }
 
         void BuildBranch(PositionNode positionNode, ObservableCollection<Position> positions)
@@ -66,8 +84,23 @@ namespace EquipmentManagerVM
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private void AddRootPositionExecute(object parametr)
+        {
+            ;
+        }
+
+        private void AddChildPositionExecute(object parametr)
+        {
+            ;
+        }
+
+        private void DeletePositionExecute(object parametr)
+        {
+            ;
+        }
+
     }
 }
