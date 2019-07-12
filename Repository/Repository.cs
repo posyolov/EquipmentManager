@@ -5,18 +5,36 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Migrations;
 
 namespace Repository
 {
-    public static class RepositoryData
+    public class RepositoryData : IEntities<Position>
     {
-        public static ObservableCollection<Position> GetPositions()
+        public ObservableCollection<Position> Entities
         {
-            EquipmentContainer context = new EquipmentContainer();
-            context.Positions.Load();
-            var data = context.Positions.Local;
-            return data;
+            get
+            {
+                using (var context = new EquipmentContainer())
+                {
+                    context.Positions.Load();
+                    return context.Positions.Local;
+                }
+            }
         }
 
+        public void Add(Position entity)
+        {
+            using (var context = new EquipmentContainer())
+            {
+                context.Positions.AddOrUpdate(entity);
+                context.SaveChanges();
+            }
+        }
+
+        public void Update(Position entity)
+        {
+            Add(entity);
+        }
     }
 }

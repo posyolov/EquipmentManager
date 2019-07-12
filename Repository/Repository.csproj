@@ -65,6 +65,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Equipment.edmx</DependentUpon>
     </Compile>
+    <Compile Include="IEntities.cs" />
     <Compile Include="Position.cs">
       <DependentUpon>Equipment.tt</DependentUpon>
     </Compile>
