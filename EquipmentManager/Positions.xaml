@@ -20,19 +20,19 @@
             <StackPanel Grid.Row="0">
                 
                 <TextBlock>Дерево позиций</TextBlock>
-                
+
                 <TreeView ItemsSource="{Binding PositionsTree}">
                     <i:Interaction.Behaviors>
                         <local:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
                     </i:Interaction.Behaviors>
                     <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding Nodes}">
+                        <HierarchicalDataTemplate ItemsSource="{Binding Nodes, Mode=OneWay}">
                             <HierarchicalDataTemplate.Triggers>
                                 <!--<DataTrigger Binding="{Binding Path=Marked}" Value="True">
                                 <Setter Property="TextBlock.Foreground" Value="Red"/>
                             </DataTrigger>-->
                             </HierarchicalDataTemplate.Triggers>
-                            <TextBlock Text="{Binding Name}"/>
+                            <TextBlock Text="{Binding PosData.Name}"/>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                     
@@ -45,7 +45,7 @@
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Добавить позицию в " Margin="0"/>
-                                        <TextBlock Text="{Binding SelectedItem.Name}" Margin="0"/>
+                                        <TextBlock Text="{Binding SelectedItem.PosData.Name}" Margin="0"/>
                                     </StackPanel>
                                 </MenuItem.Header>
                             </MenuItem>
@@ -54,7 +54,7 @@
                                 <MenuItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Удалить позицию " Margin="0"/>
-                                        <TextBlock Text="{Binding SelectedItem.Name}" Margin="0"/>
+                                        <TextBlock Text="{Binding SelectedItem.PosData.Name}" Margin="0"/>
                                     </StackPanel>
                                 </MenuItem.Header>
                             </MenuItem>
@@ -67,24 +67,32 @@
             <GridSplitter Grid.Row="1" Height="10" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
 
             <!--данные по позиции-->
-            <Grid Grid.Row="2" DataContext="{Binding SelectedItemEdit}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition MinWidth="50"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" Grid.Row="0" Text="ID:"></TextBlock>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Id}"></TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="1" Text="Обозначение:"></TextBlock>
-                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                <TextBlock Grid.Column="0" Grid.Row="2" Text="Название:"></TextBlock>
-                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            </Grid>
-            
+            <StackPanel Grid.Row="2">
+                <Grid DataContext="{Binding SelectedItemPosData}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition MinWidth="50"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="ID:"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Id}"></TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Обозначение:"></TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Название:"></TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </Grid>
+
+                <Button Margin="10"
+                        Command="{Binding SavePosDataCommand}">
+                    Сохранить
+                </Button>
+            </StackPanel>
+
         </Grid>
     </ControlTemplate>
 

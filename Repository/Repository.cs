@@ -23,7 +23,7 @@ namespace Repository
             }
         }
 
-        public void Add(Position entity)
+        public void Update(Position entity)
         {
             using (var context = new EquipmentContainer())
             {
@@ -32,9 +32,9 @@ namespace Repository
             }
         }
 
-        public void Update(Position entity)
+        public void Add(Position entity)
         {
-            Add(entity);
+            Update(entity);
         }
     }
 }

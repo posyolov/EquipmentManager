@@ -15,14 +15,15 @@ namespace EquipmentManagerVM
         readonly IEntities<Position> positionsRepos;
 
         public ObservableCollection<Position> Positions { get; }
-        public ObservableCollection<PositionNode> PositionsTree { get; }
+        public ObservableCollection<PositionNode> PositionsTree { get; set; }
 
         public DelegateCommand<object> AddRootPositionCommand { get; }
         public DelegateCommand<object> AddChildPositionCommand { get; }
         public DelegateCommand<object> DeletePositionCommand { get; }
+        public DelegateCommand<object> SavePosDataCommand { get; }
 
         private PositionNode _selectedItem;
-        private PositionNode _selectedItemEdit;
+        private Position _selectedItemPosData;
 
         public PositionNode SelectedItem
         {
@@ -31,19 +32,21 @@ namespace EquipmentManagerVM
             {
                 _selectedItem = value;
                 NotifyPropertyChanged();
-                SelectedItemEdit = value; //надо копировать по значению
+
+                //приходится каждый раз создавать экземпляр
+                SelectedItemPosData = value.CopyPosData();
 
                 AddChildPositionCommand.RiseCanExecuteChanged();
                 DeletePositionCommand.RiseCanExecuteChanged();
             }
         }
 
-        public PositionNode SelectedItemEdit
+        public Position SelectedItemPosData
         {
-            get { return _selectedItemEdit; }
+            get { return _selectedItemPosData; }
             set
             {
-                _selectedItemEdit = value;
+                _selectedItemPosData = value;
                 NotifyPropertyChanged();
             }
         }
@@ -81,11 +84,16 @@ namespace EquipmentManagerVM
                 execute: DeletePositionExecute,
                 canExecute: (s) => { return _selectedItem != null; }
                 );
+
+            SavePosDataCommand = new DelegateCommand<object>(
+                execute: SavePosDataExecute
+                );
+
         }
 
         void BuildBranch(PositionNode positionNode, ObservableCollection<Position> positions)
         {
-            var childrenPositions = positions.Where(c => c.ParentId == positionNode.Id);
+            var childrenPositions = positions.Where(c => c.ParentId == positionNode.PosData.Id);
 
             positionNode.Nodes = new ObservableCollection<PositionNode>();
 
@@ -98,23 +106,18 @@ namespace EquipmentManagerVM
 
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         private void AddRootPositionExecute(object parametr)
         {
             Position pos = new Position()
             {
-                Id = _selectedItem.Id,
-                Name = _selectedItem.Name,
-                ParentId = _selectedItem.ParentId,
-                Title = _selectedItem.Title
+                //Id = _selectedItem.PosData.Id,
+                Name = "New position",
+                //ParentId = _selectedItem.PosData.ParentId,
+                //Title = _selectedItem.PosData.Title
             };
 
             positionsRepos.Update(pos);
+            PositionsTree.Add(new PositionNode(pos));
         }
 
         private void AddChildPositionExecute(object parametr)
@@ -127,5 +130,36 @@ namespace EquipmentManagerVM
             ;
         }
 
+        private void SavePosDataExecute(object parametr)
+        {
+            //var node = PositionsTree.Where(p => p.Id == SelectedItemPosData.Id).FirstOrDefault();
+            //if(node != null)
+            //    node.SetPosData(SelectedItemPosData);
+            //NotifyPropertyChanged("PositionsTree");
+
+            //PositionsTree[0].Name = "kuku";
+            //NotifyPropertyChanged("PositionsTree");
+
+            //работает
+            //PositionsTree.Add(new PositionNode(new Position() { Id = 222, Name = "KUKU" }));
+
+            //работает
+            //PositionsTree[0] = new PositionNode(new Position() { Id = 222, Name = "KUKU" });
+
+            //заработало
+            //PositionsTree[0].PosData = new Position() { Id = 222, Name = "KUKU" };
+
+            //SelectedItem.PosData = new Position() { Name = SelectedItemPosData.Name, Title = SelectedItemPosData.Title };
+
+            positionsRepos.Update(SelectedItemPosData);
+            SelectedItem.SetPosData(SelectedItemPosData);
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
