@@ -11,6 +11,9 @@ namespace Repository
     {
         ObservableCollection<T> Entities { get; }
 
+        void Add(T entity);
         void Update(T entity);
+        void Remove(T entity);
+        void RemoveRange(List<T> entities);
     }
 }

@@ -36,5 +36,22 @@ namespace Repository
         {
             Update(entity);
         }
+
+        public void Remove(Position entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveRange(List<Position> branch)
+        {
+            using (var context = new EquipmentContainer())
+            {
+                foreach (var pos in branch)
+                {
+                    context.Entry(pos).State = EntityState.Deleted;
+                }
+                context.SaveChanges();
+            }
+        }
     }
 }

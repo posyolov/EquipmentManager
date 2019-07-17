@@ -34,7 +34,7 @@ namespace EquipmentManagerVM
                 NotifyPropertyChanged();
 
                 //приходится каждый раз создавать экземпляр
-                SelectedItemPosData = value.CopyPosData();
+                SelectedItemPosData = value?.CopyPosData();
 
                 AddChildPositionCommand.RiseCanExecuteChanged();
                 DeletePositionCommand.RiseCanExecuteChanged();
@@ -106,14 +106,35 @@ namespace EquipmentManagerVM
 
         }
 
+        void GetChildrenPosData(List<Position> childrenPosData, PositionNode childNode)
+        {
+            childrenPosData.Add(childNode.PosData);
+
+            if (childNode.Nodes != null)
+                foreach (PositionNode node in childNode.Nodes)
+                    GetChildrenPosData(childrenPosData, node);
+        }
+
+        void RemoveNode(int id, ObservableCollection<PositionNode> nodes)
+        {
+            foreach (PositionNode node in nodes)
+            {
+                if (node.PosData.Id == id)
+                {
+                    nodes.Remove(node);
+                    return;
+                }
+
+                RemoveNode(id, node.Nodes);
+            }
+        }
+
         private void AddRootPositionExecute(object parametr)
         {
             Position pos = new Position()
             {
-                //Id = _selectedItem.PosData.Id,
+                //Id = присваивает метод AddOrUpdate EF
                 Name = "New position",
-                //ParentId = _selectedItem.PosData.ParentId,
-                //Title = _selectedItem.PosData.Title
             };
 
             positionsRepos.Update(pos);
@@ -122,35 +143,29 @@ namespace EquipmentManagerVM
 
         private void AddChildPositionExecute(object parametr)
         {
-            ;
+            Position pos = new Position()
+            {
+                //Id = присваивает метод AddOrUpdate EF
+                Name = "New position",
+                ParentId = SelectedItem.PosData.Id,
+            };
+
+            positionsRepos.Update(pos);
+
+            SelectedItem.Nodes.Add(new PositionNode(pos));
         }
 
         private void DeletePositionExecute(object parametr)
         {
-            ;
+            List<Position> branchPosData = new List<Position>();
+            GetChildrenPosData(branchPosData, SelectedItem);
+            positionsRepos.RemoveRange(branchPosData);
+
+            RemoveNode(SelectedItem.PosData.Id, PositionsTree);
         }
 
         private void SavePosDataExecute(object parametr)
         {
-            //var node = PositionsTree.Where(p => p.Id == SelectedItemPosData.Id).FirstOrDefault();
-            //if(node != null)
-            //    node.SetPosData(SelectedItemPosData);
-            //NotifyPropertyChanged("PositionsTree");
-
-            //PositionsTree[0].Name = "kuku";
-            //NotifyPropertyChanged("PositionsTree");
-
-            //работает
-            //PositionsTree.Add(new PositionNode(new Position() { Id = 222, Name = "KUKU" }));
-
-            //работает
-            //PositionsTree[0] = new PositionNode(new Position() { Id = 222, Name = "KUKU" });
-
-            //заработало
-            //PositionsTree[0].PosData = new Position() { Id = 222, Name = "KUKU" };
-
-            //SelectedItem.PosData = new Position() { Name = SelectedItemPosData.Name, Title = SelectedItemPosData.Title };
-
             positionsRepos.Update(SelectedItemPosData);
             SelectedItem.SetPosData(SelectedItemPosData);
         }

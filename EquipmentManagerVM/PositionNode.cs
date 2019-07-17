@@ -29,10 +29,7 @@ namespace EquipmentManagerVM
         public PositionNode(Position position)
         {
             PosData = position;
-            //Id = position.Id;
-            //ParentId = position.ParentId;
-            //Name = position.Name;
-            //Title = position.Title;
+            Nodes = new ObservableCollection<PositionNode>();
         }
 
         public Position CopyPosData()
