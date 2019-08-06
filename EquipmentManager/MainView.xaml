@@ -13,7 +13,7 @@
                 <ResourceDictionary Source="MainMenu.xaml" />
                 <ResourceDictionary Source="MainStatusBar.xaml" />
                 <ResourceDictionary Source="Positions.xaml" />
-                <ResourceDictionary Source="WorkArea.xaml" />
+                <ResourceDictionary Source="Journal.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -26,17 +26,17 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
-                <ColumnDefinition Width="auto"></ColumnDefinition>
-                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <GridSplitter Grid.Column="1" Width="10" VerticalAlignment="Stretch" HorizontalAlignment="Center"></GridSplitter>
 
             <ContentControl DataContext="{Binding PositionsVM}"  
                             Template="{StaticResource Positions}"
-                            Grid.Row="0"/>
+                            Grid.Column="0"/>
 
-            <ContentControl DataContext="{Binding WorkAreaVM}"
-                            Template="{StaticResource WorkArea}" 
+            <GridSplitter Grid.Column="1" Width="10" VerticalAlignment="Stretch" HorizontalAlignment="Center"></GridSplitter>
+
+            <ContentControl DataContext="{Binding JournalVM}"
+                            Template="{StaticResource Journal}" 
                             Grid.Column="2"/>
             
             <!--<TextBlock Grid.Column="2" DataContext="{StaticResource pData}" Text="{Binding Path=Kuku1}"/>-->

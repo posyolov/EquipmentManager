@@ -1,0 +1,38 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ControlTemplate x:Key="Journal">
+        
+        <TabControl HorizontalAlignment="Stretch">
+            
+            <TabItem Header="Сводный">
+                <ListView ItemsSource="{Binding Data1}">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Header="Дата/время" DisplayMemberBinding="{Binding DateTime}"></GridViewColumn>
+                                <GridViewColumn Header="Позиция" DisplayMemberBinding="{Binding Position.Name}"></GridViewColumn>
+                                <GridViewColumn Header="Описание" DisplayMemberBinding="{Binding Description}"></GridViewColumn>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+            
+            <TabItem Header="Дежурный">
+                <ListBox ItemsSource="{Binding Data2}">
+
+                </ListBox>
+            </TabItem>
+            
+            <TabItem Header="Блокировки">
+                <ListBox ItemsSource="{Binding Data3}">
+
+                </ListBox>
+            </TabItem>
+            
+        </TabControl>
+        
+    </ControlTemplate>
+
+</ResourceDictionary>

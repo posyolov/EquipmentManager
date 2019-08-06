@@ -12,7 +12,7 @@ namespace EquipmentManagerVM
 {
     public class PositionsVM : INotifyPropertyChanged
     {
-        readonly IEntities<Position> positionsRepos;
+        readonly IGenericRepository<Position> positionsRepos;
 
         public ObservableCollection<Position> Positions { get; }
         public ObservableCollection<PositionNode> PositionsTree { get; set; }
@@ -51,11 +51,11 @@ namespace EquipmentManagerVM
             }
         }
 
-        public PositionsVM(IEntities<Position> positionsRepository)
+        public PositionsVM(IGenericRepository<Position> positionsRepository)
         {
             positionsRepos = positionsRepository;
 
-            Positions = positionsRepository.Entities;
+            Positions = positionsRepository.Get();
 
             PositionsTree = new ObservableCollection<PositionNode>();
 

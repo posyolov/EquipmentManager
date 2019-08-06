@@ -46,7 +46,7 @@
     <Compile Include="PositionsVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PositionNode.cs" />
-    <Compile Include="WorkAreaVM.cs" />
+    <Compile Include="JournalVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Repository\Repository.csproj">

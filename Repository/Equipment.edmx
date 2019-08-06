@@ -7,6 +7,16 @@
     <Schema Namespace="Equipment.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityContainer Name="EquipmentStoreContainer">
     <EntitySet Name="Positions" EntityType="Equipment.Store.Positions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Journal" EntityType="Equipment.Store.Journal" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EventCategories" EntityType="Equipment.Store.EventCategories" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="PositionJournalEvent" Association="Equipment.Store.PositionJournalEvent">
+      <End Role="Position" EntitySet="Positions" />
+      <End Role="JournalEvent" EntitySet="Journal" />
+    </AssociationSet>
+    <AssociationSet Name="EventCategoryJournalEvent" Association="Equipment.Store.EventCategoryJournalEvent">
+      <End Role="EventCategory" EntitySet="EventCategories" />
+      <End Role="JournalEvent" EntitySet="Journal" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Positions">
     <Key>
@@ -17,12 +27,62 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Title" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
+  <EntityType Name="Journal">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Position_Id" Type="int" Nullable="false" />
+    <Property Name="EventCategory_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EventCategories">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="PositionJournalEvent">
+    <End Role="Position" Type="Equipment.Store.Positions" Multiplicity="1" />
+    <End Role="JournalEvent" Type="Equipment.Store.Journal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Position">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="JournalEvent">
+        <PropertyRef Name="Position_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EventCategoryJournalEvent">
+    <End Role="EventCategory" Type="Equipment.Store.EventCategories" Multiplicity="1" />
+    <End Role="JournalEvent" Type="Equipment.Store.Journal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EventCategory">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="JournalEvent">
+        <PropertyRef Name="EventCategory_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Equipment" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
         <EntityContainer Name="EquipmentContainer" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Positions" EntityType="Equipment.Position" />
+          <EntitySet Name="Journal" EntityType="Equipment.JournalEvent" />
+          <AssociationSet Name="PositionJournalEvent" Association="Equipment.PositionJournalEvent">
+            <End Role="Position" EntitySet="Positions" />
+            <End Role="JournalEvent" EntitySet="Journal" />
+          </AssociationSet>
+          <EntitySet Name="EventCategories" EntityType="Equipment.EventCategory" />
+          <AssociationSet Name="EventCategoryJournalEvent" Association="Equipment.EventCategoryJournalEvent">
+            <End Role="EventCategory" EntitySet="EventCategories" />
+            <End Role="JournalEvent" EntitySet="Journal" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Position">
           <Key>
@@ -32,7 +92,33 @@
           <Property Name="ParentId" Type="Int32" Nullable="true" />
           <Property Name="Name" Type="String" Nullable="false" />
           <Property Name="Title" Type="String" Nullable="true" />
+          <NavigationProperty Name="JournalEvents" Relationship="Equipment.PositionJournalEvent" FromRole="Position" ToRole="JournalEvent" />
         </EntityType>
+        <EntityType Name="JournalEvent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <NavigationProperty Name="Position" Relationship="Equipment.PositionJournalEvent" FromRole="JournalEvent" ToRole="Position" />
+          <NavigationProperty Name="EventCategory" Relationship="Equipment.EventCategoryJournalEvent" FromRole="JournalEvent" ToRole="EventCategory" />
+        </EntityType>
+        <Association Name="PositionJournalEvent">
+          <End Type="Equipment.Position" Role="Position" Multiplicity="1" />
+          <End Type="Equipment.JournalEvent" Role="JournalEvent" Multiplicity="*" />
+        </Association>
+        <EntityType Name="EventCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" />
+          <NavigationProperty Name="JournalEvents" Relationship="Equipment.EventCategoryJournalEvent" FromRole="EventCategory" ToRole="JournalEvent" />
+        </EntityType>
+        <Association Name="EventCategoryJournalEvent">
+          <End Type="Equipment.EventCategory" Role="EventCategory" Multiplicity="1" />
+          <End Type="Equipment.JournalEvent" Role="JournalEvent" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -49,6 +135,38 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Journal">
+      <EntityTypeMapping TypeName="IsTypeOf(Equipment.JournalEvent)">
+        <MappingFragment StoreEntitySet="Journal">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EventCategories">
+      <EntityTypeMapping TypeName="IsTypeOf(Equipment.EventCategory)">
+        <MappingFragment StoreEntitySet="EventCategories">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="PositionJournalEvent" TypeName="Equipment.PositionJournalEvent" StoreEntitySet="Journal">
+      <EndProperty Name="Position">
+        <ScalarProperty Name="Id" ColumnName="Position_Id" />
+      </EndProperty>
+      <EndProperty Name="JournalEvent">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="EventCategoryJournalEvent" TypeName="Equipment.EventCategoryJournalEvent" StoreEntitySet="Journal">
+      <EndProperty Name="EventCategory">
+        <ScalarProperty Name="Id" ColumnName="EventCategory_Id" />
+      </EndProperty>
+      <EndProperty Name="JournalEvent">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

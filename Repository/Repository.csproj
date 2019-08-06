@@ -65,12 +65,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Equipment.edmx</DependentUpon>
     </Compile>
-    <Compile Include="IEntities.cs" />
+    <Compile Include="EventCategory.cs">
+      <DependentUpon>Equipment.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IGenericRepository.cs" />
+    <Compile Include="JournalEvent.cs">
+      <DependentUpon>Equipment.tt</DependentUpon>
+    </Compile>
     <Compile Include="Position.cs">
       <DependentUpon>Equipment.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository.cs" />
+    <Compile Include="GenericRepositoryEF.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Equipment.edmx">

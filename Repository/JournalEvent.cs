@@ -12,20 +12,12 @@ namespace Repository
     using System;
     using System.Collections.Generic;
     
-    public partial class Position
+    public partial class JournalEvent
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Position()
-        {
-            this.JournalEvents = new HashSet<JournalEvent>();
-        }
-    
         public int Id { get; set; }
-        public Nullable<int> ParentId { get; set; }
-        public string Name { get; set; }
-        public string Title { get; set; }
+        public string Description { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JournalEvent> JournalEvents { get; set; }
+        public virtual Position Position { get; set; }
+        public virtual EventCategory EventCategory { get; set; }
     }
 }

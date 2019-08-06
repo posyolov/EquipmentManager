@@ -12,17 +12,15 @@ namespace Repository
     using System;
     using System.Collections.Generic;
     
-    public partial class Position
+    public partial class EventCategory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Position()
+        public EventCategory()
         {
             this.JournalEvents = new HashSet<JournalEvent>();
         }
     
         public int Id { get; set; }
-        public Nullable<int> ParentId { get; set; }
-        public string Name { get; set; }
         public string Title { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

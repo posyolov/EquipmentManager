@@ -9,12 +9,12 @@ namespace EquipmentManagerVM
     public class MainVM
     {
         public PositionsVM PositionsVM { get; }
-        public WorkAreaVM WorkAreaVM { get; }
+        public JournalVM JournalVM { get; }
 
-        public MainVM(PositionsVM positionsVM, WorkAreaVM workAreaVM)
+        public MainVM(PositionsVM positionsVM, JournalVM journalVM)
         {
             PositionsVM = positionsVM;
-            WorkAreaVM = workAreaVM;
+            JournalVM = journalVM;
         }
     }
 }

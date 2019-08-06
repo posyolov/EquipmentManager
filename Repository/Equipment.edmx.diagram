@@ -6,6 +6,10 @@
     <edmx:Diagrams>
       <Diagram DiagramId="24b54f9e141643f5a7ceced9db6d05ab" Name="Diagram1" >
         <EntityTypeShape EntityType="Equipment.Position" Width="1.5" PointX="4.125" PointY="1.5" />
+        <EntityTypeShape EntityType="Equipment.JournalEvent" Width="1.5" PointX="8.75" PointY="1.25" />
+        <AssociationConnector Association="Equipment.PositionJournalEvent" />
+        <EntityTypeShape EntityType="Equipment.EventCategory" Width="1.5" PointX="10.75" PointY="1.25" />
+        <AssociationConnector Association="Equipment.EventCategoryJournalEvent" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
