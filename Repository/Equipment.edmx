@@ -32,7 +32,8 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DateTime" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Position_Id" Type="int" Nullable="false" />
     <Property Name="EventCategory_Id" Type="int" Nullable="false" />
   </EntityType>
@@ -99,7 +100,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="true" />
           <NavigationProperty Name="Position" Relationship="Equipment.PositionJournalEvent" FromRole="JournalEvent" ToRole="Position" />
           <NavigationProperty Name="EventCategory" Relationship="Equipment.EventCategoryJournalEvent" FromRole="JournalEvent" ToRole="EventCategory" />
         </EntityType>
@@ -139,6 +141,7 @@
       <EntityTypeMapping TypeName="IsTypeOf(Equipment.JournalEvent)">
         <MappingFragment StoreEntitySet="Journal">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="DateTime" ColumnName="DateTime" />
           <ScalarProperty Name="Description" ColumnName="Description" />
         </MappingFragment>
       </EntityTypeMapping>

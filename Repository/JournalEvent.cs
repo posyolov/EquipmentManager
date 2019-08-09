@@ -15,6 +15,7 @@ namespace Repository
     public partial class JournalEvent
     {
         public int Id { get; set; }
+        public System.DateTime DateTime { get; set; }
         public string Description { get; set; }
     
         public virtual Position Position { get; set; }

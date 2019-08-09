@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using Repository;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace EquipmentManagerVM
 {
-    public class PositionsVM : INotifyPropertyChanged
+    public class PositionsVM : ViewModelBase
     {
+        public event Action<Position> CreateJournalEventEv;
+
         readonly IGenericRepository<Position> positionsRepos;
 
-        public ObservableCollection<Position> Positions { get; }
+        public IEnumerable<Position> Positions { get; }
         public ObservableCollection<PositionNode> PositionsTree { get; set; }
 
+        public DelegateCommand<object> CreateJournalEventCommand { get; }
         public DelegateCommand<object> AddRootPositionCommand { get; }
         public DelegateCommand<object> AddChildPositionCommand { get; }
         public DelegateCommand<object> DeletePositionCommand { get; }
@@ -71,6 +73,10 @@ namespace EquipmentManagerVM
                 }
             }
 
+            CreateJournalEventCommand = new DelegateCommand<object>(
+                execute: RiseCreateJournalEventEv
+                );
+
             AddRootPositionCommand = new DelegateCommand<object>(
                 execute: AddRootPositionExecute
                 );
@@ -91,7 +97,7 @@ namespace EquipmentManagerVM
 
         }
 
-        void BuildBranch(PositionNode positionNode, ObservableCollection<Position> positions)
+        void BuildBranch(PositionNode positionNode, IEnumerable<Position> positions)
         {
             var childrenPositions = positions.Where(c => c.ParentId == positionNode.PosData.Id);
 
@@ -171,10 +177,10 @@ namespace EquipmentManagerVM
         }
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        private void RiseCreateJournalEventEv(object parametr)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            CreateJournalEventEv?.Invoke(SelectedItemPosData);
         }
+
     }
 }

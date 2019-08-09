@@ -1,0 +1,39 @@
+﻿<Window x:Class="EquipmentManager.CreateJournalEventView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:local="clr-namespace:EquipmentManager"
+        mc:Ignorable="d"
+        Title="Создать событие"
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="WidthAndHeight">
+    
+    <i:Interaction.Behaviors>
+        <local:CloseWindowBehavior CloseTrigger="{Binding CloseTrigger}" />
+    </i:Interaction.Behaviors>    
+    
+    <StackPanel>
+
+        <TextBlock>Дата:</TextBlock>
+        <DatePicker SelectedDate="{Binding JEvent.DateTime}"/>
+        
+        <TextBlock>Позиция:</TextBlock>
+        <TextBlock Text="{Binding JEvent.Position.Name}"/>
+        
+        <TextBlock>Категория:</TextBlock>
+        <ComboBox ItemsSource="{Binding EvCategories}"
+                  DisplayMemberPath="Title"
+                  SelectedValuePath="Id"
+                  SelectedItem="{Binding JEvent.EventCategory}">
+        </ComboBox>
+
+        <TextBlock>Описание:</TextBlock>
+        <TextBox Text="{Binding JEvent.Description}"/>
+
+        <Button Content="ОК" IsDefault="True" Command="{Binding CreateJournalEventCommand}"/>
+        <Button Content="Отмена" IsCancel="True"/>
+    </StackPanel>
+</Window>

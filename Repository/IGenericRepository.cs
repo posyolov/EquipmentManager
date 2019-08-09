@@ -10,11 +10,11 @@ namespace Repository
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {
-        ObservableCollection<TEntity> Get();
-        void Add(TEntity entity);
-        void Update(TEntity entity);
-        void Remove(TEntity entity);
-        void RemoveRange(List<TEntity> entities);
+        IEnumerable<TEntity> Get();
         IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties);
+        void Add(TEntity entity);       //??? добавить результат выполнения ???
+        void Update(TEntity entity);      //??? добавить результат выполнения ???
+        void Remove(TEntity entity);      //??? добавить результат выполнения ???
+        void RemoveRange(List<TEntity> entities);      //??? добавить результат выполнения ???
     }
 }

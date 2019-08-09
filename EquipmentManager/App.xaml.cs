@@ -16,21 +16,47 @@ namespace EquipmentManager
     /// </summary>
     public partial class App : Application
     {
+        GenericRepositoryEF<Position> positionRepos;
+        GenericRepositoryEF<JournalEvent> journalRepos;
+        GenericRepositoryEF<EventCategory> evCategoryRepository;
+
+        PositionsVM positionsVM;
+        JournalVM journalVM;
+        MainVM mainVM;
+
+        MainView mainView;
+        CreateJournalEventView createJournalEventView;
+               
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            GenericRepositoryEF<Position> positionRepos = new GenericRepositoryEF<Position>();
-            GenericRepositoryEF<JournalEvent> journalRepos = new GenericRepositoryEF<JournalEvent>();
+            //репозитории
+            positionRepos = new GenericRepositoryEF<Position>();
+            journalRepos = new GenericRepositoryEF<JournalEvent>();
+            evCategoryRepository = new GenericRepositoryEF<EventCategory>();
 
-            PositionsVM positionsTreeVM = new PositionsVM(positionRepos);
-            //JournalVM journalVM = new JournalVM(new ObservableCollection<string> { "111111111111111111111", "222222222222222222222222", "3333333333333333333333333", "4444444444444444", "555555555555555555555555555" });
-            JournalVM journalVM = new JournalVM(journalRepos);
+            //ViewModels
+            positionsVM = new PositionsVM(positionRepos);
+            journalVM = new JournalVM(journalRepos);
+            mainVM = new MainVM(positionsVM, journalVM);
 
-            MainVM mainVM = new MainVM(positionsTreeVM, journalVM);
+            //Views
+            positionsVM.CreateJournalEventEv += (p) =>
+            {
+                createJournalEventView = new CreateJournalEventView();
+                createJournalEventView.Owner = mainView;
+                createJournalEventView.DataContext = new CreateJournalEventVM(p, evCategoryRepository);
 
-            MainView mainView = new MainView();
+                //createJournalEventView.Closed += CreateJournalEventView_Closed;
+
+                var res = createJournalEventView.ShowDialog();
+            };
+
+            //Main
+            mainView = new MainView();
             mainView.DataContext = mainVM;
             mainView.Show();
 
         }
+
     }
 }

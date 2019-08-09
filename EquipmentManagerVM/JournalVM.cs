@@ -8,7 +8,7 @@ using Repository;
 
 namespace EquipmentManagerVM
 {
-    public class JournalVM
+    public class JournalVM : ViewModelBase
     {
         public IEnumerable<JournalEvent> Data1 { get; }
         public ObservableCollection<string> Data2 { get; }

@@ -12,7 +12,7 @@ namespace Repository
 {
     public class GenericRepositoryEF<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        public ObservableCollection<TEntity> Get()
+        public IEnumerable<TEntity> Get()
         {
             using (var context = new EquipmentContainer())
             {

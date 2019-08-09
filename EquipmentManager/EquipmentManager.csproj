@@ -62,7 +62,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CloseWindowBehavior.cs" />
+    <Compile Include="CreateJournalEventView.xaml.cs">
+      <DependentUpon>CreateJournalEventView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TreeViewSelectedItemBehavior.cs" />
+    <Page Include="CreateJournalEventView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

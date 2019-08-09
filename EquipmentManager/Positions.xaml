@@ -38,6 +38,11 @@
                     
                     <TreeView.ContextMenu>
                         <ContextMenu>
+                            <MenuItem Command="{Binding CreateJournalEventCommand}"
+                                Header="Создать событие"/>
+
+                            <Separator/>
+
                             <MenuItem Command="{Binding AddRootPositionCommand}"
                                 Header="Добавить корневую позицию"/>
 

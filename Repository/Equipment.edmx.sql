@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 07/30/2019 11:29:09
+-- Date Created: 08/09/2019 16:17:46
 -- Generated from EDMX file: D:\Projects\C#\EquipmentManager\Repository\Equipment.edmx
 -- --------------------------------------------------
 
@@ -17,6 +17,12 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
+IF OBJECT_ID(N'[dbo].[FK_PositionJournalEvent]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Journal] DROP CONSTRAINT [FK_PositionJournalEvent];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EventCategoryJournalEvent]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Journal] DROP CONSTRAINT [FK_EventCategoryJournalEvent];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -24,6 +30,12 @@ GO
 
 IF OBJECT_ID(N'[dbo].[Positions]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Positions];
+GO
+IF OBJECT_ID(N'[dbo].[Journal]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Journal];
+GO
+IF OBJECT_ID(N'[dbo].[EventCategories]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[EventCategories];
 GO
 
 -- --------------------------------------------------
@@ -42,7 +54,8 @@ GO
 -- Creating table 'Journal'
 CREATE TABLE [dbo].[Journal] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Description] nvarchar(max)  NOT NULL,
+    [DateTime] datetime  NOT NULL,
+    [Description] nvarchar(max)  NULL,
     [Position_Id] int  NOT NULL,
     [EventCategory_Id] int  NOT NULL
 );
