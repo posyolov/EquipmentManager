@@ -16,46 +16,49 @@ namespace EquipmentManager
     /// </summary>
     public partial class App : Application
     {
-        GenericRepositoryEF<Position> positionRepos;
-        GenericRepositoryEF<JournalEvent> journalRepos;
-        GenericRepositoryEF<EventCategory> evCategoryRepository;
+        GenericRepositoryEF<Position> _positionRepos;
+        GenericRepositoryEF<JournalEvent> _journalRepos;
+        GenericRepositoryEF<EventCategory> _evCategoryRepos;
 
-        PositionsVM positionsVM;
-        JournalVM journalVM;
-        MainVM mainVM;
+        PositionsVM _positionsVM;
+        JournalVM _journalVM;
+        CreateJournalEventVM _createJournalEventVM;
+        MainVM _mainVM;
 
-        MainView mainView;
-        CreateJournalEventView createJournalEventView;
+        MainView _mainView;
+        CreateJournalEventView _createJournalEventView;
                
         private void OnStartup(object sender, StartupEventArgs e)
         {
             //репозитории
-            positionRepos = new GenericRepositoryEF<Position>();
-            journalRepos = new GenericRepositoryEF<JournalEvent>();
-            evCategoryRepository = new GenericRepositoryEF<EventCategory>();
+            _positionRepos = new GenericRepositoryEF<Position>();
+            _journalRepos = new GenericRepositoryEF<JournalEvent>();
+            _evCategoryRepos = new GenericRepositoryEF<EventCategory>();
 
             //ViewModels
-            positionsVM = new PositionsVM(positionRepos);
-            journalVM = new JournalVM(journalRepos);
-            mainVM = new MainVM(positionsVM, journalVM);
+            _positionsVM = new PositionsVM(_positionRepos);
+            _journalVM = new JournalVM(_journalRepos);
+            _mainVM = new MainVM(_positionsVM, _journalVM);
 
             //Views
-            positionsVM.CreateJournalEventEv += (p) =>
-            {
-                createJournalEventView = new CreateJournalEventView();
-                createJournalEventView.Owner = mainView;
-                createJournalEventView.DataContext = new CreateJournalEventVM(p, evCategoryRepository);
-
-                //createJournalEventView.Closed += CreateJournalEventView_Closed;
-
-                var res = createJournalEventView.ShowDialog();
-            };
+            _positionsVM.CreateJournalEventReqEv += PositionsVM_CreateJournalEventReqEv;
 
             //Main
-            mainView = new MainView();
-            mainView.DataContext = mainVM;
-            mainView.Show();
+            _mainView = new MainView();
+            _mainView.DataContext = _mainVM;
+            _mainView.Show();
 
+        }
+
+        private void PositionsVM_CreateJournalEventReqEv(Position position)
+        {
+            _createJournalEventVM = new CreateJournalEventVM(position, _evCategoryRepos, _journalRepos);
+            _createJournalEventVM.JournalEventCreatedEv += (je) =>_journalVM.AddJournalEvent(je);
+
+            _createJournalEventView = new CreateJournalEventView();
+            _createJournalEventView.Owner = _mainView;
+            _createJournalEventView.DataContext = _createJournalEventVM;
+            _createJournalEventView.ShowDialog();
         }
 
     }

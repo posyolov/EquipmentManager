@@ -16,5 +16,6 @@ namespace Repository
         void Update(TEntity entity);      //??? добавить результат выполнения ???
         void Remove(TEntity entity);      //??? добавить результат выполнения ???
         void RemoveRange(List<TEntity> entities);      //??? добавить результат выполнения ???
+        TEntity FindById(int id);
     }
 }

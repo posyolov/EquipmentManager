@@ -6,12 +6,13 @@
         <TabControl HorizontalAlignment="Stretch">
             
             <TabItem Header="Сводный">
-                <ListView ItemsSource="{Binding Data1}">
+                <ListView ItemsSource="{Binding JournalEvents}">
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
                                 <GridViewColumn Header="Дата/время" DisplayMemberBinding="{Binding DateTime}"></GridViewColumn>
                                 <GridViewColumn Header="Позиция" DisplayMemberBinding="{Binding Position.Name}"></GridViewColumn>
+                                <GridViewColumn Header="Категория" DisplayMemberBinding="{Binding EventCategory.Title}"></GridViewColumn>
                                 <GridViewColumn Header="Описание" DisplayMemberBinding="{Binding Description}"></GridViewColumn>
                             </GridView.Columns>
                         </GridView>

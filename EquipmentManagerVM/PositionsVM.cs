@@ -11,7 +11,7 @@ namespace EquipmentManagerVM
 {
     public class PositionsVM : ViewModelBase
     {
-        public event Action<Position> CreateJournalEventEv;
+        public event Action<Position> CreateJournalEventReqEv;
 
         readonly IGenericRepository<Position> positionsRepos;
 
@@ -179,7 +179,7 @@ namespace EquipmentManagerVM
 
         private void RiseCreateJournalEventEv(object parametr)
         {
-            CreateJournalEventEv?.Invoke(SelectedItemPosData);
+            CreateJournalEventReqEv?.Invoke(SelectedItemPosData);
         }
 
     }

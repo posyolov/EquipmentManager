@@ -10,13 +10,18 @@ namespace EquipmentManagerVM
 {
     public class CreateJournalEventVM : ViewModelBase
     {
-        public JournalEvent JEvent { get; }
+        public event Action<JournalEvent> JournalEventCreatedEv;
+
+        public JournalEvent JEvent { get; set; }
+
         public IEnumerable<EventCategory> EvCategories { get; }
+        IGenericRepository<JournalEvent> _journalRepos;
+        IGenericRepository<EventCategory> _evCategoryRepository;
 
         private bool closeTrigger;
         public bool CloseTrigger
         {
-            get { return this.closeTrigger; }
+            get => closeTrigger;
             set
             {
                 closeTrigger = value;
@@ -26,34 +31,42 @@ namespace EquipmentManagerVM
 
         public DelegateCommand<object> CreateJournalEventCommand { get; }
 
-        public CreateJournalEventVM(Position position, IGenericRepository<EventCategory> evCategoryRepository)
+        public CreateJournalEventVM(Position position, IGenericRepository<EventCategory> evCategoryRepository, IGenericRepository<JournalEvent> journalRepository)
         {
             //запрос списка категорий
-            EvCategories = evCategoryRepository.Get();
+            _evCategoryRepository = evCategoryRepository;
+            EvCategories = _evCategoryRepository.Get();
 
             JEvent = new JournalEvent()
             {
                 DateTime = DateTime.Now,
                 Position = position,
+                //EventCategory = new EventCategory()
             };
 
             CreateJournalEventCommand = new DelegateCommand<object>(
                 execute: CreateJournalEventExecute,
                 canExecute: CreateJournalEventCanExecute
                 );
+
+            _journalRepos = journalRepository;
         }
 
         private bool CreateJournalEventCanExecute(object obj)
         {
-            return JEvent.Position != null && JEvent.EventCategory != null;
+            return true; // JEvent.Position != null && JEvent.EventCategory != null;
         }
 
         private void CreateJournalEventExecute(object obj)
         {
-            if(JEvent != null)
-                ;
+            if (JEvent != null && JEvent.Position != null && JEvent.EventCategory != null)
+            {
+                CloseTrigger = true;
 
-            CloseTrigger = true;
+                _journalRepos.Add(JEvent);
+
+                JournalEventCreatedEv?.Invoke(JEvent);
+            }
         }
 
     }

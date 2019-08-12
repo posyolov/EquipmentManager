@@ -79,5 +79,13 @@ namespace Repository
                 return includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
             }
         }
+
+        public TEntity FindById(int id)
+        {
+            using (var context = new EquipmentContainer())
+            {
+                return context.Set<TEntity>().Find(id);
+            }
+        }
     }
 }

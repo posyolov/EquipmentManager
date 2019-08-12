@@ -10,18 +10,24 @@ namespace EquipmentManagerVM
 {
     public class JournalVM : ViewModelBase
     {
-        public IEnumerable<JournalEvent> Data1 { get; }
+        IGenericRepository<JournalEvent> _journalRepos;
+
+        public ObservableCollection<JournalEvent> JournalEvents { get; set; }
         public ObservableCollection<string> Data2 { get; }
         public ObservableCollection<string> Data3 { get; }
 
         public JournalVM(IGenericRepository<JournalEvent> journalRepository)
         {
-            Data1 = journalRepository.GetWithInclude(p => p.Position);
-
-            //var kkeke = Data1[0].Position.Name;
+            _journalRepos = journalRepository;
+            JournalEvents = new ObservableCollection<JournalEvent>(_journalRepos?.GetWithInclude(p => p.Position, c => c.EventCategory));
 
             Data2 = new ObservableCollection<string>() { "aaa2", "bbb2", "ccc2" };
             Data3 = new ObservableCollection<string>() { "aaa3", "bbb3", "ccc3" };
+        }
+
+        public void AddJournalEvent(JournalEvent journalEvent)
+        {
+            JournalEvents.Add(journalEvent);
         }
     }
 }
