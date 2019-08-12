@@ -16,6 +16,8 @@ namespace EquipmentManager
     /// </summary>
     public partial class App : Application
     {
+        EquipmentContainer _context;
+
         GenericRepositoryEF<Position> _positionRepos;
         GenericRepositoryEF<JournalEvent> _journalRepos;
         GenericRepositoryEF<EventCategory> _evCategoryRepos;
@@ -31,9 +33,10 @@ namespace EquipmentManager
         private void OnStartup(object sender, StartupEventArgs e)
         {
             //репозитории
-            _positionRepos = new GenericRepositoryEF<Position>();
-            _journalRepos = new GenericRepositoryEF<JournalEvent>();
-            _evCategoryRepos = new GenericRepositoryEF<EventCategory>();
+            _context = new EquipmentContainer();
+            _positionRepos = new GenericRepositoryEF<Position>(_context);
+            _journalRepos = new GenericRepositoryEF<JournalEvent>(_context);
+            _evCategoryRepos = new GenericRepositoryEF<EventCategory>(_context);
 
             //ViewModels
             _positionsVM = new PositionsVM(_positionRepos);

@@ -12,21 +12,28 @@ namespace Repository
 {
     public class GenericRepositoryEF<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
+        EquipmentContainer _context;
+
+        public GenericRepositoryEF(EquipmentContainer context)
+        {
+            _context = context;
+        }
+
         public IEnumerable<TEntity> Get()
         {
-            using (var context = new EquipmentContainer())
+            //using (var context = new EquipmentContainer())
             {
-                context.Set<TEntity>().Load();
-                return context.Set<TEntity>().Local;
+                _context.Set<TEntity>().Load();
+                return _context.Set<TEntity>().Local;
             }
         }
 
         public void Update(TEntity entity)
         {
-            using (var context = new EquipmentContainer())
+            //using (var context = new EquipmentContainer())
             {
-                context.Set<TEntity>().AddOrUpdate(entity);
-                context.SaveChanges();
+                _context.Set<TEntity>().AddOrUpdate(entity);
+                _context.SaveChanges();
             }
         }
 
@@ -42,13 +49,13 @@ namespace Repository
 
         public void RemoveRange(List<TEntity> branch)
         {
-            using (var context = new EquipmentContainer())
+            //using (var context = new EquipmentContainer())
             {
                 foreach (var item in branch)
                 {
-                    context.Entry(item).State = EntityState.Deleted;
+                    _context.Entry(item).State = EntityState.Deleted;
                 }
-                context.SaveChanges();
+                _context.SaveChanges();
             }
         }
 
@@ -57,9 +64,9 @@ namespace Repository
         {
             //return Include(includeProperties).ToList();
 
-            using (var context = new EquipmentContainer())
+            //using (var context = new EquipmentContainer())
             {
-                IQueryable<TEntity> query = context.Set<TEntity>().AsNoTracking();
+                IQueryable<TEntity> query = _context.Set<TEntity>().AsNoTracking();
                 return includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)).ToList();
             }
         }
@@ -73,18 +80,18 @@ namespace Repository
 
         private IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            using (var context = new EquipmentContainer())
+            //using (var context = new EquipmentContainer())
             {
-                IQueryable<TEntity> query = context.Set<TEntity>().AsNoTracking();
+                IQueryable<TEntity> query = _context.Set<TEntity>().AsNoTracking();
                 return includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
             }
         }
 
         public TEntity FindById(int id)
         {
-            using (var context = new EquipmentContainer())
+            //using (var context = new EquipmentContainer())
             {
-                return context.Set<TEntity>().Find(id);
+                return _context.Set<TEntity>().Find(id);
             }
         }
     }

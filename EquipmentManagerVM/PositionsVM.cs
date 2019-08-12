@@ -15,10 +15,10 @@ namespace EquipmentManagerVM
 
         readonly IGenericRepository<Position> positionsRepos;
 
-        public IEnumerable<Position> Positions { get; }
+        IEnumerable<Position> _positions;
         public ObservableCollection<PositionNode> PositionsTree { get; set; }
 
-        public DelegateCommand<object> CreateJournalEventCommand { get; }
+        public DelegateCommand<object> CreateJournalEventReqCommand { get; }
         public DelegateCommand<object> AddRootPositionCommand { get; }
         public DelegateCommand<object> AddChildPositionCommand { get; }
         public DelegateCommand<object> DeletePositionCommand { get; }
@@ -57,24 +57,24 @@ namespace EquipmentManagerVM
         {
             positionsRepos = positionsRepository;
 
-            Positions = positionsRepository.Get();
+            _positions = positionsRepository.Get();
 
             PositionsTree = new ObservableCollection<PositionNode>();
 
             //добавляем узлы верхнего уровня
-            foreach (Position pos in Positions)
+            foreach (Position pos in _positions)
             {
                 if (!pos.ParentId.HasValue)
                 {
                     //для каждого строим ветвь
                     PositionNode posNode = new PositionNode(pos);
-                    BuildBranch(posNode, Positions);
+                    BuildBranch(posNode, _positions);
                     PositionsTree.Add(posNode);
                 }
             }
 
-            CreateJournalEventCommand = new DelegateCommand<object>(
-                execute: RiseCreateJournalEventEv
+            CreateJournalEventReqCommand = new DelegateCommand<object>(
+                execute: RiseCreateJournalEventReqEv
                 );
 
             AddRootPositionCommand = new DelegateCommand<object>(
@@ -177,9 +177,16 @@ namespace EquipmentManagerVM
         }
 
 
-        private void RiseCreateJournalEventEv(object parametr)
+        private void RiseCreateJournalEventReqEv(object parametr)
         {
-            CreateJournalEventReqEv?.Invoke(SelectedItemPosData);
+            foreach (Position pos in _positions)
+            {
+                if (pos.Id == SelectedItemPosData.Id)
+                {
+                    CreateJournalEventReqEv?.Invoke(pos);
+                    break;
+                }
+            }
         }
 
     }

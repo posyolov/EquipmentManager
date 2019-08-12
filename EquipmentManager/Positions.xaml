@@ -38,7 +38,7 @@
                     
                     <TreeView.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Command="{Binding CreateJournalEventCommand}"
+                            <MenuItem Command="{Binding CreateJournalEventReqCommand}"
                                 Header="Создать событие"/>
 
                             <Separator/>
