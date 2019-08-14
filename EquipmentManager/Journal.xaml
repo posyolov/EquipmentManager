@@ -2,48 +2,46 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ControlTemplate x:Key="Journal">
-        
-        <TabControl HorizontalAlignment="Stretch">
+
+        <TabControl HorizontalAlignment="Stretch" ItemsSource="{Binding Tabs}" SelectedIndex="0">
+
+            <!--header-->
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Header}"/>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
             
-            <TabItem Header="Сводный">
-                <ListView ItemsSource="{Binding JournalEvents}">
-                    <ListView.View>
-                        <GridView>
-                            <GridView.Columns>
-                                
-                                <GridViewColumn Header="Дата/время" 
+            <!--content-->
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <ListView ItemsSource="{Binding Content.View}">
+                        <ListView.View>
+                            <GridView>
+                                <GridView.Columns>
+
+                                    <GridViewColumn Header="Дата/время" 
                                                 DisplayMemberBinding="{Binding DateTime, ConverterCulture=ru}">
-                                </GridViewColumn>
-                                
-                                <GridViewColumn Header="Позиция" 
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Позиция" 
                                                 DisplayMemberBinding="{Binding Position.Name}">
-                                </GridViewColumn>
-                                
-                                <GridViewColumn Header="Категория" 
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Категория" 
                                                 DisplayMemberBinding="{Binding EventCategory.Title}">
-                                </GridViewColumn>
-                                
-                                <GridViewColumn Header="Описание" 
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Описание" 
                                                 DisplayMemberBinding="{Binding Description}">
-                                </GridViewColumn>
-                                
-                            </GridView.Columns>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </TabItem>
-            
-            <TabItem Header="Дежурный">
-                <ListBox ItemsSource="{Binding Data2}">
+                                    </GridViewColumn>
 
-                </ListBox>
-            </TabItem>
-            
-            <TabItem Header="Блокировки">
-                <ListBox ItemsSource="{Binding Data3}">
-
-                </ListBox>
-            </TabItem>
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
             
         </TabControl>
         

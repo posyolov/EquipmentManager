@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using Repository;
+using System.Windows.Data;
 
 namespace EquipmentManagerVM
 {
@@ -12,22 +13,42 @@ namespace EquipmentManagerVM
     {
         IGenericRepository<JournalEvent> _journalRepos;
 
-        public ObservableCollection<JournalEvent> JournalEvents { get; set; }
-        public ObservableCollection<string> Data2 { get; }
-        public ObservableCollection<string> Data3 { get; }
+        ObservableCollection<JournalEvent> _totalJournalEvents;
+
+        public ObservableCollection<TabItem> Tabs { get; }
 
         public JournalVM(IGenericRepository<JournalEvent> journalRepository)
         {
             _journalRepos = journalRepository;
-            JournalEvents = new ObservableCollection<JournalEvent>(_journalRepos?.GetWithInclude(p => p.Position, c => c.EventCategory));
+            _totalJournalEvents = new ObservableCollection<JournalEvent>(_journalRepos?.GetWithInclude(p => p.Position, c => c.EventCategory));
 
-            Data2 = new ObservableCollection<string>() { "aaa2", "bbb2", "ccc2" };
-            Data3 = new ObservableCollection<string>() { "aaa3", "bbb3", "ccc3" };
+            Tabs = new ObservableCollection<TabItem>();
+            CollectionViewSource collectionView;
+
+            collectionView = new CollectionViewSource();
+            collectionView.Source = _totalJournalEvents;
+            Tabs.Add(new TabItem() { Header = "Общий", Content = collectionView });
+
+            collectionView = new CollectionViewSource();
+            collectionView.Source = _totalJournalEvents;
+            collectionView.Filter += (s, e) => e.Accepted = ((JournalEvent)e.Item).EventCategory.Title == "Дежурный";
+            Tabs.Add(new TabItem() { Header = "Дежурный", Content = collectionView });
+
+            collectionView = new CollectionViewSource();
+            collectionView.Source = _totalJournalEvents;
+            collectionView.Filter += (s, e) => e.Accepted = ((JournalEvent)e.Item).EventCategory.Title == "Отключений";
+            Tabs.Add(new TabItem() { Header = "Отключений", Content = collectionView });
         }
 
         public void AddJournalEvent(JournalEvent journalEvent)
         {
-            JournalEvents.Add(journalEvent);
+            _totalJournalEvents.Add(journalEvent);
         }
+    }
+
+    public sealed class TabItem
+    {
+        public string Header { get; set; }
+        public CollectionViewSource Content { get; set; }
     }
 }
