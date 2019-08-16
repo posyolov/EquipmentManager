@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 08/09/2019 16:17:46
+-- Date Created: 08/15/2019 15:27:24
 -- Generated from EDMX file: D:\Projects\C#\EquipmentManager\Repository\Equipment.edmx
 -- --------------------------------------------------
 
@@ -17,11 +17,11 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_PositionJournalEvent]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Journal] DROP CONSTRAINT [FK_PositionJournalEvent];
+IF OBJECT_ID(N'[dbo].[FK_PositionJournalEntry]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Journal] DROP CONSTRAINT [FK_PositionJournalEntry];
 GO
-IF OBJECT_ID(N'[dbo].[FK_EventCategoryJournalEvent]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Journal] DROP CONSTRAINT [FK_EventCategoryJournalEvent];
+IF OBJECT_ID(N'[dbo].[FK_EntryCategoryJournalEntry]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Journal] DROP CONSTRAINT [FK_EntryCategoryJournalEntry];
 GO
 
 -- --------------------------------------------------
@@ -34,8 +34,8 @@ GO
 IF OBJECT_ID(N'[dbo].[Journal]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Journal];
 GO
-IF OBJECT_ID(N'[dbo].[EventCategories]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[EventCategories];
+IF OBJECT_ID(N'[dbo].[EntryCategories]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[EntryCategories];
 GO
 
 -- --------------------------------------------------
@@ -47,6 +47,7 @@ CREATE TABLE [dbo].[Positions] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [ParentId] int  NULL,
     [Name] nvarchar(max)  NOT NULL,
+    [ComplexName] nvarchar(max)  NOT NULL,
     [Title] nvarchar(max)  NULL
 );
 GO
@@ -57,12 +58,12 @@ CREATE TABLE [dbo].[Journal] (
     [DateTime] datetime  NOT NULL,
     [Description] nvarchar(max)  NULL,
     [Position_Id] int  NOT NULL,
-    [EventCategory_Id] int  NOT NULL
+    [EntryCategory_Id] int  NOT NULL
 );
 GO
 
--- Creating table 'EventCategories'
-CREATE TABLE [dbo].[EventCategories] (
+-- Creating table 'EntryCategories'
+CREATE TABLE [dbo].[EntryCategories] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Title] nvarchar(max)  NOT NULL
 );
@@ -84,9 +85,9 @@ ADD CONSTRAINT [PK_Journal]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'EventCategories'
-ALTER TABLE [dbo].[EventCategories]
-ADD CONSTRAINT [PK_EventCategories]
+-- Creating primary key on [Id] in table 'EntryCategories'
+ALTER TABLE [dbo].[EntryCategories]
+ADD CONSTRAINT [PK_EntryCategories]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -96,32 +97,32 @@ GO
 
 -- Creating foreign key on [Position_Id] in table 'Journal'
 ALTER TABLE [dbo].[Journal]
-ADD CONSTRAINT [FK_PositionJournalEvent]
+ADD CONSTRAINT [FK_PositionJournalEntry]
     FOREIGN KEY ([Position_Id])
     REFERENCES [dbo].[Positions]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_PositionJournalEvent'
-CREATE INDEX [IX_FK_PositionJournalEvent]
+-- Creating non-clustered index for FOREIGN KEY 'FK_PositionJournalEntry'
+CREATE INDEX [IX_FK_PositionJournalEntry]
 ON [dbo].[Journal]
     ([Position_Id]);
 GO
 
--- Creating foreign key on [EventCategory_Id] in table 'Journal'
+-- Creating foreign key on [EntryCategory_Id] in table 'Journal'
 ALTER TABLE [dbo].[Journal]
-ADD CONSTRAINT [FK_EventCategoryJournalEvent]
-    FOREIGN KEY ([EventCategory_Id])
-    REFERENCES [dbo].[EventCategories]
+ADD CONSTRAINT [FK_EntryCategoryJournalEntry]
+    FOREIGN KEY ([EntryCategory_Id])
+    REFERENCES [dbo].[EntryCategories]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_EventCategoryJournalEvent'
-CREATE INDEX [IX_FK_EventCategoryJournalEvent]
+-- Creating non-clustered index for FOREIGN KEY 'FK_EntryCategoryJournalEntry'
+CREATE INDEX [IX_FK_EntryCategoryJournalEntry]
 ON [dbo].[Journal]
-    ([EventCategory_Id]);
+    ([EntryCategory_Id]);
 GO
 
 -- --------------------------------------------------

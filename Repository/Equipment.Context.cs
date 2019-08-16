@@ -26,7 +26,7 @@ namespace Repository
         }
     
         public virtual DbSet<Position> Positions { get; set; }
-        public virtual DbSet<JournalEvent> Journal { get; set; }
-        public virtual DbSet<EventCategory> EventCategories { get; set; }
+        public virtual DbSet<JournalEntry> Journal { get; set; }
+        public virtual DbSet<EntryCategory> EntryCategories { get; set; }
     }
 }

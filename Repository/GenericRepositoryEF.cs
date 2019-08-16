@@ -10,6 +10,10 @@ using System.Linq.Expressions;
 
 namespace Repository
 {
+    /// <summary>
+    /// Обобщённый репозиторий Entity Framework
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
     public class GenericRepositoryEF<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         EquipmentContainer _context;
@@ -19,6 +23,10 @@ namespace Repository
             _context = context;
         }
 
+        /// <summary>
+        /// Запрос всех сущностей заданного типа
+        /// </summary>
+        /// <returns>IEnumerable<TEntity></returns>
         public IEnumerable<TEntity> Get()
         {
             //using (var context = new EquipmentContainer())

@@ -45,6 +45,7 @@
     <Compile Include="CreateJournalEventVM.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="MainVM.cs" />
+    <Compile Include="PositionComplexNameConverter.cs" />
     <Compile Include="PositionsVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PositionNode.cs" />

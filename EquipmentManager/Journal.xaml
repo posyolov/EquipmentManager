@@ -1,7 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:EquipmentManagerVM;assembly=EquipmentManagerVM">
     <ControlTemplate x:Key="Journal">
+
+        <ControlTemplate.Resources>
+            <local:PositionComplexNameConverter x:Key="posComplexNameConverter" />
+        </ControlTemplate.Resources>
 
         <TabControl HorizontalAlignment="Stretch" ItemsSource="{Binding Tabs}" SelectedIndex="0">
 
@@ -25,11 +29,11 @@
                                     </GridViewColumn>
 
                                     <GridViewColumn Header="Позиция" 
-                                                DisplayMemberBinding="{Binding Position.Name}">
+                                                DisplayMemberBinding="{Binding Position.ComplexName, Converter={StaticResource posComplexNameConverter}}">
                                     </GridViewColumn>
 
                                     <GridViewColumn Header="Категория" 
-                                                DisplayMemberBinding="{Binding EventCategory.Title}">
+                                                DisplayMemberBinding="{Binding EntryCategory.Title}">
                                     </GridViewColumn>
 
                                     <GridViewColumn Header="Описание" 

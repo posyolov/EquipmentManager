@@ -50,6 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntryCategory.cs">
+      <DependentUpon>Equipment.tt</DependentUpon>
+    </Compile>
     <Compile Include="Equipment.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -65,11 +68,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Equipment.edmx</DependentUpon>
     </Compile>
-    <Compile Include="EventCategory.cs">
-      <DependentUpon>Equipment.tt</DependentUpon>
-    </Compile>
     <Compile Include="IGenericRepository.cs" />
-    <Compile Include="JournalEvent.cs">
+    <Compile Include="JournalEntry.cs">
       <DependentUpon>Equipment.tt</DependentUpon>
     </Compile>
     <Compile Include="Position.cs">

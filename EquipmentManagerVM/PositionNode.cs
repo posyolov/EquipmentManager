@@ -10,6 +10,9 @@ using Repository;
 
 namespace EquipmentManagerVM
 {
+    /// <summary>
+    /// Узел дерева позиций
+    /// </summary>
     public class PositionNode : INotifyPropertyChanged
     {
         private Position _posData;

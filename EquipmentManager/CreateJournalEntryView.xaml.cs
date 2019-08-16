@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace EquipmentManager
 {
     /// <summary>
-    /// Логика взаимодействия для CreateJournalEventView.xaml
+    /// Логика взаимодействия для CreateJournalEntryView.xaml
     /// </summary>
-    public partial class CreateJournalEventView : Window
+    public partial class CreateJournalEntryView : Window
     {
-        public CreateJournalEventView()
+        public CreateJournalEntryView()
         {
             InitializeComponent();
         }

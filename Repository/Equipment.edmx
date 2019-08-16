@@ -8,14 +8,14 @@
   <EntityContainer Name="EquipmentStoreContainer">
     <EntitySet Name="Positions" EntityType="Equipment.Store.Positions" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Journal" EntityType="Equipment.Store.Journal" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="EventCategories" EntityType="Equipment.Store.EventCategories" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="PositionJournalEvent" Association="Equipment.Store.PositionJournalEvent">
+    <EntitySet Name="EntryCategories" EntityType="Equipment.Store.EntryCategories" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="PositionJournalEntry" Association="Equipment.Store.PositionJournalEntry">
       <End Role="Position" EntitySet="Positions" />
-      <End Role="JournalEvent" EntitySet="Journal" />
+      <End Role="JournalEntry" EntitySet="Journal" />
     </AssociationSet>
-    <AssociationSet Name="EventCategoryJournalEvent" Association="Equipment.Store.EventCategoryJournalEvent">
-      <End Role="EventCategory" EntitySet="EventCategories" />
-      <End Role="JournalEvent" EntitySet="Journal" />
+    <AssociationSet Name="EntryCategoryJournalEntry" Association="Equipment.Store.EntryCategoryJournalEntry">
+      <End Role="EntryCategory" EntitySet="EntryCategories" />
+      <End Role="JournalEntry" EntitySet="Journal" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Positions">
@@ -25,6 +25,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ParentId" Type="int" Nullable="true" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ComplexName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Title" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Journal">
@@ -35,36 +36,36 @@
     <Property Name="DateTime" Type="datetime" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Position_Id" Type="int" Nullable="false" />
-    <Property Name="EventCategory_Id" Type="int" Nullable="false" />
+    <Property Name="EntryCategory_Id" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="EventCategories">
+  <EntityType Name="EntryCategories">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
-  <Association Name="PositionJournalEvent">
+  <Association Name="PositionJournalEntry">
     <End Role="Position" Type="Equipment.Store.Positions" Multiplicity="1" />
-    <End Role="JournalEvent" Type="Equipment.Store.Journal" Multiplicity="*" />
+    <End Role="JournalEntry" Type="Equipment.Store.Journal" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Position">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="JournalEvent">
+      <Dependent Role="JournalEntry">
         <PropertyRef Name="Position_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="EventCategoryJournalEvent">
-    <End Role="EventCategory" Type="Equipment.Store.EventCategories" Multiplicity="1" />
-    <End Role="JournalEvent" Type="Equipment.Store.Journal" Multiplicity="*" />
+  <Association Name="EntryCategoryJournalEntry">
+    <End Role="EntryCategory" Type="Equipment.Store.EntryCategories" Multiplicity="1" />
+    <End Role="JournalEntry" Type="Equipment.Store.Journal" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="EventCategory">
+      <Principal Role="EntryCategory">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="JournalEvent">
-        <PropertyRef Name="EventCategory_Id" />
+      <Dependent Role="JournalEntry">
+        <PropertyRef Name="EntryCategory_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -74,52 +75,63 @@
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Equipment" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
         <EntityContainer Name="EquipmentContainer" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Positions" EntityType="Equipment.Position" />
-          <EntitySet Name="Journal" EntityType="Equipment.JournalEvent" />
-          <AssociationSet Name="PositionJournalEvent" Association="Equipment.PositionJournalEvent">
+          <EntitySet Name="Journal" EntityType="Equipment.JournalEntry" />
+          <EntitySet Name="EntryCategories" EntityType="Equipment.EntryCategory" />
+          <AssociationSet Name="PositionJournalEntry" Association="Equipment.PositionJournalEntry">
             <End Role="Position" EntitySet="Positions" />
-            <End Role="JournalEvent" EntitySet="Journal" />
+            <End Role="JournalEntry" EntitySet="Journal" />
           </AssociationSet>
-          <EntitySet Name="EventCategories" EntityType="Equipment.EventCategory" />
-          <AssociationSet Name="EventCategoryJournalEvent" Association="Equipment.EventCategoryJournalEvent">
-            <End Role="EventCategory" EntitySet="EventCategories" />
-            <End Role="JournalEvent" EntitySet="Journal" />
+          <AssociationSet Name="EntryCategoryJournalEntry" Association="Equipment.EntryCategoryJournalEntry">
+            <End Role="EntryCategory" EntitySet="EntryCategories" />
+            <End Role="JournalEntry" EntitySet="Journal" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Position">
+          <Documentation>
+            <Summary>Позиции оборудования</Summary>
+            <LongDescription>Позиции оборудования</LongDescription>
+          </Documentation>
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParentId" Type="Int32" Nullable="true" />
           <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="ComplexName" Type="String" Nullable="false" />
           <Property Name="Title" Type="String" Nullable="true" />
-          <NavigationProperty Name="JournalEvents" Relationship="Equipment.PositionJournalEvent" FromRole="Position" ToRole="JournalEvent" />
+          <NavigationProperty Name="JournalEntries" Relationship="Equipment.PositionJournalEntry" FromRole="Position" ToRole="JournalEntry" />
         </EntityType>
-        <EntityType Name="JournalEvent">
+        <EntityType Name="JournalEntry">
+          <Documentation>
+            <LongDescription>События по позициям</LongDescription>
+          </Documentation>
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DateTime" Type="DateTime" Nullable="false" />
           <Property Name="Description" Type="String" Nullable="true" />
-          <NavigationProperty Name="Position" Relationship="Equipment.PositionJournalEvent" FromRole="JournalEvent" ToRole="Position" />
-          <NavigationProperty Name="EventCategory" Relationship="Equipment.EventCategoryJournalEvent" FromRole="JournalEvent" ToRole="EventCategory" />
+          <NavigationProperty Name="Position" Relationship="Equipment.PositionJournalEntry" FromRole="JournalEntry" ToRole="Position" />
+          <NavigationProperty Name="EntryCategory" Relationship="Equipment.EntryCategoryJournalEntry" FromRole="JournalEntry" ToRole="EntryCategory" />
         </EntityType>
-        <Association Name="PositionJournalEvent">
-          <End Type="Equipment.Position" Role="Position" Multiplicity="1" />
-          <End Type="Equipment.JournalEvent" Role="JournalEvent" Multiplicity="*" />
-        </Association>
-        <EntityType Name="EventCategory">
+        <EntityType Name="EntryCategory">
+          <Documentation>
+            <LongDescription>Категории событий</LongDescription>
+          </Documentation>
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" Nullable="false" />
-          <NavigationProperty Name="JournalEvents" Relationship="Equipment.EventCategoryJournalEvent" FromRole="EventCategory" ToRole="JournalEvent" />
+          <NavigationProperty Name="JournalEntries" Relationship="Equipment.EntryCategoryJournalEntry" FromRole="EntryCategory" ToRole="JournalEntry" />
         </EntityType>
-        <Association Name="EventCategoryJournalEvent">
-          <End Type="Equipment.EventCategory" Role="EventCategory" Multiplicity="1" />
-          <End Type="Equipment.JournalEvent" Role="JournalEvent" Multiplicity="*" />
+        <Association Name="PositionJournalEntry">
+          <End Type="Equipment.Position" Role="Position" Multiplicity="1" />
+          <End Type="Equipment.JournalEntry" Role="JournalEntry" Multiplicity="*" />
+        </Association>
+        <Association Name="EntryCategoryJournalEntry">
+          <End Type="Equipment.EntryCategory" Role="EntryCategory" Multiplicity="1" />
+          <End Type="Equipment.JournalEntry" Role="JournalEntry" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -133,12 +145,13 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ParentId" ColumnName="ParentId" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ComplexName" ColumnName="ComplexName" />
           <ScalarProperty Name="Title" ColumnName="Title" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Journal">
-      <EntityTypeMapping TypeName="IsTypeOf(Equipment.JournalEvent)">
+      <EntityTypeMapping TypeName="IsTypeOf(Equipment.JournalEntry)">
         <MappingFragment StoreEntitySet="Journal">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="DateTime" ColumnName="DateTime" />
@@ -146,27 +159,27 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="EventCategories">
-      <EntityTypeMapping TypeName="IsTypeOf(Equipment.EventCategory)">
-        <MappingFragment StoreEntitySet="EventCategories">
+    <EntitySetMapping Name="EntryCategories">
+      <EntityTypeMapping TypeName="IsTypeOf(Equipment.EntryCategory)">
+        <MappingFragment StoreEntitySet="EntryCategories">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Title" ColumnName="Title" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="PositionJournalEvent" TypeName="Equipment.PositionJournalEvent" StoreEntitySet="Journal">
+    <AssociationSetMapping Name="PositionJournalEntry" TypeName="Equipment.PositionJournalEntry" StoreEntitySet="Journal">
       <EndProperty Name="Position">
         <ScalarProperty Name="Id" ColumnName="Position_Id" />
       </EndProperty>
-      <EndProperty Name="JournalEvent">
+      <EndProperty Name="JournalEntry">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="EventCategoryJournalEvent" TypeName="Equipment.EventCategoryJournalEvent" StoreEntitySet="Journal">
-      <EndProperty Name="EventCategory">
-        <ScalarProperty Name="Id" ColumnName="EventCategory_Id" />
+    <AssociationSetMapping Name="EntryCategoryJournalEntry" TypeName="Equipment.EntryCategoryJournalEntry" StoreEntitySet="Journal">
+      <EndProperty Name="EntryCategory">
+        <ScalarProperty Name="Id" ColumnName="EntryCategory_Id" />
       </EndProperty>
-      <EndProperty Name="JournalEvent">
+      <EndProperty Name="JournalEntry">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>

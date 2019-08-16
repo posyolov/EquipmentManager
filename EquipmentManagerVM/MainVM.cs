@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EquipmentManagerVM
 {
+    /// <summary>
+    /// Основная ViewModel
+    /// </summary>
     public class MainVM
     {
         public PositionsVM PositionsVM { get; }

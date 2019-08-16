@@ -63,11 +63,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CloseWindowBehavior.cs" />
-    <Compile Include="CreateJournalEventView.xaml.cs">
-      <DependentUpon>CreateJournalEventView.xaml</DependentUpon>
+    <Compile Include="CreateJournalEntryView.xaml.cs">
+      <DependentUpon>CreateJournalEntryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="TreeViewSelectedItemBehavior.cs" />
-    <Page Include="CreateJournalEventView.xaml">
+    <Page Include="CreateJournalEntryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

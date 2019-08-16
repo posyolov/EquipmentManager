@@ -9,16 +9,19 @@ using System.ComponentModel;
 
 namespace EquipmentManagerVM
 {
+    /// <summary>
+    /// ViewModel для дерева позиций
+    /// </summary>
     public class PositionsVM : ViewModelBase
     {
-        public event Action<Position> CreateJournalEventReqEv;
+        public event Action<Position> CreateJournalEntryReqEv;
 
         readonly IGenericRepository<Position> positionsRepos;
 
         IEnumerable<Position> _positions;
         public ObservableCollection<PositionNode> PositionsTree { get; set; }
 
-        public DelegateCommand<object> CreateJournalEventReqCommand { get; }
+        public DelegateCommand<object> CreateJournalEntryReqCommand { get; }
         public DelegateCommand<object> AddRootPositionCommand { get; }
         public DelegateCommand<object> AddChildPositionCommand { get; }
         public DelegateCommand<object> DeletePositionCommand { get; }
@@ -73,8 +76,8 @@ namespace EquipmentManagerVM
                 }
             }
 
-            CreateJournalEventReqCommand = new DelegateCommand<object>(
-                execute: RiseCreateJournalEventReqEv
+            CreateJournalEntryReqCommand = new DelegateCommand<object>(
+                execute: RiseCreateJournalEntryReqEv
                 );
 
             AddRootPositionCommand = new DelegateCommand<object>(
@@ -143,7 +146,9 @@ namespace EquipmentManagerVM
                 Name = "New position",
             };
 
+            SetComplexName(pos);
             positionsRepos.Update(pos);
+
             PositionsTree.Add(new PositionNode(pos));
         }
 
@@ -156,6 +161,7 @@ namespace EquipmentManagerVM
                 ParentId = SelectedItem.PosData.Id,
             };
 
+            SetComplexName(pos);
             positionsRepos.Update(pos);
 
             SelectedItem.Nodes.Add(new PositionNode(pos));
@@ -172,22 +178,39 @@ namespace EquipmentManagerVM
 
         private void SavePosDataExecute(object parametr)
         {
+            SetComplexName(SelectedItemPosData);
+
             positionsRepos.Update(SelectedItemPosData);
             SelectedItem.SetPosData(SelectedItemPosData);
         }
 
 
-        private void RiseCreateJournalEventReqEv(object parametr)
+        private void RiseCreateJournalEntryReqEv(object parametr)
         {
             foreach (Position pos in _positions)
             {
                 if (pos.Id == SelectedItemPosData.Id)
                 {
-                    CreateJournalEventReqEv?.Invoke(pos);
+                    CreateJournalEntryReqEv?.Invoke(pos);
                     break;
                 }
             }
         }
 
+        //задание составного имени
+        private void SetComplexName(Position pos)
+        {
+            if (pos.ParentId != null)
+            {
+                Position parentPos = positionsRepos.FindById((int)pos.ParentId);
+                if (parentPos != null)
+                {
+                    pos.ComplexName = parentPos.ComplexName + ";" + pos.Name;
+                }
+            }
+            else
+                pos.ComplexName = pos.Name;
+
+        }
     }
 }

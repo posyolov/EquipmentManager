@@ -17,15 +17,16 @@ namespace Repository
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Position()
         {
-            this.JournalEvents = new HashSet<JournalEvent>();
+            this.JournalEntries = new HashSet<JournalEntry>();
         }
     
         public int Id { get; set; }
         public Nullable<int> ParentId { get; set; }
         public string Name { get; set; }
+        public string ComplexName { get; set; }
         public string Title { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JournalEvent> JournalEvents { get; set; }
+        public virtual ICollection<JournalEntry> JournalEntries { get; set; }
     }
 }

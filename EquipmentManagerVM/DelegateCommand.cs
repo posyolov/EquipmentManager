@@ -3,6 +3,10 @@ using System.Windows.Input;
 
 namespace EquipmentManagerVM
 {
+    /// <summary>
+    /// Класс для привязки команды от View
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class DelegateCommand<T> : ICommand
     {
         private readonly Predicate<T> _canExecute;

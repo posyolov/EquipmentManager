@@ -8,15 +8,18 @@ using System.Threading.Tasks;
 
 namespace EquipmentManagerVM
 {
-    public class CreateJournalEventVM : ViewModelBase
+    /// <summary>
+    /// ViewModel окна создания нового события
+    /// </summary>
+    public class CreateJournalEntryVM : ViewModelBase
     {
-        public event Action<JournalEvent> JournalEventCreatedEv;
+        public event Action<JournalEntry> JournalEntryCreatedEv;
 
-        public JournalEvent JEvent { get; set; }
+        public JournalEntry JEntry { get; set; }
 
-        public IEnumerable<EventCategory> EvCategories { get; }
-        IGenericRepository<JournalEvent> _journalRepos;
-        IGenericRepository<EventCategory> _evCategoryRepository;
+        public IEnumerable<EntryCategory> EvCategories { get; }
+        IGenericRepository<JournalEntry> _journalRepos;
+        IGenericRepository<EntryCategory> _evCategoryRepository;
 
         private bool closeTrigger;
         public bool CloseTrigger
@@ -29,43 +32,43 @@ namespace EquipmentManagerVM
             }
         }
 
-        public DelegateCommand<object> CreateJournalEventCommand { get; }
+        public DelegateCommand<object> CreateJournalEntryCommand { get; }
 
-        public CreateJournalEventVM(Position position, IGenericRepository<EventCategory> evCategoryRepository, IGenericRepository<JournalEvent> journalRepository)
+        public CreateJournalEntryVM(Position position, IGenericRepository<EntryCategory> evCategoryRepository, IGenericRepository<JournalEntry> journalRepository)
         {
             //запрос списка категорий
             _evCategoryRepository = evCategoryRepository;
             EvCategories = _evCategoryRepository.Get();
 
-            JEvent = new JournalEvent()
+            JEntry = new JournalEntry()
             {
                 DateTime = DateTime.Now,
                 Position = position,
-                //EventCategory = new EventCategory()
+                //EntryCategory = new EntryCategory()
             };
 
-            CreateJournalEventCommand = new DelegateCommand<object>(
-                execute: CreateJournalEventExecute,
-                canExecute: CreateJournalEventCanExecute
+            CreateJournalEntryCommand = new DelegateCommand<object>(
+                execute: CreateJournalEntryExecute,
+                canExecute: CreateJournalEntryCanExecute
                 );
 
             _journalRepos = journalRepository;
         }
 
-        private bool CreateJournalEventCanExecute(object obj)
+        private bool CreateJournalEntryCanExecute(object obj)
         {
-            return true; // JEvent.Position != null && JEvent.EventCategory != null;
+            return true; // JEntry.Position != null && JEntry.EntryCategory != null;
         }
 
-        private void CreateJournalEventExecute(object obj)
+        private void CreateJournalEntryExecute(object obj)
         {
-            if (JEvent != null && JEvent.Position != null && JEvent.EventCategory != null)
+            if (JEntry != null && JEntry.Position != null && JEntry.EntryCategory != null)
             {
                 CloseTrigger = true;
 
-                _journalRepos.Add(JEvent);
+                _journalRepos.Add(JEntry);
 
-                JournalEventCreatedEv?.Invoke(JEvent);
+                JournalEntryCreatedEv?.Invoke(JEntry);
             }
         }
 
