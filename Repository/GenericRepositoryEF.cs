@@ -55,7 +55,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public void RemoveRange(List<TEntity> branch)
+        public Exception RemoveRange(List<TEntity> branch)
         {
             //using (var context = new EquipmentContainer())
             {
@@ -63,7 +63,20 @@ namespace Repository
                 {
                     _context.Entry(item).State = EntityState.Deleted;
                 }
-                _context.SaveChanges();
+
+                try
+                {
+                    _context.SaveChanges();
+                    return null;
+                }
+                catch(Exception ex)
+                {
+                    foreach (var item in branch)
+                    {
+                        _context.Entry(item).State = EntityState.Unchanged;
+                    }
+                    return ex;
+                }
             }
         }
 

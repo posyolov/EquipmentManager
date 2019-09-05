@@ -9,74 +9,78 @@
                 <Setter Property="Margin" Value="5 2 5 2"/>
             </Style>
         </ControlTemplate.Resources>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
 
-            <!--дерево позиций-->
-            <StackPanel Grid.Row="0">
-                
-                <TextBlock>Дерево позиций</TextBlock>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <TreeView ItemsSource="{Binding PositionsTree}">
-                    <i:Interaction.Behaviors>
-                        <local:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
-                    </i:Interaction.Behaviors>
-                    <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding Nodes, Mode=OneWay}">
-                            <HierarchicalDataTemplate.Triggers>
-                                <!--<DataTrigger Binding="{Binding Path=Marked}" Value="True">
+                <!--дерево позиций-->
+            <ScrollViewer Grid.Row="0">
+                <Grid>
+
+                    <TextBlock>Дерево позиций</TextBlock>
+
+                    <TreeView ItemsSource="{Binding PositionsTree}"
+                              BorderThickness="0">
+                        <i:Interaction.Behaviors>
+                            <local:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
+                        </i:Interaction.Behaviors>
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Nodes, Mode=OneWay}">
+                                <HierarchicalDataTemplate.Triggers>
+                                    <!--<DataTrigger Binding="{Binding Path=Marked}" Value="True">
                                 <Setter Property="TextBlock.Foreground" Value="Red"/>
                             </DataTrigger>-->
-                            </HierarchicalDataTemplate.Triggers>
-                            <TextBlock Text="{Binding PosData.Name}"/>
-                        </HierarchicalDataTemplate>
-                    </TreeView.ItemTemplate>
-                    
-                    <TreeView.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Command="{Binding CreateJournalEntryReqCommand}"
+                                </HierarchicalDataTemplate.Triggers>
+                                <TextBlock Text="{Binding PosData.Name}"/>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+
+                        <TreeView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding CreateJournalEntryReqCommand}"
                                 Header="Создать запись"/>
 
-                            <Separator/>
+                                <Separator/>
 
-                            <MenuItem Command="{Binding AddRootPositionCommand}"
+                                <MenuItem Command="{Binding AddRootPositionCommand}"
                                 Header="Добавить корневую позицию"/>
 
-                            <MenuItem Command="{Binding AddChildPositionCommand}">
-                                <MenuItem.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Добавить позицию в " Margin="0"/>
-                                        <TextBlock Text="{Binding SelectedItem.PosData.Name}" Margin="0"/>
-                                    </StackPanel>
-                                </MenuItem.Header>
-                            </MenuItem>
+                                <MenuItem Command="{Binding AddChildPositionCommand}">
+                                    <MenuItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Добавить позицию в " Margin="0"/>
+                                            <TextBlock Text="{Binding SelectedItem.PosData.Name}" Margin="0"/>
+                                        </StackPanel>
+                                    </MenuItem.Header>
+                                </MenuItem>
 
-                            <MenuItem Command="{Binding DeletePositionCommand}">
-                                <MenuItem.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Удалить позицию " Margin="0"/>
-                                        <TextBlock Text="{Binding SelectedItem.PosData.Name}" Margin="0"/>
-                                    </StackPanel>
-                                </MenuItem.Header>
-                            </MenuItem>
-                        </ContextMenu>
-                    </TreeView.ContextMenu>
-                    
-                </TreeView>
-            </StackPanel>
+                                <MenuItem Command="{Binding DeletePositionCommand}">
+                                    <MenuItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Удалить позицию " Margin="0"/>
+                                            <TextBlock Text="{Binding SelectedItem.PosData.Name}" Margin="0"/>
+                                        </StackPanel>
+                                    </MenuItem.Header>
+                                </MenuItem>
+                            </ContextMenu>
+                        </TreeView.ContextMenu>
+
+                    </TreeView>
+                </Grid>
+            </ScrollViewer>
 
             <GridSplitter Grid.Row="1" Height="10" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
 
-            <!--данные по позиции-->
-            <StackPanel Grid.Row="2">
+                <!--данные по позиции-->
+                <StackPanel Grid.Row="2">
                 <Grid DataContext="{Binding SelectedItemPosData}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition MinWidth="50"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition MinWidth="50" Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -94,11 +98,12 @@
 
                 <Button Margin="10"
                         Command="{Binding SavePosDataCommand}">
-                    Сохранить
-                </Button>
-            </StackPanel>
+                        Сохранить
+                    </Button>
+                </StackPanel>
 
-        </Grid>
+            </Grid>
+
     </ControlTemplate>
 
 </ResourceDictionary>

@@ -171,9 +171,11 @@ namespace EquipmentManagerVM
         {
             List<Position> branchPosData = new List<Position>();
             GetChildrenPosData(branchPosData, SelectedItem);
-            positionsRepos.RemoveRange(branchPosData);
 
-            RemoveNode(SelectedItem.PosData.Id, PositionsTree);
+            if (positionsRepos.RemoveRange(branchPosData) == null)
+                RemoveNode(SelectedItem.PosData.Id, PositionsTree);
+            else
+                ;
         }
 
         private void SavePosDataExecute(object parametr)
