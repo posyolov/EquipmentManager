@@ -34,9 +34,14 @@ namespace EquipmentManager
         {
             //репозитории
             _context = new EquipmentContainer();
+
             _positionRepos = new GenericRepositoryEF<Position>(_context);
             _journalRepos = new GenericRepositoryEF<JournalEntry>(_context);
             _evCategoryRepos = new GenericRepositoryEF<EntryCategory>(_context);
+
+            //GenericRepositoryEF<PositionNode> tempRepos = new GenericRepositoryEF<PositionNode>(_context);
+            GenericRepositoryAccess<StockItem> st = new GenericRepositoryAccess<StockItem>(@"D:\Projects\Access\EquipmentManager\Склад.accdb");
+            var dwdw = st.Get();
 
             //ViewModels
             _positionsVM = new PositionsVM(_positionRepos);

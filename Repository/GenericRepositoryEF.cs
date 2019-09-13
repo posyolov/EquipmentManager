@@ -16,10 +16,20 @@ namespace Repository
     /// <typeparam name="TEntity"></typeparam>
     public class GenericRepositoryEF<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        EquipmentContainer _context;
+        DbContext _context;
 
-        public GenericRepositoryEF(EquipmentContainer context)
+        public GenericRepositoryEF(DbContext context)
         {
+            try
+            {
+                context.Set<TEntity>().Count();
+                //var kuku = context.Set(typeof(TEntity));
+            }
+            catch
+            {
+                throw new NotImplementedException();
+            }
+
             _context = context;
         }
 

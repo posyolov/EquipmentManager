@@ -68,6 +68,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Equipment.edmx</DependentUpon>
     </Compile>
+    <Compile Include="GenericRepositoryAccess.cs" />
     <Compile Include="IGenericRepository.cs" />
     <Compile Include="JournalEntry.cs">
       <DependentUpon>Equipment.tt</DependentUpon>
@@ -77,6 +78,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GenericRepositoryEF.cs" />
+    <Compile Include="StockItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Equipment.edmx">

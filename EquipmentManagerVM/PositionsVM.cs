@@ -175,7 +175,7 @@ namespace EquipmentManagerVM
             if (positionsRepos.RemoveRange(branchPosData) == null)
                 RemoveNode(SelectedItem.PosData.Id, PositionsTree);
             else
-                ;
+                System.Windows.MessageBox.Show("Заплатка! Добавить окно по шаблону MVVM!");
         }
 
         private void SavePosDataExecute(object parametr)
