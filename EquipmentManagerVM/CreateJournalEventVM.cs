@@ -17,9 +17,9 @@ namespace EquipmentManagerVM
 
         public JournalEntry JEntry { get; set; }
 
-        public IEnumerable<EntryCategory> EvCategories { get; }
+        public IEnumerable<JournalEntryCategory> EvCategories { get; }
         IGenericRepository<JournalEntry> _journalRepos;
-        IGenericRepository<EntryCategory> _evCategoryRepository;
+        IGenericRepository<JournalEntryCategory> _evCategoryRepository;
 
         private bool closeTrigger;
         public bool CloseTrigger
@@ -34,7 +34,7 @@ namespace EquipmentManagerVM
 
         public DelegateCommand<object> CreateJournalEntryCommand { get; }
 
-        public CreateJournalEntryVM(Position position, IGenericRepository<EntryCategory> evCategoryRepository, IGenericRepository<JournalEntry> journalRepository)
+        public CreateJournalEntryVM(Position position, IGenericRepository<JournalEntryCategory> evCategoryRepository, IGenericRepository<JournalEntry> journalRepository)
         {
             //запрос списка категорий
             _evCategoryRepository = evCategoryRepository;
@@ -62,7 +62,7 @@ namespace EquipmentManagerVM
 
         private void CreateJournalEntryExecute(object obj)
         {
-            if (JEntry != null && JEntry.Position != null && JEntry.EntryCategory != null)
+            if (JEntry != null && JEntry.Position != null && JEntry.JournalEntryCategory != null)
             {
                 CloseTrigger = true;
 

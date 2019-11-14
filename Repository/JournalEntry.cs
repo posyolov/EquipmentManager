@@ -19,6 +19,6 @@ namespace Repository
         public string Description { get; set; }
     
         public virtual Position Position { get; set; }
-        public virtual EntryCategory EntryCategory { get; set; }
+        public virtual JournalEntryCategory JournalEntryCategory { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 08/27/2019 14:38:15
+-- Date Created: 11/14/2019 16:39:36
 -- Generated from EDMX file: D:\Projects\C#\EquipmentManager\Repository\Equipment.edmx
 -- --------------------------------------------------
 
@@ -17,25 +17,25 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_PositionJournalEntry]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Journal] DROP CONSTRAINT [FK_PositionJournalEntry];
-GO
 IF OBJECT_ID(N'[dbo].[FK_EntryCategoryJournalEntry]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Journal] DROP CONSTRAINT [FK_EntryCategoryJournalEntry];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PositionJournalEntry]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Journal] DROP CONSTRAINT [FK_PositionJournalEntry];
 GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[Positions]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Positions];
+IF OBJECT_ID(N'[dbo].[EntryCategories]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[EntryCategories];
 GO
 IF OBJECT_ID(N'[dbo].[Journal]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Journal];
 GO
-IF OBJECT_ID(N'[dbo].[EntryCategories]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[EntryCategories];
+IF OBJECT_ID(N'[dbo].[Positions]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Positions];
 GO
 
 -- --------------------------------------------------
@@ -58,14 +58,15 @@ CREATE TABLE [dbo].[Journal] (
     [DateTime] datetime  NOT NULL,
     [Description] nvarchar(max)  NULL,
     [Position_Id] int  NOT NULL,
-    [EntryCategory_Id] int  NOT NULL
+    [JournalEntryCategory_Id] int  NOT NULL
 );
 GO
 
--- Creating table 'EntryCategories'
-CREATE TABLE [dbo].[EntryCategories] (
+-- Creating table 'JournalEntryCategories'
+CREATE TABLE [dbo].[JournalEntryCategories] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Title] nvarchar(max)  NOT NULL
+    [Title] nvarchar(max)  NOT NULL,
+    [Description] nvarchar(max)  NULL
 );
 GO
 
@@ -85,9 +86,9 @@ ADD CONSTRAINT [PK_Journal]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'EntryCategories'
-ALTER TABLE [dbo].[EntryCategories]
-ADD CONSTRAINT [PK_EntryCategories]
+-- Creating primary key on [Id] in table 'JournalEntryCategories'
+ALTER TABLE [dbo].[JournalEntryCategories]
+ADD CONSTRAINT [PK_JournalEntryCategories]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -110,11 +111,11 @@ ON [dbo].[Journal]
     ([Position_Id]);
 GO
 
--- Creating foreign key on [EntryCategory_Id] in table 'Journal'
+-- Creating foreign key on [JournalEntryCategory_Id] in table 'Journal'
 ALTER TABLE [dbo].[Journal]
 ADD CONSTRAINT [FK_EntryCategoryJournalEntry]
-    FOREIGN KEY ([EntryCategory_Id])
-    REFERENCES [dbo].[EntryCategories]
+    FOREIGN KEY ([JournalEntryCategory_Id])
+    REFERENCES [dbo].[JournalEntryCategories]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
@@ -122,7 +123,7 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_EntryCategoryJournalEntry'
 CREATE INDEX [IX_FK_EntryCategoryJournalEntry]
 ON [dbo].[Journal]
-    ([EntryCategory_Id]);
+    ([JournalEntryCategory_Id]);
 GO
 
 -- --------------------------------------------------

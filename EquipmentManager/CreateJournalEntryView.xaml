@@ -27,7 +27,7 @@
         <ComboBox ItemsSource="{Binding EvCategories}"
                   DisplayMemberPath="Title"
                   SelectedValuePath="Id"
-                  SelectedItem="{Binding JEntry.EntryCategory}">
+                  SelectedItem="{Binding JEntry.JournalEntryCategory}">
         </ComboBox>
 
         <TextBlock>Описание:</TextBlock>

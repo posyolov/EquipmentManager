@@ -12,10 +12,10 @@ namespace Repository
     using System;
     using System.Collections.Generic;
     
-    public partial class EntryCategory
+    public partial class JournalEntryCategory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public EntryCategory()
+        public JournalEntryCategory()
         {
             this.JournalEntries = new HashSet<JournalEntry>();
         }

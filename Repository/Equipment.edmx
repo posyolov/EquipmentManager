@@ -4,86 +4,86 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Equipment.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="EntryCategories">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="Journal">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DateTime" Type="datetime" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="Position_Id" Type="int" Nullable="false" />
-          <Property Name="EntryCategory_Id" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Positions">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ParentId" Type="int" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="ComplexName" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Title" Type="nvarchar(max)" />
-        </EntityType>
-        <Association Name="FK_EntryCategoryJournalEntry">
-          <End Role="EntryCategories" Type="Self.EntryCategories" Multiplicity="1" />
-          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EntryCategories">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Journal">
-              <PropertyRef Name="EntryCategory_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PositionJournalEntry">
-          <End Role="Positions" Type="Self.Positions" Multiplicity="1" />
-          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Positions">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Journal">
-              <PropertyRef Name="Position_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="EquipmentStoreContainer">
-          <EntitySet Name="EntryCategories" EntityType="Self.EntryCategories" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Journal" EntityType="Self.Journal" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Positions" EntityType="Self.Positions" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_EntryCategoryJournalEntry" Association="Self.FK_EntryCategoryJournalEntry">
-            <End Role="EntryCategories" EntitySet="EntryCategories" />
-            <End Role="Journal" EntitySet="Journal" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PositionJournalEntry" Association="Self.FK_PositionJournalEntry">
-            <End Role="Positions" EntitySet="Positions" />
-            <End Role="Journal" EntitySet="Journal" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema></edmx:StorageModels>
+    <Schema Namespace="Equipment.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="EquipmentStoreContainer">
+    <EntitySet Name="Positions" EntityType="Equipment.Store.Positions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Journal" EntityType="Equipment.Store.Journal" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="JournalEntryCategories" EntityType="Equipment.Store.JournalEntryCategories" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="PositionJournalEntry" Association="Equipment.Store.PositionJournalEntry">
+      <End Role="Position" EntitySet="Positions" />
+      <End Role="JournalEntry" EntitySet="Journal" />
+    </AssociationSet>
+    <AssociationSet Name="EntryCategoryJournalEntry" Association="Equipment.Store.EntryCategoryJournalEntry">
+      <End Role="EntryCategory" EntitySet="JournalEntryCategories" />
+      <End Role="JournalEntry" EntitySet="Journal" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Positions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ParentId" Type="int" Nullable="true" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ComplexName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Journal">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DateTime" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Position_Id" Type="int" Nullable="false" />
+    <Property Name="JournalEntryCategory_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="JournalEntryCategories">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <Association Name="PositionJournalEntry">
+    <End Role="Position" Type="Equipment.Store.Positions" Multiplicity="1" />
+    <End Role="JournalEntry" Type="Equipment.Store.Journal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Position">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="JournalEntry">
+        <PropertyRef Name="Position_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EntryCategoryJournalEntry">
+    <End Role="EntryCategory" Type="Equipment.Store.JournalEntryCategories" Multiplicity="1" />
+    <End Role="JournalEntry" Type="Equipment.Store.Journal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EntryCategory">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="JournalEntry">
+        <PropertyRef Name="JournalEntryCategory_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Equipment" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
         <EntityContainer Name="EquipmentContainer" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Positions" EntityType="Equipment.Position" />
           <EntitySet Name="Journal" EntityType="Equipment.JournalEntry" />
-          <EntitySet Name="EntryCategories" EntityType="Equipment.EntryCategory" />
+          <EntitySet Name="JournalEntryCategories" EntityType="Equipment.JournalEntryCategory" />
           <AssociationSet Name="PositionJournalEntry" Association="Equipment.PositionJournalEntry">
             <End Role="Position" EntitySet="Positions" />
             <End Role="JournalEntry" EntitySet="Journal" />
           </AssociationSet>
           <AssociationSet Name="EntryCategoryJournalEntry" Association="Equipment.EntryCategoryJournalEntry">
-            <End Role="EntryCategory" EntitySet="EntryCategories" />
+            <End Role="EntryCategory" EntitySet="JournalEntryCategories" />
             <End Role="JournalEntry" EntitySet="Journal" />
           </AssociationSet>
         </EntityContainer>
@@ -113,9 +113,9 @@
           <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Description" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Position" Relationship="Equipment.PositionJournalEntry" FromRole="JournalEntry" ToRole="Position" />
-          <NavigationProperty Name="EntryCategory" Relationship="Equipment.EntryCategoryJournalEntry" FromRole="JournalEntry" ToRole="EntryCategory" />
+          <NavigationProperty Name="JournalEntryCategory" Relationship="Equipment.EntryCategoryJournalEntry" FromRole="JournalEntry" ToRole="EntryCategory" />
         </EntityType>
-        <EntityType Name="EntryCategory">
+        <EntityType Name="JournalEntryCategory">
           <Documentation>
             <LongDescription>Категории событий</LongDescription>
           </Documentation>
@@ -132,7 +132,7 @@
           <End Type="Equipment.JournalEntry" Role="JournalEntry" Multiplicity="*" />
         </Association>
         <Association Name="EntryCategoryJournalEntry">
-          <End Type="Equipment.EntryCategory" Role="EntryCategory" Multiplicity="1" />
+          <End Type="Equipment.JournalEntryCategory" Role="EntryCategory" Multiplicity="1" />
           <End Type="Equipment.JournalEntry" Role="JournalEntry" Multiplicity="*" />
         </Association>
       </Schema>
@@ -161,12 +161,12 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="EntryCategories">
-      <EntityTypeMapping TypeName="IsTypeOf(Equipment.EntryCategory)">
-        <MappingFragment StoreEntitySet="EntryCategories">
-          <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+    <EntitySetMapping Name="JournalEntryCategories">
+      <EntityTypeMapping TypeName="IsTypeOf(Equipment.JournalEntryCategory)">
+        <MappingFragment StoreEntitySet="JournalEntryCategories">
+          <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -180,7 +180,7 @@
     </AssociationSetMapping>
     <AssociationSetMapping Name="EntryCategoryJournalEntry" TypeName="Equipment.EntryCategoryJournalEntry" StoreEntitySet="Journal">
       <EndProperty Name="EntryCategory">
-        <ScalarProperty Name="Id" ColumnName="EntryCategory_Id" />
+        <ScalarProperty Name="Id" ColumnName="JournalEntryCategory_Id" />
       </EndProperty>
       <EndProperty Name="JournalEntry">
         <ScalarProperty Name="Id" ColumnName="Id" />

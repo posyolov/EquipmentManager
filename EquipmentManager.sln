@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EquipmentManagerVM", "EquipmentManagerVM\EquipmentManagerVM.csproj", "{6FE48D29-5B8A-43F4-A1E2-D1E596164D5A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EquipmentManagerM", "EquipmentManagerM\EquipmentManagerM.csproj", "{C33F2094-8917-462C-A326-223CC9E19D69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6FE48D29-5B8A-43F4-A1E2-D1E596164D5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FE48D29-5B8A-43F4-A1E2-D1E596164D5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FE48D29-5B8A-43F4-A1E2-D1E596164D5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C33F2094-8917-462C-A326-223CC9E19D69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C33F2094-8917-462C-A326-223CC9E19D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C33F2094-8917-462C-A326-223CC9E19D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C33F2094-8917-462C-A326-223CC9E19D69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -23,7 +23,7 @@ namespace EquipmentManagerVM
         public JournalVM(IGenericRepository<JournalEntry> journalRepository)
         {
             _journalRepos = journalRepository;
-            _totalJournalEntrys = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.EntryCategory));
+            _totalJournalEntrys = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.JournalEntryCategory));
 
             Tabs = new ObservableCollection<TabItem>();
             CollectionViewSource collectionView;
@@ -34,12 +34,12 @@ namespace EquipmentManagerVM
 
             collectionView = new CollectionViewSource();
             collectionView.Source = _totalJournalEntrys;
-            collectionView.Filter += (s, e) => e.Accepted = ((JournalEntry)e.Item).EntryCategory.Title == "Дежурный";
+            collectionView.Filter += (s, e) => e.Accepted = ((JournalEntry)e.Item).JournalEntryCategory.Title == "Дежурный";
             Tabs.Add(new TabItem() { Header = "Дежурный", Content = collectionView });
 
             collectionView = new CollectionViewSource();
             collectionView.Source = _totalJournalEntrys;
-            collectionView.Filter += (s, e) => e.Accepted = ((JournalEntry)e.Item).EntryCategory.Title == "Отключений";
+            collectionView.Filter += (s, e) => e.Accepted = ((JournalEntry)e.Item).JournalEntryCategory.Title == "Отключений";
             Tabs.Add(new TabItem() { Header = "Отключений", Content = collectionView });
         }
 

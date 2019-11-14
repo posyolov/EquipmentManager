@@ -53,6 +53,10 @@
     <Compile Include="ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EquipmentManagerM\EquipmentManagerM.csproj">
+      <Project>{C33F2094-8917-462C-A326-223CC9E19D69}</Project>
+      <Name>EquipmentManagerM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Repository\Repository.csproj">
       <Project>{9170fa04-ff19-4947-8e63-e959fa76099b}</Project>
       <Name>Repository</Name>
