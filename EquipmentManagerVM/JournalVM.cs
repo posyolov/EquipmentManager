@@ -16,36 +16,36 @@ namespace EquipmentManagerVM
     {
         IGenericRepository<JournalEntry> _journalRepos;
 
-        ObservableCollection<JournalEntry> _totalJournalEntrys;
+        ObservableCollection<JournalEntry> _totalJournalEntries;
 
         public ObservableCollection<TabItem> Tabs { get; }
 
         public JournalVM(IGenericRepository<JournalEntry> journalRepository)
         {
             _journalRepos = journalRepository;
-            _totalJournalEntrys = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.JournalEntryCategory));
+            _totalJournalEntries = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.JournalEntryCategory));
 
             Tabs = new ObservableCollection<TabItem>();
             CollectionViewSource collectionView;
 
             collectionView = new CollectionViewSource();
-            collectionView.Source = _totalJournalEntrys;
+            collectionView.Source = _totalJournalEntries;
             Tabs.Add(new TabItem() { Header = "Общий", Content = collectionView });
 
             collectionView = new CollectionViewSource();
-            collectionView.Source = _totalJournalEntrys;
+            collectionView.Source = _totalJournalEntries;
             collectionView.Filter += (s, e) => e.Accepted = ((JournalEntry)e.Item).JournalEntryCategory.Title == "Дежурный";
             Tabs.Add(new TabItem() { Header = "Дежурный", Content = collectionView });
 
             collectionView = new CollectionViewSource();
-            collectionView.Source = _totalJournalEntrys;
+            collectionView.Source = _totalJournalEntries;
             collectionView.Filter += (s, e) => e.Accepted = ((JournalEntry)e.Item).JournalEntryCategory.Title == "Отключений";
             Tabs.Add(new TabItem() { Header = "Отключений", Content = collectionView });
         }
 
         public void AddJournalEntry(JournalEntry JournalEntry)
         {
-            _totalJournalEntrys.Add(JournalEntry);
+            _totalJournalEntries.Add(JournalEntry);
         }
     }
 

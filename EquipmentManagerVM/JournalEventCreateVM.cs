@@ -11,7 +11,7 @@ namespace EquipmentManagerVM
     /// <summary>
     /// ViewModel окна создания нового события
     /// </summary>
-    public class CreateJournalEntryVM : ViewModelBase
+    public class JournalEntryCreateVM : ViewModelBase
     {
         public event Action<JournalEntry> JournalEntryCreatedEv;
 
@@ -32,9 +32,9 @@ namespace EquipmentManagerVM
             }
         }
 
-        public DelegateCommand<object> CreateJournalEntryCommand { get; }
+        public DelegateCommand<object> JournalEntryCreateCommand { get; }
 
-        public CreateJournalEntryVM(Position position, IGenericRepository<JournalEntryCategory> evCategoryRepository, IGenericRepository<JournalEntry> journalRepository)
+        public JournalEntryCreateVM(Position position, IGenericRepository<JournalEntryCategory> evCategoryRepository, IGenericRepository<JournalEntry> journalRepository)
         {
             //запрос списка категорий
             _evCategoryRepository = evCategoryRepository;
@@ -47,20 +47,20 @@ namespace EquipmentManagerVM
                 //EntryCategory = new EntryCategory()
             };
 
-            CreateJournalEntryCommand = new DelegateCommand<object>(
-                execute: CreateJournalEntryExecute,
-                canExecute: CreateJournalEntryCanExecute
+            JournalEntryCreateCommand = new DelegateCommand<object>(
+                execute: JournalEntryCreateExecute,
+                canExecute: JournalEntryCreateCanExecute
                 );
 
             _journalRepos = journalRepository;
         }
 
-        private bool CreateJournalEntryCanExecute(object obj)
+        private bool JournalEntryCreateCanExecute(object obj)
         {
             return true; // JEntry.Position != null && JEntry.EntryCategory != null;
         }
 
-        private void CreateJournalEntryExecute(object obj)
+        private void JournalEntryCreateExecute(object obj)
         {
             if (JEntry != null && JEntry.Position != null && JEntry.JournalEntryCategory != null)
             {

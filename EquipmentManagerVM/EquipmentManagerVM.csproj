@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateJournalEventVM.cs" />
+    <Compile Include="JournalEventCreateVM.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="MainVM.cs" />
     <Compile Include="PositionComplexNameConverter.cs" />
@@ -58,7 +58,7 @@
       <Name>EquipmentManagerM</Name>
     </ProjectReference>
     <ProjectReference Include="..\Repository\Repository.csproj">
-      <Project>{9170fa04-ff19-4947-8e63-e959fa76099b}</Project>
+      <Project>{9170FA04-FF19-4947-8E63-E959FA76099B}</Project>
       <Name>Repository</Name>
     </ProjectReference>
   </ItemGroup>

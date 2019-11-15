@@ -12,34 +12,41 @@ namespace EquipmentManagerVM
     /// </summary>
     public class MainVM
     {
+        // Main Model.
+        readonly Manager _manager;
+
+        // ViewModels.
         public PositionsVM PositionsVM { get; }
         public JournalVM JournalVM { get; }
 
-        public event Action<CreateJournalEntryVM> CreateJournalEntryViewEv;
+        // Event to high level for create journal entry.
+        public event Action<JournalEntryCreateVM> JournalEntryCreateViewEv;
 
-        readonly Manager _manager;
-
-        public MainVM(Manager manager)
+        public MainVM()
         {
-            _manager = manager;
+            // Main Model.
+            _manager = new Manager();
+
 
             // Positions.
-            PositionsVM = new PositionsVM(manager.PositionRepos);
-            // Request to open create journal entry view.
-            PositionsVM.CreateJournalEntryReqEv += PositionsVM_CreateJournalEntryReqEv;
+            PositionsVM = new PositionsVM(_manager.PositionRepos);
+
+            // Request to create journal entry.
+            // Create VM and notify high level.
+            PositionsVM.JournalEntryCreateReqEv += (pos) =>
+            {
+                // Make JournalEntryCreateVM at selected position.
+                JournalEntryCreateVM _journalEntryCreateVM = new JournalEntryCreateVM(pos, _manager.EvCategoryRepos, _manager.JournalRepos);
+                // !!!high coupling? JournalVM must update herself?!!! Event to notify JournalVM that new entry was created.
+                _journalEntryCreateVM.JournalEntryCreatedEv += (je) => JournalVM.AddJournalEntry(je);
+
+                // Gen event for high level.
+                JournalEntryCreateViewEv(_journalEntryCreateVM);
+            };
+
 
             // Journal.
-            JournalVM = new JournalVM(manager.JournalRepos);
-        }
-
-        // Open window for create journal entry
-        private void PositionsVM_CreateJournalEntryReqEv(Repository.Position position)
-        {
-            // Journal entry view at selected position
-            CreateJournalEntryVM _createJournalEntryVM = new CreateJournalEntryVM(position, _manager.EvCategoryRepos, _manager.JournalRepos);
-            _createJournalEntryVM.JournalEntryCreatedEv += (je) => JournalVM.AddJournalEntry(je);
-
-            CreateJournalEntryViewEv(_createJournalEntryVM);
+            JournalVM = new JournalVM(_manager.JournalRepos);
         }
     }
 }

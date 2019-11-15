@@ -14,14 +14,14 @@ namespace EquipmentManagerVM
     /// </summary>
     public class PositionsVM : ViewModelBase
     {
-        public event Action<Position> CreateJournalEntryReqEv;
+        public event Action<Position> JournalEntryCreateReqEv;
 
         readonly IGenericRepository<Position> positionsRepos;
 
         IEnumerable<Position> _positions;
         public ObservableCollection<PositionNode> PositionsTree { get; set; }
 
-        public DelegateCommand<object> CreateJournalEntryReqCommand { get; }
+        public DelegateCommand<object> JournalEntryCreateReqCommand { get; }
         public DelegateCommand<object> AddRootPositionCommand { get; }
         public DelegateCommand<object> AddChildPositionCommand { get; }
         public DelegateCommand<object> DeletePositionCommand { get; }
@@ -76,8 +76,8 @@ namespace EquipmentManagerVM
                 }
             }
 
-            CreateJournalEntryReqCommand = new DelegateCommand<object>(
-                execute: RiseCreateJournalEntryReqEv
+            JournalEntryCreateReqCommand = new DelegateCommand<object>(
+                execute: RiseJournalEntryCreateReqEv
                 );
 
             AddRootPositionCommand = new DelegateCommand<object>(
@@ -187,13 +187,13 @@ namespace EquipmentManagerVM
         }
 
 
-        private void RiseCreateJournalEntryReqEv(object parametr)
+        private void RiseJournalEntryCreateReqEv(object parametr)
         {
             foreach (Position pos in _positions)
             {
                 if (pos.Id == SelectedItemPosData.Id)
                 {
-                    CreateJournalEntryReqEv?.Invoke(pos);
+                    JournalEntryCreateReqEv?.Invoke(pos);
                     break;
                 }
             }

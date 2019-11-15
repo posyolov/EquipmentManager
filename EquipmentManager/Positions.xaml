@@ -41,7 +41,7 @@
 
                         <TreeView.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Command="{Binding CreateJournalEntryReqCommand}"
+                                <MenuItem Command="{Binding JournalEntryCreateReqCommand}"
                                 Header="Создать запись"/>
 
                                 <Separator/>

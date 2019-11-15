@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Collections.ObjectModel;
-using EquipmentManagerM;
 
 namespace EquipmentManager
 {
@@ -16,26 +15,25 @@ namespace EquipmentManager
     /// </summary>
     public partial class App : Application
     {
-        Manager _manager;
         MainVM _mainVM;
         MainView _mainView;
 
-        // Application startup.
+        // Create main ViewModel and View. Create other Views by events from MainVM.
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            // Main Model.
-            _manager = new Manager();
-
             // Main ViewModel.
-            _mainVM = new MainVM(_manager);
-            // Subscribe to 
-            _mainVM.CreateJournalEntryViewEv += (vm) =>
+            _mainVM = new MainVM();
+            // Subscribe to create jornal entry view
+            _mainVM.JournalEntryCreateViewEv += (vm) =>
+            {
+                JournalEntryCreateView _journalEntryCreateView = new JournalEntryCreateView
                 {
-                    CreateJournalEntryView _createJournalEntryView = new CreateJournalEntryView();
-                    _createJournalEntryView.Owner = _mainView;
-                    _createJournalEntryView.DataContext = vm;
-                    _createJournalEntryView.ShowDialog();
+                    Owner = _mainView,
+                    DataContext = vm
                 };
+                _journalEntryCreateView.ShowDialog();
+            };
+
 
             // Main View.
             _mainView = new MainView

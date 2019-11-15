@@ -33,7 +33,7 @@
                                     </GridViewColumn>
 
                                     <GridViewColumn Header="Категория" 
-                                                DisplayMemberBinding="{Binding EntryCategory.Title}">
+                                                DisplayMemberBinding="{Binding JournalEntryCategory.Title}">
                                     </GridViewColumn>
 
                                     <GridViewColumn Header="Описание" 

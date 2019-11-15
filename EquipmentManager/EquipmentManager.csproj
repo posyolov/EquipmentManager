@@ -14,6 +14,8 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,11 +37,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
     <Reference Include="Microsoft.Expression.Interactions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Blend.Interactivity.Wpf.1.0.1340.0\lib\net\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Blend.Interactivity.Wpf.1.0.1340.0\lib\net\System.Windows.Interactivity.dll</HintPath>
@@ -63,11 +65,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CloseWindowBehavior.cs" />
-    <Compile Include="CreateJournalEntryView.xaml.cs">
-      <DependentUpon>CreateJournalEntryView.xaml</DependentUpon>
+    <Compile Include="JournalEntryCreateView.xaml.cs">
+      <DependentUpon>JournalEntryCreateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="TreeViewSelectedItemBehavior.cs" />
-    <Page Include="CreateJournalEntryView.xaml">
+    <Page Include="JournalEntryCreateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -128,17 +130,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EquipmentManagerM\EquipmentManagerM.csproj">
-      <Project>{c33f2094-8917-462c-a326-223cc9e19d69}</Project>
-      <Name>EquipmentManagerM</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EquipmentManagerVM\EquipmentManagerVM.csproj">
       <Project>{6fe48d29-5b8a-43f4-a1e2-d1e596164d5a}</Project>
       <Name>EquipmentManagerVM</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Repository\Repository.csproj">
-      <Project>{9170FA04-FF19-4947-8E63-E959FA76099B}</Project>
-      <Name>Repository</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
