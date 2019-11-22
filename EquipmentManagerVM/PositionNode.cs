@@ -11,7 +11,7 @@ using Repository;
 namespace EquipmentManagerVM
 {
     /// <summary>
-    /// Узел дерева позиций
+    /// Positions tree node
     /// </summary>
     public class PositionNode : INotifyPropertyChanged
     {
@@ -29,17 +29,28 @@ namespace EquipmentManagerVM
             }
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public PositionNode(Position position)
         {
             PosData = position;
             Nodes = new ObservableCollection<PositionNode>();
         }
 
-        public Position CopyPosData()
+        /// <summary>
+        /// Get position data from node.
+        /// </summary>
+        /// <returns></returns>
+        public Position GetPositionData()
         {
             return new Position() { Id = PosData.Id, Name = PosData.Name, ParentId = PosData.ParentId, Title = PosData.Title };
         }
 
+        /// <summary>
+        /// Set position data to node.
+        /// </summary>
+        /// <param name="posData"></param>
         public void SetPosData(Position posData)
         {
             PosData = new Position() { Id = posData.Id, Name = posData.Name, ParentId = posData.ParentId, Title = posData.Title }; ;

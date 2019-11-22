@@ -10,15 +10,14 @@ using System.ComponentModel;
 namespace EquipmentManagerVM
 {
     /// <summary>
-    /// ViewModel для дерева позиций
+    /// ViewModel positions tree
     /// </summary>
     public class PositionsVM : ViewModelBase
     {
         public event Action<Position> JournalEntryCreateReqEv;
 
-        readonly IGenericRepository<Position> positionsRepos;
-
-        IEnumerable<Position> _positions;
+        IGenericRepository<Position> _repository;
+        ObservableCollection<Position> _positions;
         public ObservableCollection<PositionNode> PositionsTree { get; set; }
 
         public DelegateCommand<object> JournalEntryCreateReqCommand { get; }
@@ -39,7 +38,7 @@ namespace EquipmentManagerVM
                 NotifyPropertyChanged();
 
                 //приходится каждый раз создавать экземпляр
-                SelectedItemPosData = value?.CopyPosData();
+                SelectedItemPosData = value?.GetPositionData();
 
                 AddChildPositionCommand.RiseCanExecuteChanged();
                 DeletePositionCommand.RiseCanExecuteChanged();
@@ -56,11 +55,14 @@ namespace EquipmentManagerVM
             }
         }
 
-        public PositionsVM(IGenericRepository<Position> positionsRepository)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="repository"></param>
+        public PositionsVM(IGenericRepository<Position> repository)
         {
-            positionsRepos = positionsRepository;
-
-            _positions = positionsRepository.Get();
+            _repository = repository;
+            _positions = new ObservableCollection<Position>(_repository.Get());
 
             PositionsTree = new ObservableCollection<PositionNode>();
 
@@ -100,6 +102,11 @@ namespace EquipmentManagerVM
 
         }
 
+        /// <summary>
+        /// Building branch the node.
+        /// </summary>
+        /// <param name="positionNode"></param>
+        /// <param name="positions"></param>
         void BuildBranch(PositionNode positionNode, IEnumerable<Position> positions)
         {
             var childrenPositions = positions.Where(c => c.ParentId == positionNode.PosData.Id);
@@ -115,16 +122,26 @@ namespace EquipmentManagerVM
 
         }
 
-        void GetChildrenPosData(List<Position> childrenPosData, PositionNode childNode)
+        /// <summary>
+        /// Extract the node`s children position data to list recursively
+        /// </summary>
+        /// <param name="childrenPosData"></param>
+        /// <param name="childNode"></param>
+        void GetChildrenPosDataList(PositionNode childNode, List<Position> childrenPosData)
         {
             childrenPosData.Add(childNode.PosData);
 
             if (childNode.Nodes != null)
                 foreach (PositionNode node in childNode.Nodes)
-                    GetChildrenPosData(childrenPosData, node);
+                    GetChildrenPosDataList(node, childrenPosData);
         }
 
-        void RemoveNode(int id, ObservableCollection<PositionNode> nodes)
+        /// <summary>
+        /// Remove node by ID in nodes collection
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="nodes"></param>
+        void RemoveNodeById(int id, ObservableCollection<PositionNode> nodes)
         {
             foreach (PositionNode node in nodes)
             {
@@ -134,10 +151,14 @@ namespace EquipmentManagerVM
                     return;
                 }
 
-                RemoveNode(id, node.Nodes);
+                RemoveNodeById(id, node.Nodes);
             }
         }
 
+        /// <summary>
+        /// Execute method for AddRootPositionCommand
+        /// </summary>
+        /// <param name="parametr"></param>
         private void AddRootPositionExecute(object parametr)
         {
             Position pos = new Position()
@@ -147,11 +168,15 @@ namespace EquipmentManagerVM
             };
 
             SetComplexName(pos);
-            positionsRepos.Update(pos);
+            _repository.Update(pos);
 
             PositionsTree.Add(new PositionNode(pos));
         }
 
+        /// <summary>
+        /// Execute method for AddChildPositionCommand
+        /// </summary>
+        /// <param name="parametr"></param>
         private void AddChildPositionExecute(object parametr)
         {
             Position pos = new Position()
@@ -162,31 +187,42 @@ namespace EquipmentManagerVM
             };
 
             SetComplexName(pos);
-            positionsRepos.Update(pos);
+            _repository.Update(pos);
 
             SelectedItem.Nodes.Add(new PositionNode(pos));
         }
 
+        /// <summary>
+        /// Execute method for DeletePositionCommand
+        /// </summary>
+        /// <param name="parametr"></param>
         private void DeletePositionExecute(object parametr)
         {
             List<Position> branchPosData = new List<Position>();
-            GetChildrenPosData(branchPosData, SelectedItem);
+            GetChildrenPosDataList(SelectedItem, branchPosData);
 
-            if (positionsRepos.RemoveRange(branchPosData) == null)
-                RemoveNode(SelectedItem.PosData.Id, PositionsTree);
+            if (_repository.RemoveRange(branchPosData) == null)
+                RemoveNodeById(SelectedItem.PosData.Id, PositionsTree);
             else
                 System.Windows.MessageBox.Show("Заплатка! Добавить окно по шаблону MVVM!");
         }
 
+        /// <summary>
+        /// Execute method for SavePosDataCommand
+        /// </summary>
+        /// <param name="parametr"></param>
         private void SavePosDataExecute(object parametr)
         {
             SetComplexName(SelectedItemPosData);
 
-            positionsRepos.Update(SelectedItemPosData);
+            _repository.Update(SelectedItemPosData);
             SelectedItem.SetPosData(SelectedItemPosData);
         }
 
-
+        /// <summary>
+        /// Execute method for JournalEntryCreateReqCommand
+        /// </summary>
+        /// <param name="parametr"></param>
         private void RiseJournalEntryCreateReqEv(object parametr)
         {
             foreach (Position pos in _positions)
@@ -199,12 +235,15 @@ namespace EquipmentManagerVM
             }
         }
 
-        //задание составного имени
+        /// <summary>
+        /// Set ComplexName property for the position
+        /// </summary>
+        /// <param name="pos"></param>
         private void SetComplexName(Position pos)
         {
             if (pos.ParentId != null)
             {
-                Position parentPos = positionsRepos.FindById((int)pos.ParentId);
+                Position parentPos = _repository.FindById((int)pos.ParentId);
                 if (parentPos != null)
                 {
                     pos.ComplexName = parentPos.ComplexName + ";" + pos.Name;

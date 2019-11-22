@@ -1,6 +1,7 @@
 ﻿using Repository;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,23 +15,32 @@ namespace EquipmentManagerM
     {
         EquipmentContainer _context;
 
-        public GenericRepositoryEF<Position> PositionRepos { get; }
-        public GenericRepositoryEF<JournalEntry> JournalRepos { get; }
-        public GenericRepositoryEF<JournalEntryCategory> EvCategoryRepos { get; }
+        GenericRepositoryEF<Position> _positionRepos;
+        GenericRepositoryEF<JournalEntry> _journalRepos;
+        GenericRepositoryEF<JournalEntryCategory> _journalEntryCategoryRepos;
+        GenericRepositoryAccess<StockItem> _stockRepos;
 
-        public GenericRepositoryAccess<StockItem> StockRepos { get; }
+        public RepositoryProxy<Position> PositionReposProxy { get; }
+        public RepositoryProxy<JournalEntry> JournalReposProxy { get; }
+        public RepositoryProxy<JournalEntryCategory> JournalEntryCategoryReposProxy { get; }
+        public RepositoryProxy<StockItem> StockReposProxy { get; }
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public Manager()
         {
-            //репозитории
             _context = new EquipmentContainer();
+            _positionRepos = new GenericRepositoryEF<Position>(_context);
+            _journalRepos = new GenericRepositoryEF<JournalEntry>(_context);
+            _journalEntryCategoryRepos = new GenericRepositoryEF<JournalEntryCategory>(_context);
 
-            PositionRepos = new GenericRepositoryEF<Position>(_context);
-            JournalRepos = new GenericRepositoryEF<JournalEntry>(_context);
-            EvCategoryRepos = new GenericRepositoryEF<JournalEntryCategory>(_context);
+            PositionReposProxy = new RepositoryProxy<Position>(_positionRepos);
+            JournalReposProxy = new RepositoryProxy<JournalEntry>(_journalRepos);
+            JournalEntryCategoryReposProxy = new RepositoryProxy<JournalEntryCategory>(_journalEntryCategoryRepos);
 
-            StockRepos = new GenericRepositoryAccess<StockItem>(@"D:\Projects\Access\EquipmentManager\Склад.accdb");
-            var dwdw = StockRepos.Get();
+            _stockRepos = new GenericRepositoryAccess<StockItem>(@"D:\Projects\Access\EquipmentManager\Склад.accdb");
+            var dwdw = _stockRepos.Get();
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using EquipmentManagerM;
+using Repository;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,45 +10,49 @@ using System.Threading.Tasks;
 namespace EquipmentManagerVM
 {
     /// <summary>
-    /// Основная ViewModel
+    /// Main ViewModel
     /// </summary>
     public class MainVM
     {
-        // Main Model.
         readonly Manager _manager;
 
-        // ViewModels.
         public PositionsVM PositionsVM { get; }
         public JournalVM JournalVM { get; }
 
-        // Event to high level for create journal entry.
         public event Action<JournalEntryCreateVM> JournalEntryCreateViewEv;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public MainVM()
         {
-            // Main Model.
             _manager = new Manager();
+            
+            PositionsVM = new PositionsVM(_manager.PositionReposProxy);
+            PositionsVM.JournalEntryCreateReqEv += OnJournalEntryCreateRequestEv;
+            
+            JournalVM = new JournalVM(_manager.JournalReposProxy);
+        }
 
+        /// <summary>
+        /// Create JournalEntryCreateVM and invoke event for creating JournalEntryCreateView.
+        /// </summary>
+        /// <param name="selectedPosition"></param>
+        private void OnJournalEntryCreateRequestEv(Position selectedPosition)
+        {
+            JournalEntryCreateVM _journalEntryCreateVM = new JournalEntryCreateVM(selectedPosition, _manager.JournalEntryCategoryReposProxy, _manager.JournalReposProxy);
+            _journalEntryCreateVM.JournalEntryCreatedEv += OnJournalEntryCreatedEv; 
 
-            // Positions.
-            PositionsVM = new PositionsVM(_manager.PositionRepos);
+            JournalEntryCreateViewEv?.Invoke(_journalEntryCreateVM);
+        }
 
-            // Request to create journal entry.
-            // Create VM and notify high level.
-            PositionsVM.JournalEntryCreateReqEv += (pos) =>
-            {
-                // Make JournalEntryCreateVM at selected position.
-                JournalEntryCreateVM _journalEntryCreateVM = new JournalEntryCreateVM(pos, _manager.EvCategoryRepos, _manager.JournalRepos);
-                // !!!high coupling? JournalVM must update herself?!!! Event to notify JournalVM that new entry was created.
-                _journalEntryCreateVM.JournalEntryCreatedEv += (je) => JournalVM.AddJournalEntry(je);
-
-                // Gen event for high level.
-                JournalEntryCreateViewEv(_journalEntryCreateVM);
-            };
-
-
-            // Journal.
-            JournalVM = new JournalVM(_manager.JournalRepos);
+        /// <summary>
+        /// Notify JournalVM that journal entry was created. ???may be throw model?
+        /// </summary>
+        /// <param name="je"></param>
+        private void OnJournalEntryCreatedEv(JournalEntry je)
+        {
+            JournalVM.AddJournalEntry(je);
         }
     }
 }

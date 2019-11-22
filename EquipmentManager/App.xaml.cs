@@ -18,29 +18,35 @@ namespace EquipmentManager
         MainVM _mainVM;
         MainView _mainView;
 
-        // Create main ViewModel and View. Create other Views by events from MainVM.
+        /// <summary>
+        /// Create main ViewModel and View. Create other Views by events from MainVM.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            // Main ViewModel.
             _mainVM = new MainVM();
-            // Subscribe to create jornal entry view
-            _mainVM.JournalEntryCreateViewEv += (vm) =>
-            {
-                JournalEntryCreateView _journalEntryCreateView = new JournalEntryCreateView
-                {
-                    Owner = _mainView,
-                    DataContext = vm
-                };
-                _journalEntryCreateView.ShowDialog();
-            };
+            _mainVM.JournalEntryCreateViewEv += OnJournalEntryCreateViewEv;
 
-
-            // Main View.
             _mainView = new MainView
             {
                 DataContext = _mainVM
             };
             _mainView.Show();
+        }
+
+        /// <summary>
+        /// Show JournalEntryCreateView on request from MainView.
+        /// </summary>
+        /// <param name="vm"></param>
+        private void OnJournalEntryCreateViewEv(JournalEntryCreateVM vm)
+        {
+            JournalEntryCreateView _journalEntryCreateView = new JournalEntryCreateView
+            {
+                Owner = _mainView,
+                DataContext = vm
+            };
+            _journalEntryCreateView.ShowDialog();
         }
     }
 }
