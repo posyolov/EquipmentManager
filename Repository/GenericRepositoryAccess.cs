@@ -15,11 +15,11 @@ namespace Repository
     /// <typeparam name="TEntity"></typeparam>
     public class GenericRepositoryAccess<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        string _connectionStr;
+        StockContainer _context;
 
-        public GenericRepositoryAccess(string connectionString)
+        public GenericRepositoryAccess(StockContainer context)
         {
-            _connectionStr = connectionString;
+            _context = context;
         }
 
         public void Add(TEntity entity)
@@ -34,23 +34,7 @@ namespace Repository
 
         public IEnumerable<TEntity> Get()
         {
-            //подключаемся к БД
-            //_connectionStr = "";//"EquipmentStatistic.accdb";//@"O:\12_Производственно-технический департамент\12.5_Служба АСУ\01_Поселов\Temp\EquipmentStatistic.accdb";
-
-            OleDbConnection accessConnection = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + _connectionStr + ";");
-            accessConnection.Open();
-
-            OleDbCommand oleDbCommand = accessConnection.CreateCommand();
-
-            OleDbDataAdapter adapterDb = new OleDbDataAdapter();
-
-            DataTable table = new DataTable();
-            oleDbCommand.CommandType = System.Data.CommandType.Text;
-            oleDbCommand.CommandText = "SELECT * FROM " + "Номенклатура";// typeof(TEntity).Name;
-            adapterDb.SelectCommand = oleDbCommand;
-            adapterDb.Fill(table);
-
-            return null;
+            return _context.Load<TEntity>();
         }
 
         public IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties)

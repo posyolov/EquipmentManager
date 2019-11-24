@@ -13,12 +13,13 @@ namespace EquipmentManagerM
     /// </summary>
     public class Manager
     {
-        EquipmentContainer _context;
+        EquipmentContainer _equipmentContext;
+        StockContainer _stockContext;
 
-        GenericRepositoryEF<Position> _positionRepos;
-        GenericRepositoryEF<JournalEntry> _journalRepos;
-        GenericRepositoryEF<JournalEntryCategory> _journalEntryCategoryRepos;
-        GenericRepositoryAccess<StockItem> _stockRepos;
+        IGenericRepository<Position> _positionRepos;
+        IGenericRepository<JournalEntry> _journalRepos;
+        IGenericRepository<JournalEntryCategory> _journalEntryCategoryRepos;
+        IGenericRepository<StockItem> _stockRepos;
 
         public RepositoryProxy<Position> PositionReposProxy { get; }
         public RepositoryProxy<JournalEntry> JournalReposProxy { get; }
@@ -30,17 +31,20 @@ namespace EquipmentManagerM
         /// </summary>
         public Manager()
         {
-            _context = new EquipmentContainer();
-            _positionRepos = new GenericRepositoryEF<Position>(_context);
-            _journalRepos = new GenericRepositoryEF<JournalEntry>(_context);
-            _journalEntryCategoryRepos = new GenericRepositoryEF<JournalEntryCategory>(_context);
+            _equipmentContext = new EquipmentContainer();
+            _stockContext = new StockContainer();
+
+            _positionRepos = new GenericRepositoryEF<Position>(_equipmentContext);
+            _journalRepos = new GenericRepositoryEF<JournalEntry>(_equipmentContext);
+            _journalEntryCategoryRepos = new GenericRepositoryEF<JournalEntryCategory>(_equipmentContext);
+            _stockRepos = new GenericRepositoryAccess<StockItem>(_stockContext);
 
             PositionReposProxy = new RepositoryProxy<Position>(_positionRepos);
             JournalReposProxy = new RepositoryProxy<JournalEntry>(_journalRepos);
             JournalEntryCategoryReposProxy = new RepositoryProxy<JournalEntryCategory>(_journalEntryCategoryRepos);
 
-            _stockRepos = new GenericRepositoryAccess<StockItem>(@"D:\Projects\Access\EquipmentManager\Склад.accdb");
-            var dwdw = _stockRepos.Get();
+
+            var kuku =_stockRepos.Get();
         }
     }
 }

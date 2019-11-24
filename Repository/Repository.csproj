@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GenericRepositoryEF.cs" />
+    <Compile Include="StockContainer.cs" />
     <Compile Include="StockItem.cs" />
   </ItemGroup>
   <ItemGroup>
