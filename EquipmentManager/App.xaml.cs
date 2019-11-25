@@ -26,7 +26,8 @@ namespace EquipmentManager
         private void OnStartup(object sender, StartupEventArgs e)
         {
             _mainVM = new MainVM();
-            _mainVM.JournalEntryCreateViewEv += OnJournalEntryCreateViewEv;
+            _mainVM.JournalEntryCreateViewRequestEv += OnJournalEntryCreateViewEv;
+            _mainVM.StockItemsViewRequestEv += OnStockItemsViewRequestEv;
 
             _mainView = new MainView
             {
@@ -36,12 +37,26 @@ namespace EquipmentManager
         }
 
         /// <summary>
+        /// Show StockItemsView on request from MainView.
+        /// </summary>
+        /// <param name="vm"></param>
+        private void OnStockItemsViewRequestEv(StockItemsVM vm)
+        {
+            var _stockItemsView = new StockItemsView
+            {
+                Owner = _mainView,
+                DataContext = vm
+            };
+            _stockItemsView.ShowDialog();
+        }
+
+        /// <summary>
         /// Show JournalEntryCreateView on request from MainView.
         /// </summary>
         /// <param name="vm"></param>
         private void OnJournalEntryCreateViewEv(JournalEntryCreateVM vm)
         {
-            JournalEntryCreateView _journalEntryCreateView = new JournalEntryCreateView
+            var _journalEntryCreateView = new JournalEntryCreateView
             {
                 Owner = _mainView,
                 DataContext = vm

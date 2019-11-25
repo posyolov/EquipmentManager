@@ -19,8 +19,11 @@
     </Window.Resources>
 
     <DockPanel>
-        <ContentControl Template="{StaticResource MainMenu}" DockPanel.Dock="Top"/>
-        <ContentControl Template="{StaticResource MainStatusBar}" DockPanel.Dock="Bottom"/>
+        <ContentControl DataContext="{Binding MainMenuVM}"
+                        Template="{StaticResource MainMenu}" 
+                        DockPanel.Dock="Top"/>
+        <ContentControl Template="{StaticResource MainStatusBar}" 
+                        DockPanel.Dock="Bottom"/>
 
         <Grid>
             <Grid.ColumnDefinitions>
@@ -33,21 +36,15 @@
                             Template="{StaticResource Positions}"
                             Grid.Column="0"/>
 
-            <GridSplitter Grid.Column="1" Width="10" VerticalAlignment="Stretch" HorizontalAlignment="Center"></GridSplitter>
+            <GridSplitter Grid.Column="1" 
+                          Width="10" 
+                          VerticalAlignment="Stretch"
+                          HorizontalAlignment="Center">
+            </GridSplitter>
 
             <ContentControl DataContext="{Binding JournalVM}"
                             Template="{StaticResource Journal}" 
                             Grid.Column="2"/>
-            
-            <!--<TextBlock Grid.Column="2" DataContext="{StaticResource pData}" Text="{Binding Path=Kuku1}"/>-->
-            <!--<TextBlock Grid.Column="2" Text="kukukukuku"/>-->
-            <!--<StackPanel Grid.Column="3" DataContext="{Binding PosDataVM}">
-                <TextBlock Text="kuku:"/>
-                <TextBlock Text="{Binding Path=Kuku1}"/>
-                <TextBlock Text="{Binding Path=Kuku2}"/>
-                <TextBlock Text="{Binding Path=Kuku3}"/>
-            </StackPanel>-->
-
         </Grid>
 
 

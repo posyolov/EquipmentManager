@@ -16,10 +16,12 @@ namespace EquipmentManagerVM
     {
         readonly Manager _manager;
 
+        public MainMenuVM MainMenuVM { get; }
         public PositionsVM PositionsVM { get; }
         public JournalVM JournalVM { get; }
 
-        public event Action<JournalEntryCreateVM> JournalEntryCreateViewEv;
+        public event Action<JournalEntryCreateVM> JournalEntryCreateViewRequestEv;
+        public event Action<StockItemsVM> StockItemsViewRequestEv;
 
         /// <summary>
         /// Default constructor.
@@ -27,11 +29,24 @@ namespace EquipmentManagerVM
         public MainVM()
         {
             _manager = new Manager();
-            
+
+            MainMenuVM = new MainMenuVM();
+            MainMenuVM.OpenStockItemsViewRequest += OnOpenStockItemsViewRequest;
+
             PositionsVM = new PositionsVM(_manager.PositionReposProxy);
             PositionsVM.JournalEntryCreateReqEv += OnJournalEntryCreateRequestEv;
             
             JournalVM = new JournalVM(_manager.JournalReposProxy);
+        }
+
+        /// <summary>
+        /// Create StockItemsVM and invoke event for creating StockItemsView.
+        /// </summary>
+        private void OnOpenStockItemsViewRequest()
+        {
+            StockItemsVM _stockItemsVM = new StockItemsVM(_manager.StockItemsReposProxy);
+
+            StockItemsViewRequestEv?.Invoke(_stockItemsVM);
         }
 
         /// <summary>
@@ -43,7 +58,7 @@ namespace EquipmentManagerVM
             JournalEntryCreateVM _journalEntryCreateVM = new JournalEntryCreateVM(selectedPosition, _manager.JournalEntryCategoryReposProxy, _manager.JournalReposProxy);
             _journalEntryCreateVM.JournalEntryCreatedEv += OnJournalEntryCreatedEv; 
 
-            JournalEntryCreateViewEv?.Invoke(_journalEntryCreateVM);
+            JournalEntryCreateViewRequestEv?.Invoke(_journalEntryCreateVM);
         }
 
         /// <summary>

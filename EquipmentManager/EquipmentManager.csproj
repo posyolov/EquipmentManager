@@ -68,6 +68,9 @@
     <Compile Include="JournalEntryCreateView.xaml.cs">
       <DependentUpon>JournalEntryCreateView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StockItemsView.xaml.cs">
+      <DependentUpon>StockItemsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TreeViewSelectedItemBehavior.cs" />
     <Page Include="JournalEntryCreateView.xaml">
       <SubType>Designer</SubType>
@@ -100,6 +103,10 @@
     <Page Include="Journal.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StockItemsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

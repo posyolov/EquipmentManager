@@ -15,7 +15,11 @@
             </MenuItem>
             <MenuItem Header="Edit" ></MenuItem>
             <MenuItem Header="View" ></MenuItem>
-
+            <MenuItem Header="Data">
+                <MenuItem Header="Stock items"
+                          Command="{Binding OpenStockItemsViewCommand}">
+                </MenuItem>
+            </MenuItem>
         </Menu>
     </ControlTemplate>
 
