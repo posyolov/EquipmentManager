@@ -43,8 +43,6 @@ namespace EquipmentManagerM
             JournalReposProxy = new RepositoryProxy<JournalEntry>(_journalRepos);
             JournalEntryCategoryReposProxy = new RepositoryProxy<JournalEntryCategory>(_journalEntryCategoryRepos);
             StockItemsReposProxy = new RepositoryProxy<StockItem>(_stockItemsRepos);
-
-            var kuku =_stockItemsRepos.Get();
         }
     }
 }

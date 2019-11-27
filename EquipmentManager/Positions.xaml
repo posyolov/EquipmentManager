@@ -1,15 +1,16 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-                    xmlns:c="clr-namespace:EquipmentManagerVM;assembly=EquipmentManagerVM"
-                    xmlns:local="clr-namespace:EquipmentManager">
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:local="clr-namespace:EquipmentManager"
+                    xmlns:vm="clr-namespace:EquipmentManagerVM;assembly=EquipmentManagerVM">
 
     <ControlTemplate x:Key="Positions">
         <ControlTemplate.Resources>
             <Style TargetType="TextBlock">
                 <Setter Property="Margin" Value="5 2 5 2"/>
             </Style>
-            <c:LongToBoolConverter x:Key="longToBoolConverter" />
+            <vm:LongToBoolConverter x:Key="longToBoolConverter" />
         </ControlTemplate.Resources>
 
             <Grid>
@@ -102,13 +103,17 @@
                     <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Status}"></TextBlock>
 
                     <StackPanel Grid.Column="1" Grid.Row="4">
-                        <CheckBox Content=": Bit #0" FlowDirection="RightToLeft">
-                            <CheckBox.IsChecked>
-                                <Binding Path="Status" 
-                                         Converter="{StaticResource longToBoolConverter}" 
-                                         ConverterParameter="0"/>
-                            </CheckBox.IsChecked>
-                        </CheckBox>
+
+                        <CheckBox Content="0" 
+                                  IsChecked="{Binding Status, Converter={StaticResource longToBoolConverter}, ConverterParameter=0}"/>
+                        <CheckBox Content="1" 
+                                  IsChecked="{Binding Status, Converter={StaticResource longToBoolConverter}, ConverterParameter=1}"/>
+                        <CheckBox Content="2" 
+                                  IsChecked="{Binding Status, Converter={StaticResource longToBoolConverter}, ConverterParameter=2}"/>
+                        <CheckBox Content="3" 
+                                  IsChecked="{Binding Status, Converter={StaticResource longToBoolConverter}, ConverterParameter=3}"/>
+
+
                     </StackPanel>
                 </Grid>
 

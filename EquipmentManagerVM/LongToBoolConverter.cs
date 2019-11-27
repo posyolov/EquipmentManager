@@ -13,11 +13,6 @@ namespace EquipmentManagerVM
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             //object[] parameters = (object[])parameter;
-            //long b = (long)value;
-            //int bitNumber = int.Parse(parameters[0].ToString());
-            //bool ret = (b & (1 << bitNumber)) > 0;
-            //return ret;
-
             long b = (long)value;
             int bitNumber = int.Parse(parameter.ToString());
             bool ret = (b & (1 << bitNumber)) > 0;
@@ -41,7 +36,20 @@ namespace EquipmentManagerVM
             //    ret = BitOperations.ZeroBit(byteOrigVal, bitNumber);
             //}
             //return ret;
-            return 0;
+            //string parameterString = parameter as string;
+            //if (!string.IsNullOrEmpty(parameterString))
+            //{
+            //    string[] parameters = parameterString.Split(new char[] { '|' });
+            //    long b = (long)value;
+            //    int bitNumber = int.Parse(parameters[0]);
+            //    bool ret = (b & (1 << bitNumber)) > 0;
+            //    return ret;
+            //}
+            //else
+            //{
+            //    return null;
+            //}
+            return null;
         }
     }
 }
