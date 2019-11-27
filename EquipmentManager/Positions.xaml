@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:c="clr-namespace:EquipmentManagerVM;assembly=EquipmentManagerVM"
                     xmlns:local="clr-namespace:EquipmentManager">
 
     <ControlTemplate x:Key="Positions">
@@ -8,6 +9,7 @@
             <Style TargetType="TextBlock">
                 <Setter Property="Margin" Value="5 2 5 2"/>
             </Style>
+            <c:LongToBoolConverter x:Key="longToBoolConverter" />
         </ControlTemplate.Resources>
 
             <Grid>
@@ -87,6 +89,8 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" Text="ID:"></TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Id}"></TextBlock>
@@ -94,6 +98,18 @@
                     <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     <TextBlock Grid.Column="0" Grid.Row="2" Text="Название:"></TextBlock>
                     <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Статус:"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Status}"></TextBlock>
+
+                    <StackPanel Grid.Column="1" Grid.Row="4">
+                        <CheckBox Content=": Bit #0" FlowDirection="RightToLeft">
+                            <CheckBox.IsChecked>
+                                <Binding Path="Status" 
+                                         Converter="{StaticResource longToBoolConverter}" 
+                                         ConverterParameter="0"/>
+                            </CheckBox.IsChecked>
+                        </CheckBox>
+                    </StackPanel>
                 </Grid>
 
                 <Button Margin="10"

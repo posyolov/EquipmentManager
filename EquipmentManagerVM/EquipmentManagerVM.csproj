@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="JournalEventCreateVM.cs" />
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="LongToBoolConverter.cs" />
     <Compile Include="MainMenuVM.cs" />
     <Compile Include="MainVM.cs" />
     <Compile Include="PositionComplexNameConverter.cs" />

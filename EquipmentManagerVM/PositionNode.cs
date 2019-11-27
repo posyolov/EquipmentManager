@@ -44,7 +44,7 @@ namespace EquipmentManagerVM
         /// <returns></returns>
         public Position GetPositionData()
         {
-            return new Position() { Id = PosData.Id, Name = PosData.Name, ParentId = PosData.ParentId, Title = PosData.Title };
+            return new Position() { Id = PosData.Id, Name = PosData.Name, ParentId = PosData.ParentId, Title = PosData.Title , Status = PosData.Status};
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace EquipmentManagerVM
         /// <param name="posData"></param>
         public void SetPosData(Position posData)
         {
-            PosData = new Position() { Id = posData.Id, Name = posData.Name, ParentId = posData.ParentId, Title = posData.Title }; ;
+            PosData = new Position() { Id = posData.Id, Name = posData.Name, ParentId = posData.ParentId, Title = posData.Title, Status = posData.Status }; ;
         }
 
 

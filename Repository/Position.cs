@@ -25,6 +25,7 @@ namespace Repository
         public string Name { get; set; }
         public string ComplexName { get; set; }
         public string Title { get; set; }
+        public long Status { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<JournalEntry> JournalEntries { get; set; }

@@ -27,6 +27,7 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ComplexName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Title" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Status" Type="bigint" Nullable="false" />
   </EntityType>
   <EntityType Name="Journal">
     <Key>
@@ -101,6 +102,7 @@
           <Property Name="ComplexName" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="Title" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="JournalEntries" Relationship="Equipment.PositionJournalEntry" FromRole="Position" ToRole="JournalEntry" />
+          <Property Name="Status" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="JournalEntry">
           <Documentation>
@@ -149,6 +151,7 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="ComplexName" ColumnName="ComplexName" />
           <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

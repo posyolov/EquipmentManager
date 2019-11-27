@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/14/2019 16:39:36
+-- Date Created: 11/27/2019 15:33:29
 -- Generated from EDMX file: D:\Projects\C#\EquipmentManager\Repository\Equipment.edmx
 -- --------------------------------------------------
 
@@ -17,25 +17,25 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_EntryCategoryJournalEntry]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Journal] DROP CONSTRAINT [FK_EntryCategoryJournalEntry];
-GO
 IF OBJECT_ID(N'[dbo].[FK_PositionJournalEntry]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Journal] DROP CONSTRAINT [FK_PositionJournalEntry];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EntryCategoryJournalEntry]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Journal] DROP CONSTRAINT [FK_EntryCategoryJournalEntry];
 GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[EntryCategories]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[EntryCategories];
+IF OBJECT_ID(N'[dbo].[Positions]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Positions];
 GO
 IF OBJECT_ID(N'[dbo].[Journal]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Journal];
 GO
-IF OBJECT_ID(N'[dbo].[Positions]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Positions];
+IF OBJECT_ID(N'[dbo].[JournalEntryCategories]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[JournalEntryCategories];
 GO
 
 -- --------------------------------------------------
@@ -48,7 +48,8 @@ CREATE TABLE [dbo].[Positions] (
     [ParentId] int  NULL,
     [Name] nvarchar(max)  NOT NULL,
     [ComplexName] nvarchar(max)  NOT NULL,
-    [Title] nvarchar(max)  NULL
+    [Title] nvarchar(max)  NULL,
+    [Status] bigint  NOT NULL
 );
 GO
 
