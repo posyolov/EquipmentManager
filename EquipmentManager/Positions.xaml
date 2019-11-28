@@ -10,7 +10,7 @@
             <Style TargetType="TextBlock">
                 <Setter Property="Margin" Value="5 2 5 2"/>
             </Style>
-            <vm:LongToBoolConverter x:Key="longToBoolConverter" />
+            <vm:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
         </ControlTemplate.Resources>
 
             <Grid>
@@ -79,15 +79,13 @@
             <GridSplitter Grid.Row="1" Height="10" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
 
                 <!--данные по позиции-->
-                <StackPanel Grid.Row="2">
+            <StackPanel Grid.Row="2">
                 <Grid DataContext="{Binding SelectedItemPosData}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition MinWidth="50" Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
@@ -102,28 +100,24 @@
                     <TextBlock Grid.Column="0" Grid.Row="3" Text="Статус:"></TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Status}"></TextBlock>
 
-                    <StackPanel Grid.Column="1" Grid.Row="4">
-
-                        <CheckBox Content="0" 
-                                  IsChecked="{Binding Status, Converter={StaticResource longToBoolConverter}, ConverterParameter=0}"/>
-                        <CheckBox Content="1" 
-                                  IsChecked="{Binding Status, Converter={StaticResource longToBoolConverter}, ConverterParameter=1}"/>
-                        <CheckBox Content="2" 
-                                  IsChecked="{Binding Status, Converter={StaticResource longToBoolConverter}, ConverterParameter=2}"/>
-                        <CheckBox Content="3" 
-                                  IsChecked="{Binding Status, Converter={StaticResource longToBoolConverter}, ConverterParameter=3}"/>
-
-
-                    </StackPanel>
                 </Grid>
 
                 <Button Margin="10"
                         Command="{Binding SavePosDataCommand}">
-                        Сохранить
-                    </Button>
-                </StackPanel>
+                    Сохранить
+                </Button>
 
-            </Grid>
+                <ListBox ItemsSource="{Binding StatusBits}">
+                    <ListBox.ItemTemplate>
+                        <HierarchicalDataTemplate>
+                            <CheckBox Content="{Binding Title}" IsChecked="False" Visibility="{Binding Enable, Converter={StaticResource boolToVisibilityConverter}}"/>
+                        </HierarchicalDataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+            </StackPanel>
+
+        </Grid>
 
     </ControlTemplate>
 

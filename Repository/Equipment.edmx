@@ -9,6 +9,7 @@
     <EntitySet Name="Positions" EntityType="Equipment.Store.Positions" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Journal" EntityType="Equipment.Store.Journal" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="JournalEntryCategories" EntityType="Equipment.Store.JournalEntryCategories" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PositionStatusBits" EntityType="Equipment.Store.PositionStatusBits" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="PositionJournalEntry" Association="Equipment.Store.PositionJournalEntry">
       <End Role="Position" EntitySet="Positions" />
       <End Role="JournalEntry" EntitySet="Journal" />
@@ -46,6 +47,14 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="PositionStatusBits">
+    <Key>
+      <PropertyRef Name="BitNumber" />
+    </Key>
+    <Property Name="BitNumber" Type="int" Nullable="false" />
+    <Property Name="Enable" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <Association Name="PositionJournalEntry">
     <End Role="Position" Type="Equipment.Store.Positions" Multiplicity="1" />
@@ -87,6 +96,7 @@
             <End Role="EntryCategory" EntitySet="JournalEntryCategories" />
             <End Role="JournalEntry" EntitySet="Journal" />
           </AssociationSet>
+          <EntitySet Name="PositionStatusBits" EntityType="Equipment.PositionStatusBit" />
         </EntityContainer>
         <EntityType Name="Position">
           <Documentation>
@@ -137,6 +147,14 @@
           <End Type="Equipment.JournalEntryCategory" Role="EntryCategory" Multiplicity="1" />
           <End Type="Equipment.JournalEntry" Role="JournalEntry" Multiplicity="*" />
         </Association>
+        <EntityType Name="PositionStatusBit">
+          <Key>
+            <PropertyRef Name="BitNumber" />
+          </Key>
+          <Property Name="BitNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="Enable" Type="Boolean" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -170,6 +188,15 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Title" ColumnName="Title" />
           <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PositionStatusBits">
+      <EntityTypeMapping TypeName="IsTypeOf(Equipment.PositionStatusBit)">
+        <MappingFragment StoreEntitySet="PositionStatusBits">
+          <ScalarProperty Name="BitNumber" ColumnName="BitNumber" />
+          <ScalarProperty Name="Enable" ColumnName="Enable" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

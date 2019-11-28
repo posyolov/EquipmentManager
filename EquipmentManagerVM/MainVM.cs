@@ -33,7 +33,7 @@ namespace EquipmentManagerVM
             MainMenuVM = new MainMenuVM();
             MainMenuVM.OpenStockItemsViewRequest += OnOpenStockItemsViewRequest;
 
-            PositionsVM = new PositionsVM(_manager.PositionReposProxy);
+            PositionsVM = new PositionsVM(_manager.PositionReposProxy, _manager.PositionStatusBits);
             PositionsVM.JournalEntryCreateReqEv += OnJournalEntryCreateRequestEv;
             
             JournalVM = new JournalVM(_manager.JournalReposProxy);

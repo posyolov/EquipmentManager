@@ -12,19 +12,10 @@ namespace Repository
     using System;
     using System.Collections.Generic;
     
-    public partial class JournalEntryCategory
+    public partial class PositionStatusBit
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public JournalEntryCategory()
-        {
-            this.JournalEntries = new HashSet<JournalEntry>();
-        }
-    
-        public int Id { get; set; }
+        public int BitNumber { get; set; }
+        public bool Enable { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JournalEntry> JournalEntries { get; set; }
     }
 }

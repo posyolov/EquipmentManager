@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/27/2019 15:33:29
+-- Date Created: 11/29/2019 00:22:57
 -- Generated from EDMX file: D:\Projects\C#\EquipmentManager\Repository\Equipment.edmx
 -- --------------------------------------------------
 
@@ -71,6 +71,14 @@ CREATE TABLE [dbo].[JournalEntryCategories] (
 );
 GO
 
+-- Creating table 'PositionStatusBits'
+CREATE TABLE [dbo].[PositionStatusBits] (
+    [BitNumber] int  NOT NULL,
+    [Enable] bit  NOT NULL,
+    [Title] nvarchar(max)  NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -91,6 +99,12 @@ GO
 ALTER TABLE [dbo].[JournalEntryCategories]
 ADD CONSTRAINT [PK_JournalEntryCategories]
     PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [BitNumber] in table 'PositionStatusBits'
+ALTER TABLE [dbo].[PositionStatusBits]
+ADD CONSTRAINT [PK_PositionStatusBits]
+    PRIMARY KEY CLUSTERED ([BitNumber] ASC);
 GO
 
 -- --------------------------------------------------

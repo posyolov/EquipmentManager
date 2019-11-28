@@ -18,6 +18,8 @@ namespace EquipmentManagerVM
 
         IGenericRepository<Position> _repository;
         ObservableCollection<Position> _positions;
+
+        public IEnumerable<PositionStatusBit> StatusBits { get; }
         public ObservableCollection<PositionNode> PositionsTree { get; set; }
 
         public DelegateCommand<object> JournalEntryCreateReqCommand { get; }
@@ -59,10 +61,12 @@ namespace EquipmentManagerVM
         /// Constructor.
         /// </summary>
         /// <param name="repository"></param>
-        public PositionsVM(IGenericRepository<Position> repository)
+        public PositionsVM(IGenericRepository<Position> repository, IEnumerable<PositionStatusBit> positionStatusBits)
         {
             _repository = repository;
             _positions = new ObservableCollection<Position>(_repository.Get());
+
+            StatusBits = positionStatusBits;
 
             PositionsTree = new ObservableCollection<PositionNode>();
 
