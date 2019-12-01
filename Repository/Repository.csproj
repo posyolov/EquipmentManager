@@ -79,6 +79,7 @@
     <Compile Include="PositionStatusBit.cs">
       <DependentUpon>Equipment.tt</DependentUpon>
     </Compile>
+    <Compile Include="PositionWithStatusBits.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GenericRepositoryEF.cs" />
     <Compile Include="StockContainer.cs" />

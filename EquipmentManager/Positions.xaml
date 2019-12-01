@@ -109,9 +109,9 @@
 
                 <ListBox ItemsSource="{Binding StatusBits}">
                     <ListBox.ItemTemplate>
-                        <HierarchicalDataTemplate>
+                        <DataTemplate>
                             <CheckBox Content="{Binding Title}" IsChecked="False" Visibility="{Binding Enable, Converter={StaticResource boolToVisibilityConverter}}"/>
-                        </HierarchicalDataTemplate>
+                        </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
 
