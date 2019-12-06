@@ -12,13 +12,10 @@ namespace Repository
     using System;
     using System.Collections.Generic;
     
-    public partial class JournalEntry
+    public partial class PositionStatusBitInfo
     {
-        public int Id { get; set; }
-        public System.DateTime DateTime { get; set; }
-        public string Description { get; set; }
-    
-        public virtual Position Position { get; set; }
-        public virtual JournalEntryCategory JournalEntryCategory { get; set; }
+        public int BitNumber { get; set; }
+        public bool Enable { get; set; }
+        public string Title { get; set; }
     }
 }

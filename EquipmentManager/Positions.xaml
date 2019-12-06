@@ -107,10 +107,13 @@
                     Сохранить
                 </Button>
 
-                <ListBox ItemsSource="{Binding StatusBits}">
+                <ListBox DataContext="{Binding SelectedItem}" ItemsSource="{Binding StatusBits}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <CheckBox Content="{Binding Title}" IsChecked="False" Visibility="{Binding Enable, Converter={StaticResource boolToVisibilityConverter}}"/>
+                            <CheckBox IsChecked="{Binding Value}"
+                              Content="{Binding StatusBitInfo.Title}"
+                              IsEnabled="{Binding StatusBitInfo.Enable}"/>
+                            <!--Visibility="{Binding StatusBitInfo.Enable, Converter={StaticResource boolToVisibilityConverter}}"/>-->
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

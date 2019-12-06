@@ -9,7 +9,7 @@
     <EntitySet Name="Positions" EntityType="Equipment.Store.Positions" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Journal" EntityType="Equipment.Store.Journal" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="JournalEntryCategories" EntityType="Equipment.Store.JournalEntryCategories" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="PositionStatusBits" EntityType="Equipment.Store.PositionStatusBits" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PositionStatusBitsInfo" EntityType="Equipment.Store.PositionStatusBitsInfo" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="PositionJournalEntry" Association="Equipment.Store.PositionJournalEntry">
       <End Role="Position" EntitySet="Positions" />
       <End Role="JournalEntry" EntitySet="Journal" />
@@ -48,12 +48,12 @@
     <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
-  <EntityType Name="PositionStatusBits">
+  <EntityType Name="PositionStatusBitsInfo">
     <Key>
       <PropertyRef Name="BitNumber" />
     </Key>
     <Property Name="BitNumber" Type="int" Nullable="false" />
-    <Property Name="Enable" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="Enable" Type="bit" Nullable="false" />
     <Property Name="Title" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <Association Name="PositionJournalEntry">
@@ -96,7 +96,7 @@
             <End Role="EntryCategory" EntitySet="JournalEntryCategories" />
             <End Role="JournalEntry" EntitySet="Journal" />
           </AssociationSet>
-          <EntitySet Name="PositionStatusBits" EntityType="Equipment.PositionStatusBit" />
+          <EntitySet Name="PositionStatusBitsInfo" EntityType="Equipment.PositionStatusBitInfo" />
         </EntityContainer>
         <EntityType Name="Position">
           <Documentation>
@@ -147,7 +147,7 @@
           <End Type="Equipment.JournalEntryCategory" Role="EntryCategory" Multiplicity="1" />
           <End Type="Equipment.JournalEntry" Role="JournalEntry" Multiplicity="*" />
         </Association>
-        <EntityType Name="PositionStatusBit">
+        <EntityType Name="PositionStatusBitInfo">
           <Key>
             <PropertyRef Name="BitNumber" />
           </Key>
@@ -191,9 +191,9 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="PositionStatusBits">
-      <EntityTypeMapping TypeName="IsTypeOf(Equipment.PositionStatusBit)">
-        <MappingFragment StoreEntitySet="PositionStatusBits">
+    <EntitySetMapping Name="PositionStatusBitsInfo">
+      <EntityTypeMapping TypeName="IsTypeOf(Equipment.PositionStatusBitInfo)">
+        <MappingFragment StoreEntitySet="PositionStatusBitsInfo">
           <ScalarProperty Name="BitNumber" ColumnName="BitNumber" />
           <ScalarProperty Name="Enable" ColumnName="Enable" />
           <ScalarProperty Name="Title" ColumnName="Title" />

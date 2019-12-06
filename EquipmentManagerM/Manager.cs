@@ -19,16 +19,16 @@ namespace EquipmentManagerM
         IGenericRepository<Position> _positionRepos;
         IGenericRepository<JournalEntry> _journalRepos;
         IGenericRepository<JournalEntryCategory> _journalEntryCategoryRepos;
-        IGenericRepository<PositionStatusBit> _positionStatusBitRepos;
+        IGenericRepository<PositionStatusBitInfo> _positionStatusBitInfoRepos;
         IGenericRepository<StockItem> _stockItemsRepos;
 
         public RepositoryProxy<Position> PositionReposProxy { get; }
         public RepositoryProxy<JournalEntry> JournalReposProxy { get; }
         public RepositoryProxy<JournalEntryCategory> JournalEntryCategoryReposProxy { get; }
-        public RepositoryProxy<PositionStatusBit> PositionStatusBitReposProxy { get; }
+        public RepositoryProxy<PositionStatusBitInfo> PositionStatusBitInfoReposProxy { get; }
         public RepositoryProxy<StockItem> StockItemsReposProxy { get; }
 
-        public IEnumerable<PositionStatusBit> PositionStatusBits { get; }
+        public IEnumerable<PositionStatusBitInfo> PositionStatusBitsInfo { get; }
 
         /// <summary>
         /// Default constructor.
@@ -41,16 +41,16 @@ namespace EquipmentManagerM
             _positionRepos = new GenericRepositoryEF<Position>(_equipmentContext);
             _journalRepos = new GenericRepositoryEF<JournalEntry>(_equipmentContext);
             _journalEntryCategoryRepos = new GenericRepositoryEF<JournalEntryCategory>(_equipmentContext);
-            _positionStatusBitRepos = new GenericRepositoryEF<PositionStatusBit>(_equipmentContext);
+            _positionStatusBitInfoRepos = new GenericRepositoryEF<PositionStatusBitInfo>(_equipmentContext);
             _stockItemsRepos = new GenericRepositoryAccess<StockItem>(_stockContext);
 
             PositionReposProxy = new RepositoryProxy<Position>(_positionRepos);
             JournalReposProxy = new RepositoryProxy<JournalEntry>(_journalRepos);
             JournalEntryCategoryReposProxy = new RepositoryProxy<JournalEntryCategory>(_journalEntryCategoryRepos);
-            PositionStatusBitReposProxy = new RepositoryProxy<PositionStatusBit>(_positionStatusBitRepos);
+            PositionStatusBitInfoReposProxy = new RepositoryProxy<PositionStatusBitInfo>(_positionStatusBitInfoRepos);
             StockItemsReposProxy = new RepositoryProxy<StockItem>(_stockItemsRepos);
 
-            PositionStatusBits = _positionStatusBitRepos.Get();
+            PositionStatusBitsInfo = _positionStatusBitInfoRepos.Get();
         }
     }
 }

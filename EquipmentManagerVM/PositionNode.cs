@@ -16,7 +16,7 @@ namespace EquipmentManagerVM
     public class PositionNode : INotifyPropertyChanged
     {
         private Position _posData;
-
+        public ObservableCollection<PositionStatusBit> StatusBits { get; private set; }
         public ObservableCollection<PositionNode> Nodes { get; set; }
 
         public Position PosData
@@ -29,13 +29,26 @@ namespace EquipmentManagerVM
             }
         }
 
+        public event Action<PositionNode, PositionStatusBit> PositionStatusChanged;
+
         /// <summary>
         /// Constructor.
         /// </summary>
-        public PositionNode(Position position)
+        public PositionNode(Position position, IEnumerable<PositionStatusBitInfo> positionStatusBitsInfo)
         {
             PosData = position;
             Nodes = new ObservableCollection<PositionNode>();
+
+            StatusBits = new ObservableCollection<PositionStatusBit>();
+            foreach (PositionStatusBitInfo statusBitInfo in positionStatusBitsInfo)
+            {
+                if (statusBitInfo.Enable)
+                {
+                    var statusBit = new PositionStatusBit(position.Status, statusBitInfo);
+                    StatusBits.Add(statusBit);
+                    statusBit.BitChanged += OnStatusBitChanged;
+                }
+            }
         }
 
         /// <summary>
@@ -56,6 +69,12 @@ namespace EquipmentManagerVM
             PosData = new Position() { Id = posData.Id, Name = posData.Name, ParentId = posData.ParentId, Title = posData.Title, Status = posData.Status }; ;
         }
 
+
+        private void OnStatusBitChanged(PositionStatusBit statusBit)
+        {
+            _posData.Status = (_posData.Status & ~(1 << statusBit.StatusBitInfo.BitNumber)) | (Convert.ToInt64(statusBit.Value) << statusBit.StatusBitInfo.BitNumber);
+            PositionStatusChanged?.Invoke(this, statusBit);
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")

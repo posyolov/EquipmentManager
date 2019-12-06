@@ -18,8 +18,8 @@ namespace EquipmentManagerVM
 
         IGenericRepository<Position> _repository;
         ObservableCollection<Position> _positions;
+        IEnumerable<PositionStatusBitInfo> _positionStatusBitsInfo;
 
-        public IEnumerable<PositionStatusBit> StatusBits { get; }
         public ObservableCollection<PositionNode> PositionsTree { get; set; }
 
         public DelegateCommand<object> JournalEntryCreateReqCommand { get; }
@@ -61,12 +61,11 @@ namespace EquipmentManagerVM
         /// Constructor.
         /// </summary>
         /// <param name="repository"></param>
-        public PositionsVM(IGenericRepository<Position> repository, IEnumerable<PositionStatusBit> positionStatusBits)
+        public PositionsVM(IGenericRepository<Position> repository, IEnumerable<PositionStatusBitInfo> positionStatusBitsInfo)
         {
             _repository = repository;
             _positions = new ObservableCollection<Position>(_repository.Get());
-
-            StatusBits = positionStatusBits;
+            _positionStatusBitsInfo = positionStatusBitsInfo;
 
             PositionsTree = new ObservableCollection<PositionNode>();
 
@@ -76,7 +75,8 @@ namespace EquipmentManagerVM
                 if (!pos.ParentId.HasValue)
                 {
                     //для каждого строим ветвь
-                    PositionNode posNode = new PositionNode(pos);
+                    PositionNode posNode = new PositionNode(pos, _positionStatusBitsInfo);
+                    posNode.PositionStatusChanged += OnPositionNodeChanged;
                     BuildBranch(posNode, _positions);
                     PositionsTree.Add(posNode);
                 }
@@ -119,7 +119,8 @@ namespace EquipmentManagerVM
 
             foreach (var pos in childrenPositions)
             {
-                PositionNode posNode = new PositionNode(pos);
+                PositionNode posNode = new PositionNode(pos, _positionStatusBitsInfo);
+                posNode.PositionStatusChanged += OnPositionNodeChanged;
                 BuildBranch(posNode, positions);
                 positionNode.Nodes.Add(posNode);
             }
@@ -174,7 +175,7 @@ namespace EquipmentManagerVM
             SetComplexName(pos);
             _repository.Update(pos);
 
-            PositionsTree.Add(new PositionNode(pos));
+            PositionsTree.Add(new PositionNode(pos, _positionStatusBitsInfo));
         }
 
         /// <summary>
@@ -193,7 +194,7 @@ namespace EquipmentManagerVM
             SetComplexName(pos);
             _repository.Update(pos);
 
-            SelectedItem.Nodes.Add(new PositionNode(pos));
+            SelectedItem.Nodes.Add(new PositionNode(pos, _positionStatusBitsInfo));
         }
 
         /// <summary>
@@ -256,6 +257,13 @@ namespace EquipmentManagerVM
             else
                 pos.ComplexName = pos.Name;
 
+        }
+
+        private void OnPositionNodeChanged(PositionNode positionNode, PositionStatusBit statusBit)
+        {
+            var n = positionNode.PosData.Name;
+            var s = positionNode.PosData.Status;
+            var sb = statusBit;
         }
     }
 }

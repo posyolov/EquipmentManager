@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/29/2019 00:22:57
+-- Date Created: 12/06/2019 15:56:14
 -- Generated from EDMX file: D:\Projects\C#\EquipmentManager\Repository\Equipment.edmx
 -- --------------------------------------------------
 
@@ -36,6 +36,9 @@ IF OBJECT_ID(N'[dbo].[Journal]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[JournalEntryCategories]', 'U') IS NOT NULL
     DROP TABLE [dbo].[JournalEntryCategories];
+GO
+IF OBJECT_ID(N'[dbo].[PositionStatusBitInfoes]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[PositionStatusBitInfoes];
 GO
 
 -- --------------------------------------------------
@@ -71,8 +74,8 @@ CREATE TABLE [dbo].[JournalEntryCategories] (
 );
 GO
 
--- Creating table 'PositionStatusBits'
-CREATE TABLE [dbo].[PositionStatusBits] (
+-- Creating table 'PositionStatusBitsInfo'
+CREATE TABLE [dbo].[PositionStatusBitsInfo] (
     [BitNumber] int  NOT NULL,
     [Enable] bit  NOT NULL,
     [Title] nvarchar(max)  NULL
@@ -101,9 +104,9 @@ ADD CONSTRAINT [PK_JournalEntryCategories]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [BitNumber] in table 'PositionStatusBits'
-ALTER TABLE [dbo].[PositionStatusBits]
-ADD CONSTRAINT [PK_PositionStatusBits]
+-- Creating primary key on [BitNumber] in table 'PositionStatusBitsInfo'
+ALTER TABLE [dbo].[PositionStatusBitsInfo]
+ADD CONSTRAINT [PK_PositionStatusBitsInfo]
     PRIMARY KEY CLUSTERED ([BitNumber] ASC);
 GO
 
