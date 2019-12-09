@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 12/06/2019 15:56:14
+-- Date Created: 12/09/2019 15:49:23
 -- Generated from EDMX file: D:\Projects\C#\EquipmentManager\Repository\Equipment.edmx
 -- --------------------------------------------------
 
@@ -37,8 +37,8 @@ GO
 IF OBJECT_ID(N'[dbo].[JournalEntryCategories]', 'U') IS NOT NULL
     DROP TABLE [dbo].[JournalEntryCategories];
 GO
-IF OBJECT_ID(N'[dbo].[PositionStatusBitInfoes]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[PositionStatusBitInfoes];
+IF OBJECT_ID(N'[dbo].[PositionStatusBitsInfo]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[PositionStatusBitsInfo];
 GO
 
 -- --------------------------------------------------
@@ -62,7 +62,8 @@ CREATE TABLE [dbo].[Journal] (
     [DateTime] datetime  NOT NULL,
     [Description] nvarchar(max)  NULL,
     [Position_Id] int  NOT NULL,
-    [JournalEntryCategory_Id] int  NOT NULL
+    [JournalEntryCategory_Id] int  NOT NULL,
+    [PositionStatusBitInfo_BitNumber] int  NOT NULL
 );
 GO
 
@@ -142,6 +143,21 @@ GO
 CREATE INDEX [IX_FK_EntryCategoryJournalEntry]
 ON [dbo].[Journal]
     ([JournalEntryCategory_Id]);
+GO
+
+-- Creating foreign key on [PositionStatusBitInfo_BitNumber] in table 'Journal'
+ALTER TABLE [dbo].[Journal]
+ADD CONSTRAINT [FK_PositionStatusBitInfoJournalEntry]
+    FOREIGN KEY ([PositionStatusBitInfo_BitNumber])
+    REFERENCES [dbo].[PositionStatusBitsInfo]
+        ([BitNumber])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PositionStatusBitInfoJournalEntry'
+CREATE INDEX [IX_FK_PositionStatusBitInfoJournalEntry]
+ON [dbo].[Journal]
+    ([PositionStatusBitInfo_BitNumber]);
 GO
 
 -- --------------------------------------------------

@@ -18,6 +18,10 @@
       <End Role="EntryCategory" EntitySet="JournalEntryCategories" />
       <End Role="JournalEntry" EntitySet="Journal" />
     </AssociationSet>
+    <AssociationSet Name="PositionStatusBitInfoJournalEntry" Association="Equipment.Store.PositionStatusBitInfoJournalEntry">
+      <End Role="PositionStatusBitInfo" EntitySet="PositionStatusBitsInfo" />
+      <End Role="JournalEntry" EntitySet="Journal" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Positions">
     <Key>
@@ -39,6 +43,7 @@
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Position_Id" Type="int" Nullable="false" />
     <Property Name="JournalEntryCategory_Id" Type="int" Nullable="false" />
+    <Property Name="PositionStatusBitInfo_BitNumber" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="JournalEntryCategories">
     <Key>
@@ -80,6 +85,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="PositionStatusBitInfoJournalEntry">
+    <End Role="PositionStatusBitInfo" Type="Equipment.Store.PositionStatusBitsInfo" Multiplicity="1" />
+    <End Role="JournalEntry" Type="Equipment.Store.Journal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PositionStatusBitInfo">
+        <PropertyRef Name="BitNumber" />
+      </Principal>
+      <Dependent Role="JournalEntry">
+        <PropertyRef Name="PositionStatusBitInfo_BitNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -97,6 +114,10 @@
             <End Role="JournalEntry" EntitySet="Journal" />
           </AssociationSet>
           <EntitySet Name="PositionStatusBitsInfo" EntityType="Equipment.PositionStatusBitInfo" />
+          <AssociationSet Name="PositionStatusBitInfoJournalEntry" Association="Equipment.PositionStatusBitInfoJournalEntry">
+            <End Role="PositionStatusBitInfo" EntitySet="PositionStatusBitsInfo" />
+            <End Role="JournalEntry" EntitySet="Journal" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Position">
           <Documentation>
@@ -126,6 +147,7 @@
           <Property Name="Description" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Position" Relationship="Equipment.PositionJournalEntry" FromRole="JournalEntry" ToRole="Position" />
           <NavigationProperty Name="JournalEntryCategory" Relationship="Equipment.EntryCategoryJournalEntry" FromRole="JournalEntry" ToRole="EntryCategory" />
+          <NavigationProperty Name="PositionStatusBitInfo" Relationship="Equipment.PositionStatusBitInfoJournalEntry" FromRole="JournalEntry" ToRole="PositionStatusBitInfo" />
         </EntityType>
         <EntityType Name="JournalEntryCategory">
           <Documentation>
@@ -154,7 +176,12 @@
           <Property Name="BitNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="Enable" Type="Boolean" Nullable="false" />
           <Property Name="Title" Type="String" Nullable="true" />
+          <NavigationProperty Name="JournalEntries" Relationship="Equipment.PositionStatusBitInfoJournalEntry" FromRole="PositionStatusBitInfo" ToRole="JournalEntry" />
         </EntityType>
+        <Association Name="PositionStatusBitInfoJournalEntry">
+          <End Type="Equipment.PositionStatusBitInfo" Role="PositionStatusBitInfo" Multiplicity="1" />
+          <End Type="Equipment.JournalEntry" Role="JournalEntry" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -211,6 +238,14 @@
     <AssociationSetMapping Name="EntryCategoryJournalEntry" TypeName="Equipment.EntryCategoryJournalEntry" StoreEntitySet="Journal">
       <EndProperty Name="EntryCategory">
         <ScalarProperty Name="Id" ColumnName="JournalEntryCategory_Id" />
+      </EndProperty>
+      <EndProperty Name="JournalEntry">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="PositionStatusBitInfoJournalEntry" TypeName="Equipment.PositionStatusBitInfoJournalEntry" StoreEntitySet="Journal">
+      <EndProperty Name="PositionStatusBitInfo">
+        <ScalarProperty Name="BitNumber" ColumnName="PositionStatusBitInfo_BitNumber" />
       </EndProperty>
       <EndProperty Name="JournalEntry">
         <ScalarProperty Name="Id" ColumnName="Id" />

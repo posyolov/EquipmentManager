@@ -20,5 +20,6 @@ namespace Repository
     
         public virtual Position Position { get; set; }
         public virtual JournalEntryCategory JournalEntryCategory { get; set; }
+        public virtual PositionStatusBitInfo PositionStatusBitInfo { get; set; }
     }
 }
