@@ -15,9 +15,9 @@ namespace Repository
     /// <typeparam name="TEntity"></typeparam>
     public class GenericRepositoryAccess<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        StockContainer _context;
+        StockContext _context;
 
-        public GenericRepositoryAccess(StockContainer context)
+        public GenericRepositoryAccess(StockContext context)
         {
             _context = context;
         }

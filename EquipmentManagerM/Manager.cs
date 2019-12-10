@@ -13,8 +13,8 @@ namespace EquipmentManagerM
     /// </summary>
     public class Manager
     {
-        EquipmentContainer _equipmentContext;
-        StockContainer _stockContext;
+        EquipmentContext _equipmentContext;
+        StockContext _stockContext;
 
         IGenericRepository<Position> _positionRepos;
         IGenericRepository<JournalEntry> _journalRepos;
@@ -35,8 +35,8 @@ namespace EquipmentManagerM
         /// </summary>
         public Manager()
         {
-            _equipmentContext = new EquipmentContainer();
-            _stockContext = new StockContainer();
+            _equipmentContext = new EquipmentContext();
+            _stockContext = new StockContext();
 
             _positionRepos = new GenericRepositoryEF<Position>(_equipmentContext);
             _journalRepos = new GenericRepositoryEF<JournalEntry>(_equipmentContext);

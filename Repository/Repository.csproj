@@ -50,65 +50,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Equipment.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Equipment.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Equipment.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Equipment.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Equipment.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Equipment.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="GenericRepositoryAccess.cs" />
+    <Compile Include="EF\JournalEntry.cs" />
+    <Compile Include="EF\JournalEntryCategory.cs" />
+    <Compile Include="EF\Position.cs" />
+    <Compile Include="EF\PositionStatusBitInfo.cs" />
+    <Compile Include="EF\EquipmentContext.cs" />
+    <Compile Include="Access\GenericRepositoryAccess.cs" />
     <Compile Include="IGenericRepository.cs" />
-    <Compile Include="JournalEntry.cs">
-      <DependentUpon>Equipment.tt</DependentUpon>
-    </Compile>
-    <Compile Include="JournalEntryCategory.cs">
-      <DependentUpon>Equipment.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Position.cs">
-      <DependentUpon>Equipment.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PositionStatusBitInfo.cs">
-      <DependentUpon>Equipment.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GenericRepositoryEF.cs" />
-    <Compile Include="StockContainer.cs" />
-    <Compile Include="StockItem.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EntityDeploy Include="Equipment.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Equipment.Designer.cs</LastGenOutput>
-    </EntityDeploy>
+    <Compile Include="EF\GenericRepositoryEF.cs" />
+    <Compile Include="Access\StockContext.cs" />
+    <Compile Include="Access\StockItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
-    <None Include="Equipment.edmx.diagram">
-      <DependentUpon>Equipment.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Equipment.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Equipment.Context.cs</LastGenOutput>
-      <DependentUpon>Equipment.edmx</DependentUpon>
-    </Content>
-    <Content Include="Equipment.edmx.sql" />
-    <Content Include="Equipment.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Equipment.cs</LastGenOutput>
-      <DependentUpon>Equipment.edmx</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

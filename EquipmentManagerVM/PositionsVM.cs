@@ -259,11 +259,19 @@ namespace EquipmentManagerVM
 
         }
 
+        /// <summary>
+        /// Update position data in Position table and add journal entry at changed status bit
+        /// </summary>
+        /// <param name="positionNode"></param>
+        /// <param name="statusBit"></param>
         private void OnPositionNodeChanged(PositionNode positionNode, PositionStatusBit statusBit)
         {
+            _repository.Update(positionNode.PosData);
+
             var n = positionNode.PosData.Name;
             var s = positionNode.PosData.Status;
             var sb = statusBit;
+
         }
     }
 }

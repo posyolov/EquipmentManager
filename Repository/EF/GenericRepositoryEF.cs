@@ -20,6 +20,9 @@ namespace Repository
 
         public GenericRepositoryEF(DbContext context)
         {
+            context.Set<TEntity>().Count();
+
+
             try
             {
                 context.Set<TEntity>().Count();

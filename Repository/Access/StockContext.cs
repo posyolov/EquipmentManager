@@ -12,13 +12,13 @@ namespace Repository
     /// <summary>
     /// Conteiner for stock entities
     /// </summary>
-    public class StockContainer
+    public class StockContext
     {
         ObservableCollection<StockItem> _stockItems;
 
         OleDbConnection _accessConnection;
 
-        public StockContainer()
+        public StockContext()
         {
             string connectionString = @"D:\Projects\Access\EquipmentManager\Склад.accdb";
 
