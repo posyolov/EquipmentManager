@@ -17,9 +17,8 @@ namespace EquipmentManagerVM
 
         public JournalEntry JEntry { get; set; }
 
-        public IEnumerable<JournalEntryCategory> EvCategories { get; }
-        IGenericRepository<JournalEntry> _journalRepos;
-        IGenericRepository<JournalEntryCategory> _evCategoryRepository;
+        public IEnumerable<JournalEntryCategory> EntryCategories { get; }
+        IGenericRepository<JournalEntryCategory> _entryCategoryRepository;
 
         private bool closeTrigger;
         public bool CloseTrigger
@@ -34,25 +33,22 @@ namespace EquipmentManagerVM
 
         public DelegateCommand<object> JournalEntryCreateCommand { get; }
 
-        public JournalEntryCreateVM(Position position, IGenericRepository<JournalEntryCategory> evCategoryRepository, IGenericRepository<JournalEntry> journalRepository)
+        public JournalEntryCreateVM(Position position, IGenericRepository<JournalEntryCategory> entryCategoryRepository)
         {
             //запрос списка категорий
-            _evCategoryRepository = evCategoryRepository;
-            EvCategories = _evCategoryRepository.Get();
+            _entryCategoryRepository = entryCategoryRepository;
+            EntryCategories = _entryCategoryRepository.Get();
 
             JEntry = new JournalEntry()
             {
                 DateTime = DateTime.Now,
                 Position = position,
-                //EntryCategory = new EntryCategory()
             };
 
             JournalEntryCreateCommand = new DelegateCommand<object>(
                 execute: JournalEntryCreateExecute,
                 canExecute: JournalEntryCreateCanExecute
                 );
-
-            _journalRepos = journalRepository;
         }
 
         private bool JournalEntryCreateCanExecute(object obj)
@@ -65,9 +61,6 @@ namespace EquipmentManagerVM
             if (JEntry != null && JEntry.Position != null && JEntry.JournalEntryCategory != null)
             {
                 CloseTrigger = true;
-
-                _journalRepos.Add(JEntry);
-
                 JournalEntryCreatedEv?.Invoke(JEntry);
             }
         }

@@ -15,6 +15,7 @@ namespace EquipmentManagerVM
     public class PositionsVM : ViewModelBase
     {
         public event Action<Position> JournalEntryCreateReqEv;
+        public event Action<JournalEntry> JournalEntryCreatedEv;
 
         IGenericRepository<Position> _repository;
         ObservableCollection<Position> _positions;
@@ -268,10 +269,16 @@ namespace EquipmentManagerVM
         {
             _repository.Update(positionNode.PosData);
 
-            var n = positionNode.PosData.Name;
-            var s = positionNode.PosData.Status;
-            var sb = statusBit;
-
+            JournalEntry jEntry = new JournalEntry()
+            {
+                DateTime = DateTime.Now,
+                Description = "",
+                Position = positionNode.PosData,
+                PositionStatusBitInfo = statusBit.StatusBitInfo,
+                IsIncoming = statusBit.Value
+            };
+            
+            JournalEntryCreatedEv?.Invoke(jEntry);
         }
     }
 }

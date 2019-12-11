@@ -24,7 +24,7 @@
         <TextBlock Text="{Binding JEntry.Position.Name}"/>
         
         <TextBlock>Категория:</TextBlock>
-        <ComboBox ItemsSource="{Binding EvCategories}"
+        <ComboBox ItemsSource="{Binding EntryCategories}"
                   DisplayMemberPath="Title"
                   SelectedValuePath="Id"
                   SelectedItem="{Binding JEntry.JournalEntryCategory}">

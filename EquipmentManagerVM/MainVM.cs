@@ -35,7 +35,8 @@ namespace EquipmentManagerVM
 
             PositionsVM = new PositionsVM(_manager.PositionReposProxy, _manager.PositionStatusBitsInfo);
             PositionsVM.JournalEntryCreateReqEv += OnJournalEntryCreateRequestEv;
-            
+            PositionsVM.JournalEntryCreatedEv += OnJournalEntryCreatedEv;
+
             JournalVM = new JournalVM(_manager.JournalReposProxy);
         }
 
@@ -55,7 +56,7 @@ namespace EquipmentManagerVM
         /// <param name="selectedPosition"></param>
         private void OnJournalEntryCreateRequestEv(Position selectedPosition)
         {
-            JournalEntryCreateVM _journalEntryCreateVM = new JournalEntryCreateVM(selectedPosition, _manager.JournalEntryCategoryReposProxy, _manager.JournalReposProxy);
+            JournalEntryCreateVM _journalEntryCreateVM = new JournalEntryCreateVM(selectedPosition, _manager.JournalEntryCategoryReposProxy);
             _journalEntryCreateVM.JournalEntryCreatedEv += OnJournalEntryCreatedEv; 
 
             JournalEntryCreateViewRequestEv?.Invoke(_journalEntryCreateVM);
@@ -67,6 +68,7 @@ namespace EquipmentManagerVM
         /// <param name="je"></param>
         private void OnJournalEntryCreatedEv(JournalEntry je)
         {
+            _manager.JournalReposProxy.Add(je);
             JournalVM.AddJournalEntry(je);
         }
     }

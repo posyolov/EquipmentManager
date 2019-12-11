@@ -13,6 +13,7 @@ namespace Repository
         public int Position_Id { get; set; }
         public int? JournalEntryCategory_Id { get; set; }
         public int? PositionStatusBitInfo_BitNumber { get; set; }
+        public bool? IsIncoming { get; set; }
 
         [ForeignKey("Position_Id")]
         public virtual Position Position { get; set; }

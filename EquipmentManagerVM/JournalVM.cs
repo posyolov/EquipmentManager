@@ -34,12 +34,12 @@ namespace EquipmentManagerVM
 
             collectionView = new CollectionViewSource();
             collectionView.Source = _totalJournalEntries;
-            collectionView.Filter += (s, e) => e.Accepted = ((JournalEntry)e.Item).JournalEntryCategory.Title == "Дежурный";
+            collectionView.Filter += (s, e) => e.Accepted = ((JournalEntry)e.Item).JournalEntryCategory?.Title == "Дежурный";
             Tabs.Add(new TabItem() { Header = "Дежурный", Content = collectionView });
 
             collectionView = new CollectionViewSource();
             collectionView.Source = _totalJournalEntries;
-            collectionView.Filter += (s, e) => e.Accepted = ((JournalEntry)e.Item).JournalEntryCategory.Title == "Отключений";
+            collectionView.Filter += (s, e) => e.Accepted = ((JournalEntry)e.Item).JournalEntryCategory?.Title == "Отключений";
             Tabs.Add(new TabItem() { Header = "Отключений", Content = collectionView });
         }
 

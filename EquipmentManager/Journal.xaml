@@ -28,8 +28,16 @@
                                                 DisplayMemberBinding="{Binding DateTime, ConverterCulture=ru}">
                                     </GridViewColumn>
 
+                                    <GridViewColumn Header="Входящее" 
+                                                DisplayMemberBinding="{Binding IsIncoming}">
+                                    </GridViewColumn>
+
                                     <GridViewColumn Header="Позиция" 
                                                 DisplayMemberBinding="{Binding Position.ComplexName, Converter={StaticResource posComplexNameConverter}}">
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Статус" 
+                                                DisplayMemberBinding="{Binding PositionStatusBitInfo.Title}">
                                     </GridViewColumn>
 
                                     <GridViewColumn Header="Категория" 
