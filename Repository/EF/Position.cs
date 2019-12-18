@@ -6,11 +6,9 @@ namespace Repository
     [Table("Positions")]
     public class Position
     {
-        [Key]
-        public int Id { get; set; }
-        public int? ParentId { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Name { get; set; }
-        public string ComplexName { get; set; }
+        public string ParentName { get; set; }
         public string Title { get; set; }
         public long Status { get; set; }
     }

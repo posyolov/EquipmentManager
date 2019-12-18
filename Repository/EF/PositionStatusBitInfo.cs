@@ -6,7 +6,7 @@ namespace Repository
     [Table("PositionStatusBitsInfo")]
     public class PositionStatusBitInfo
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int BitNumber { get; set; }
         public bool Enable { get; set; }
         public string Title { get; set; }

@@ -3,10 +3,6 @@
                     xmlns:local="clr-namespace:EquipmentManagerVM;assembly=EquipmentManagerVM">
     <ControlTemplate x:Key="Journal">
 
-        <ControlTemplate.Resources>
-            <local:PositionComplexNameConverter x:Key="posComplexNameConverter" />
-        </ControlTemplate.Resources>
-
         <TabControl HorizontalAlignment="Stretch" ItemsSource="{Binding Tabs}" SelectedIndex="0">
 
             <!--header-->
@@ -33,7 +29,7 @@
                                     </GridViewColumn>
 
                                     <GridViewColumn Header="Позиция" 
-                                                DisplayMemberBinding="{Binding Position.ComplexName, Converter={StaticResource posComplexNameConverter}}">
+                                                DisplayMemberBinding="{Binding Position.Name}">
                                     </GridViewColumn>
 
                                     <GridViewColumn Header="Статус" 

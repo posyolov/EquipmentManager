@@ -60,7 +60,8 @@ namespace Repository
 
         public void Add(TEntity entity)
         {
-            Update(entity);
+            _context.Set<TEntity>().Add(entity);
+            _context.SaveChanges();
         }
 
         public void Remove(TEntity entity)

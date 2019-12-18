@@ -73,7 +73,7 @@ namespace EquipmentManagerVM
             //добавляем узлы верхнего уровня
             foreach (Position pos in _positions)
             {
-                if (!pos.ParentId.HasValue)
+                if (pos.ParentName == null)
                 {
                     //для каждого строим ветвь
                     PositionNode posNode = new PositionNode(pos, _positionStatusBitsInfo);
@@ -114,7 +114,7 @@ namespace EquipmentManagerVM
         /// <param name="positions"></param>
         void BuildBranch(PositionNode positionNode, IEnumerable<Position> positions)
         {
-            var childrenPositions = positions.Where(c => c.ParentId == positionNode.PosData.Id);
+            var childrenPositions = positions.Where(c => c.ParentName == positionNode.PosData.Name);
 
             positionNode.Nodes = new ObservableCollection<PositionNode>();
 
@@ -145,19 +145,19 @@ namespace EquipmentManagerVM
         /// <summary>
         /// Remove node by ID in nodes collection
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="name"></param>
         /// <param name="nodes"></param>
-        void RemoveNodeById(int id, ObservableCollection<PositionNode> nodes)
+        void RemoveNodeByName(string name, ObservableCollection<PositionNode> nodes)
         {
             foreach (PositionNode node in nodes)
             {
-                if (node.PosData.Id == id)
+                if (node.PosData.Name == name)
                 {
                     nodes.Remove(node);
                     return;
                 }
 
-                RemoveNodeById(id, node.Nodes);
+                RemoveNodeByName(name, node.Nodes);
             }
         }
 
@@ -173,8 +173,7 @@ namespace EquipmentManagerVM
                 Name = "New position",
             };
 
-            SetComplexName(pos);
-            _repository.Update(pos);
+            _repository.Add(pos);
 
             PositionsTree.Add(new PositionNode(pos, _positionStatusBitsInfo));
         }
@@ -189,11 +188,10 @@ namespace EquipmentManagerVM
             {
                 //Id = присваивает метод AddOrUpdate EF
                 Name = "New position",
-                ParentId = SelectedItem.PosData.Id,
+                ParentName = SelectedItem.PosData.Name
             };
 
-            SetComplexName(pos);
-            _repository.Update(pos);
+            _repository.Add(pos);
 
             SelectedItem.Nodes.Add(new PositionNode(pos, _positionStatusBitsInfo));
         }
@@ -208,7 +206,7 @@ namespace EquipmentManagerVM
             GetChildrenPosDataList(SelectedItem, branchPosData);
 
             if (_repository.RemoveRange(branchPosData) == null)
-                RemoveNodeById(SelectedItem.PosData.Id, PositionsTree);
+                RemoveNodeByName(SelectedItem.PosData.Name, PositionsTree);
             else
                 System.Windows.MessageBox.Show("Заплатка! Добавить окно по шаблону MVVM!");
         }
@@ -219,8 +217,6 @@ namespace EquipmentManagerVM
         /// <param name="parametr"></param>
         private void SavePosDataExecute(object parametr)
         {
-            SetComplexName(SelectedItemPosData);
-
             _repository.Update(SelectedItemPosData);
             SelectedItem.SetPosData(SelectedItemPosData);
         }
@@ -233,31 +229,12 @@ namespace EquipmentManagerVM
         {
             foreach (Position pos in _positions)
             {
-                if (pos.Id == SelectedItemPosData.Id)
+                if (pos.Name == SelectedItemPosData.Name)
                 {
                     JournalEntryCreateReqEv?.Invoke(pos);
                     break;
                 }
             }
-        }
-
-        /// <summary>
-        /// Set ComplexName property for the position
-        /// </summary>
-        /// <param name="pos"></param>
-        private void SetComplexName(Position pos)
-        {
-            if (pos.ParentId != null)
-            {
-                Position parentPos = _repository.FindById((int)pos.ParentId);
-                if (parentPos != null)
-                {
-                    pos.ComplexName = parentPos.ComplexName + ";" + pos.Name;
-                }
-            }
-            else
-                pos.ComplexName = pos.Name;
-
         }
 
         /// <summary>
