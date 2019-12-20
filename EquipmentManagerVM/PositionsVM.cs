@@ -173,7 +173,7 @@ namespace EquipmentManagerVM
                 Name = "New position",
             };
 
-            _repository.Add(pos);
+           // _repository.Add(pos);
 
             PositionsTree.Add(new PositionNode(pos, _positionStatusBitsInfo));
         }
@@ -187,7 +187,7 @@ namespace EquipmentManagerVM
             Position pos = new Position()
             {
                 //Id = присваивает метод AddOrUpdate EF
-                Name = "New position",
+                Name = SelectedItem.PosData.Name + "_XX",
                 ParentName = SelectedItem.PosData.Name
             };
 
