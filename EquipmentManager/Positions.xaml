@@ -38,7 +38,7 @@
                                 <Setter Property="TextBlock.Foreground" Value="Red"/>
                             </DataTrigger>-->
                                 </HierarchicalDataTemplate.Triggers>
-                                <TextBlock Text="{Binding PosData.Name}"/>
+                                <TextBlock Text="{Binding PositionData.Name}"/>
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
 
@@ -56,7 +56,7 @@
                                     <MenuItem.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Добавить позицию в " Margin="0"/>
-                                            <TextBlock Text="{Binding SelectedItem.PosData.Name}" Margin="0"/>
+                                            <TextBlock Text="{Binding SelectedItem.PositionData.Name}" Margin="0"/>
                                         </StackPanel>
                                     </MenuItem.Header>
                                 </MenuItem>
@@ -65,7 +65,7 @@
                                     <MenuItem.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Удалить позицию " Margin="0"/>
-                                            <TextBlock Text="{Binding SelectedItem.PosData.Name}" Margin="0"/>
+                                            <TextBlock Text="{Binding SelectedItem.PositionData.Name}" Margin="0"/>
                                         </StackPanel>
                                     </MenuItem.Header>
                                 </MenuItem>

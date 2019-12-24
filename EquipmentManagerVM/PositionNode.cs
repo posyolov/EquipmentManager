@@ -13,73 +13,70 @@ namespace EquipmentManagerVM
     /// <summary>
     /// Positions tree node
     /// </summary>
-    public class PositionNode : INotifyPropertyChanged
+    public class PositionNode
     {
-        private Position _posData;
+        private readonly IEnumerable<PositionStatusBitInfo> _positionStatusBitsInfo;
+
+        public Position PositionData { get; set; }
         public ObservableCollection<PositionStatusBit> StatusBits { get; private set; }
         public ObservableCollection<PositionNode> Nodes { get; set; }
-
-        public Position PosData
-        {
-            get => _posData;
-            set
-            {
-                _posData = value;
-                NotifyPropertyChanged();
-            }
-        }
 
         public event Action<PositionNode, PositionStatusBit> PositionStatusChanged;
 
         /// <summary>
-        /// Constructor.
+        /// Constructor without children filling.
         /// </summary>
         public PositionNode(Position position, IEnumerable<PositionStatusBitInfo> positionStatusBitsInfo)
         {
-            PosData = position;
+            _positionStatusBitsInfo = positionStatusBitsInfo;
+
+            PositionData = position;
             Nodes = new ObservableCollection<PositionNode>();
 
             StatusBits = new ObservableCollection<PositionStatusBit>();
-            foreach (PositionStatusBitInfo statusBitInfo in positionStatusBitsInfo)
+            foreach (PositionStatusBitInfo statusBitInfo in _positionStatusBitsInfo)
             {
                 if (statusBitInfo.Enable)
                 {
                     var statusBit = new PositionStatusBit(position.Status, statusBitInfo);
-                    StatusBits.Add(statusBit);
                     statusBit.BitChanged += OnStatusBitChanged;
+                    StatusBits.Add(statusBit);
                 }
             }
         }
 
         /// <summary>
-        /// Get position data from node.
+        /// Constructor with children filling.
         /// </summary>
-        /// <returns></returns>
-        public Position GetPositionData()
+        public PositionNode(Position position, IEnumerable<Position> positions, IEnumerable<PositionStatusBitInfo> positionStatusBitsInfo)
+            : this(position, positionStatusBitsInfo)
         {
-            return new Position() { Name = PosData.Name, ParentName = PosData.ParentName, Title = PosData.Title , Status = PosData.Status};
+            BuildBranch(this, positions);
         }
 
         /// <summary>
-        /// Set position data to node.
+        /// Building branch of the node.
         /// </summary>
-        /// <param name="posData"></param>
-        public void SetPosData(Position posData)
+        /// <param name="positionNode"></param>
+        /// <param name="positions"></param>
+        void BuildBranch(PositionNode positionNode, IEnumerable<Position> positions)
         {
-            PosData = new Position() { Name = posData.Name, ParentName = posData.ParentName, Title = posData.Title, Status = posData.Status }; ;
-        }
+            var childrenPositions = positions.Where(c => c.ParentName == positionNode.PositionData.Name);
 
+            foreach (var pos in childrenPositions)
+            {
+                PositionNode posNode = new PositionNode(pos, positions, _positionStatusBitsInfo);
+                posNode.PositionStatusChanged += PositionStatusChanged;
+                BuildBranch(posNode, positions);
+                positionNode.Nodes.Add(posNode);
+            }
+
+        }
 
         private void OnStatusBitChanged(PositionStatusBit statusBit)
         {
-            _posData.Status = (_posData.Status & ~(1 << statusBit.StatusBitInfo.BitNumber)) | (Convert.ToInt64(statusBit.Value) << statusBit.StatusBitInfo.BitNumber);
+            PositionData.Status = (PositionData.Status & ~(1 << statusBit.StatusBitInfo.BitNumber)) | (Convert.ToInt64(statusBit.Value) << statusBit.StatusBitInfo.BitNumber);
             PositionStatusChanged?.Invoke(this, statusBit);
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
