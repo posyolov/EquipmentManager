@@ -29,15 +29,15 @@
                     <TreeView ItemsSource="{Binding PositionsTree}"
                               BorderThickness="0">
                         <i:Interaction.Behaviors>
-                            <local:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedItem}" />
+                            <local:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedNode}" />
                         </i:Interaction.Behaviors>
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem">
+                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate ItemsSource="{Binding Nodes, Mode=OneWay}">
-                                <HierarchicalDataTemplate.Triggers>
-                                    <!--<DataTrigger Binding="{Binding Path=Marked}" Value="True">
-                                <Setter Property="TextBlock.Foreground" Value="Red"/>
-                            </DataTrigger>-->
-                                </HierarchicalDataTemplate.Triggers>
                                 <TextBlock Text="{Binding PositionData.Name}"/>
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
@@ -56,7 +56,7 @@
                                     <MenuItem.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Добавить позицию в " Margin="0"/>
-                                            <TextBlock Text="{Binding SelectedItem.PositionData.Name}" Margin="0"/>
+                                            <TextBlock Text="{Binding SelectedNode.PositionData.Name}" Margin="0"/>
                                         </StackPanel>
                                     </MenuItem.Header>
                                 </MenuItem>
@@ -65,7 +65,7 @@
                                     <MenuItem.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Удалить позицию " Margin="0"/>
-                                            <TextBlock Text="{Binding SelectedItem.PositionData.Name}" Margin="0"/>
+                                            <TextBlock Text="{Binding SelectedNode.PositionData.Name}" Margin="0"/>
                                         </StackPanel>
                                     </MenuItem.Header>
                                 </MenuItem>
@@ -78,9 +78,9 @@
 
             <GridSplitter Grid.Row="1" Height="10" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
 
-                <!--данные по позиции-->
+            <!--данные по позиции-->
             <StackPanel Grid.Row="2">
-                <Grid DataContext="{Binding SelectedItemPosData}">
+                <Grid DataContext="{Binding SelectedNode.PositionData}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition MinWidth="50" Width="*"/>
@@ -104,7 +104,7 @@
                     Сохранить
                 </Button>
 
-                <ListBox DataContext="{Binding SelectedItem}" ItemsSource="{Binding StatusBits}">
+                <ListBox DataContext="{Binding SelectedNode}" ItemsSource="{Binding StatusBits}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <CheckBox IsChecked="{Binding Value}"

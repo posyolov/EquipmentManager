@@ -17,9 +17,9 @@ namespace EquipmentManagerVM
         public event Action<Position> JournalEntryCreateReqEv;
         public event Action<JournalEntry> JournalEntryCreatedEv;
 
-        IGenericRepository<Position> _repository;
-        IEnumerable<Position> _positions;
-        IEnumerable<PositionStatusBitInfo> _positionStatusBitsInfo;
+        private IGenericRepository<Position> _positionsRepository;
+        private IEnumerable<Position> _positions;
+        private IEnumerable<PositionStatusBitInfo> _positionStatusBitsInfo;
 
         public ObservableCollection<PositionNode> PositionsTree { get; set; }
 
@@ -29,32 +29,20 @@ namespace EquipmentManagerVM
         public DelegateCommand<object> DeletePositionCommand { get; }
         public DelegateCommand<object> SavePosDataCommand { get; }
 
-        private PositionNode _selectedItem;
-        private Position _selectedItemPosData;
-
-        public PositionNode SelectedItem
+        private PositionNode _selectedNode;
+        public PositionNode SelectedNode
         {
-            get { return _selectedItem; }
+            get
+            {
+                return _selectedNode;
+            }
             set
             {
-                _selectedItem = value;
+                _selectedNode = value;
                 NotifyPropertyChanged();
-
-                //приходится каждый раз создавать экземпляр
-                //SelectedItemPosData = value?.GetPositionData();
 
                 AddChildPositionCommand.RiseCanExecuteChanged();
                 DeletePositionCommand.RiseCanExecuteChanged();
-            }
-        }
-
-        public Position SelectedItemPosData
-        {
-            get { return _selectedItemPosData; }
-            set
-            {
-                _selectedItemPosData = value;
-                NotifyPropertyChanged();
             }
         }
 
@@ -64,8 +52,8 @@ namespace EquipmentManagerVM
         /// <param name="repository"></param>
         public PositionsVM(IGenericRepository<Position> repository, IEnumerable<PositionStatusBitInfo> positionStatusBitsInfo)
         {
-            _repository = repository;
-            _positions = _repository.Get();
+            _positionsRepository = repository;
+            _positions = _positionsRepository.Get();
             _positionStatusBitsInfo = positionStatusBitsInfo;
 
             PositionsTree = new ObservableCollection<PositionNode>();
@@ -76,7 +64,7 @@ namespace EquipmentManagerVM
                 if (pos.ParentName == null)
                 {
                     PositionNode posNode = new PositionNode(pos, _positions, _positionStatusBitsInfo);
-                    posNode.PositionStatusChanged += OnPositionNodeChanged;
+                    posNode.PositionStatusChanged += OnPositionNodeStatusChanged;
                     PositionsTree.Add(posNode);
                 }
             }
@@ -91,12 +79,12 @@ namespace EquipmentManagerVM
 
             AddChildPositionCommand = new DelegateCommand<object>(
                 execute: AddChildPositionExecute,
-                canExecute: (s) => { return _selectedItem != null; }
+                canExecute: (s) => { return _selectedNode != null; }
                 );
 
             DeletePositionCommand = new DelegateCommand<object>(
                 execute: DeletePositionExecute,
-                canExecute: (s) => { return _selectedItem != null; }
+                canExecute: (s) => { return _selectedNode != null; }
                 );
 
             SavePosDataCommand = new DelegateCommand<object>(
@@ -106,25 +94,11 @@ namespace EquipmentManagerVM
         }
 
         /// <summary>
-        /// Extract the node`s children position data to list recursively
-        /// </summary>
-        /// <param name="childrenPosData"></param>
-        /// <param name="childNode"></param>
-        void GetChildrenPosDataList(PositionNode childNode, List<Position> childrenPosData)
-        {
-            childrenPosData.Add(childNode.PositionData);
-
-            if (childNode.Nodes != null)
-                foreach (PositionNode node in childNode.Nodes)
-                    GetChildrenPosDataList(node, childrenPosData);
-        }
-
-        /// <summary>
         /// Remove node by ID in nodes collection
         /// </summary>
         /// <param name="name"></param>
         /// <param name="nodes"></param>
-        void RemoveNodeByName(string name, ObservableCollection<PositionNode> nodes)
+        void RemoveNodeFromTree(string name, ObservableCollection<PositionNode> nodes)
         {
             foreach (PositionNode node in nodes)
             {
@@ -134,7 +108,7 @@ namespace EquipmentManagerVM
                     return;
                 }
 
-                RemoveNodeByName(name, node.Nodes);
+                RemoveNodeFromTree(name, node.Nodes);
             }
         }
 
@@ -146,13 +120,12 @@ namespace EquipmentManagerVM
         {
             Position pos = new Position()
             {
-                //Id = присваивает метод AddOrUpdate EF
                 Name = "New position",
             };
 
-           // _repository.Add(pos);
+            _positionsRepository.Add(pos);
 
-            PositionsTree.Add(new PositionNode(pos, _positionStatusBitsInfo));
+            PositionsTree.Add(new PositionNode(pos, _positionStatusBitsInfo) { IsSelected = true });
         }
 
         /// <summary>
@@ -163,14 +136,13 @@ namespace EquipmentManagerVM
         {
             Position pos = new Position()
             {
-                //Id = присваивает метод AddOrUpdate EF
-                Name = SelectedItem.PositionData.Name + "_XX",
-                ParentName = SelectedItem.PositionData.Name
+                Name = SelectedNode.PositionData.Name + "_XX",
+                ParentName = SelectedNode.PositionData.Name
             };
 
-            _repository.Add(pos);
+            _positionsRepository.Add(pos);
 
-            SelectedItem.Nodes.Add(new PositionNode(pos, _positionStatusBitsInfo));
+            SelectedNode.Nodes.Add(new PositionNode(pos, _positionStatusBitsInfo) { IsSelected = true });
         }
 
         /// <summary>
@@ -179,13 +151,14 @@ namespace EquipmentManagerVM
         /// <param name="parametr"></param>
         private void DeletePositionExecute(object parametr)
         {
-            List<Position> branchPosData = new List<Position>();
-            GetChildrenPosDataList(SelectedItem, branchPosData);
+            List<Position> branchPosData = SelectedNode.GetAllPositionsList();
 
-            if (_repository.RemoveRange(branchPosData) == null)
-                RemoveNodeByName(SelectedItem.PositionData.Name, PositionsTree);
+            Exception res = _positionsRepository.RemoveRange(branchPosData);
+
+            if (res == null)
+                RemoveNodeFromTree(SelectedNode.PositionData.Name, PositionsTree);
             else
-                System.Windows.MessageBox.Show("Заплатка! Добавить окно по шаблону MVVM!");
+                System.Windows.MessageBox.Show(res.ToString() + "\nЗаплатка! Добавить окно по шаблону MVVM!");
         }
 
         /// <summary>
@@ -194,7 +167,7 @@ namespace EquipmentManagerVM
         /// <param name="parametr"></param>
         private void SavePosDataExecute(object parametr)
         {
-            _repository.Update(SelectedItemPosData);
+            _positionsRepository.Update(SelectedNode.PositionData);
             //SelectedItem.SetPosData(SelectedItemPosData);
         }
 
@@ -206,7 +179,7 @@ namespace EquipmentManagerVM
         {
             foreach (Position pos in _positions)
             {
-                if (pos.Name == SelectedItemPosData.Name)
+                if (pos.Name == SelectedNode.PositionData.Name)
                 {
                     JournalEntryCreateReqEv?.Invoke(pos);
                     break;
@@ -219,9 +192,9 @@ namespace EquipmentManagerVM
         /// </summary>
         /// <param name="positionNode"></param>
         /// <param name="statusBit"></param>
-        private void OnPositionNodeChanged(PositionNode positionNode, PositionStatusBit statusBit)
+        private void OnPositionNodeStatusChanged(PositionNode positionNode, PositionStatusBit statusBit)
         {
-            _repository.Update(positionNode.PositionData);
+            _positionsRepository.Update(positionNode.PositionData);
 
             JournalEntry jEntry = new JournalEntry()
             {
