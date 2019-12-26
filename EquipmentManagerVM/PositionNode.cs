@@ -17,8 +17,8 @@ namespace EquipmentManagerVM
     {
         public Position PositionData { get; }
         public ObservableCollection<PositionStatusBit> StatusBits { get; }
-        public ObservableCollection<PositionNode> Nodes { get; set; }
-        public bool IsSelected { get; set; }
+        public ObservableCollection<PositionNode> Nodes { get; } //TODO: сделать недоступным добавление и удаление
+        public bool IsSelected { get; set; } //TODO: можно ли убрать?
 
         public event Action<PositionNode, PositionStatusBit> PositionStatusChanged;
 
@@ -29,6 +29,7 @@ namespace EquipmentManagerVM
         public PositionNode(Position position, IEnumerable<PositionStatusBitInfo> positionStatusBitsInfo)
         {
             PositionData = position;
+            Nodes = new ObservableCollection<PositionNode>();
 
             StatusBits = new ObservableCollection<PositionStatusBit>();
             foreach (PositionStatusBitInfo statusBitInfo in positionStatusBitsInfo)
@@ -49,7 +50,6 @@ namespace EquipmentManagerVM
         public PositionNode(Position position, IEnumerable<Position> positions, IEnumerable<PositionStatusBitInfo> positionStatusBitsInfo)
             : this(position, positionStatusBitsInfo)
         {
-            Nodes = new ObservableCollection<PositionNode>();
             var childrenPositions = positions.Where(c => c.ParentName == PositionData.Name);
 
             foreach (var pos in childrenPositions)
@@ -57,6 +57,23 @@ namespace EquipmentManagerVM
                 PositionNode posNode = new PositionNode(pos, positions, positionStatusBitsInfo);
                 posNode.PositionStatusChanged += OnChildPositionStatusChanged;
                 Nodes.Add(posNode);
+            }
+        }
+
+        /// <summary>
+        /// Add node children nodes.
+        /// </summary>
+        /// <param name="node"></param>
+        public void AddChild(PositionNode node)
+        {
+            if(node != null)
+            {
+                node.PositionStatusChanged += OnChildPositionStatusChanged;
+                Nodes.Add(node);
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(node));
             }
         }
 
@@ -79,7 +96,7 @@ namespace EquipmentManagerVM
         /// </summary>
         /// <param name="node"></param>
         /// <param name="positions"></param>
-        void GetPositionsList(PositionNode node, List<Position> positions)
+        private void GetPositionsList(PositionNode node, List<Position> positions)
         {
             positions?.Add(node.PositionData);
 

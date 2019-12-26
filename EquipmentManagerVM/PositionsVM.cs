@@ -120,12 +120,16 @@ namespace EquipmentManagerVM
         {
             Position pos = new Position()
             {
-                Name = "New position",
+                Name = "ROOT_POS"
             };
 
-            _positionsRepository.Add(pos);
+            var posNode = new PositionNode(pos, _positionStatusBitsInfo)
+            {
+                IsSelected = true
+            };
+            posNode.PositionStatusChanged += OnPositionNodeStatusChanged;
 
-            PositionsTree.Add(new PositionNode(pos, _positionStatusBitsInfo) { IsSelected = true });
+            PositionsTree.Add(posNode);
         }
 
         /// <summary>
@@ -140,9 +144,12 @@ namespace EquipmentManagerVM
                 ParentName = SelectedNode.PositionData.Name
             };
 
-            _positionsRepository.Add(pos);
+            var posNode = new PositionNode(pos, _positionStatusBitsInfo)
+            {
+                IsSelected = true
+            };
 
-            SelectedNode.Nodes.Add(new PositionNode(pos, _positionStatusBitsInfo) { IsSelected = true });
+            SelectedNode.AddChild(posNode);
         }
 
         /// <summary>
