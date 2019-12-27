@@ -78,6 +78,17 @@ namespace EquipmentManagerVM
         }
 
         /// <summary>
+        /// Remove child node all over tree.
+        /// Return True if removing success, else False.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public bool RemoveChildWholeTree(PositionNode node)
+        {
+            return RemoveChildFromNode(node, this);
+        }
+
+        /// <summary>
         /// Extract the node`s children position data to list recursively.
         /// </summary>
         /// <param name="childrenPosData"></param>
@@ -103,6 +114,30 @@ namespace EquipmentManagerVM
             if (node.Nodes != null)
                 foreach (PositionNode posNode in node.Nodes)
                     GetPositionsList(posNode, positions);
+        }
+
+        /// <summary>
+        /// Remove child node rerursively.
+        /// Return True if removing success, else False.
+        /// </summary>
+        /// <param name="desiredNode"></param>
+        /// <param name="parentNode"></param>
+        /// <returns></returns>
+        private bool RemoveChildFromNode(PositionNode desiredNode, PositionNode parentNode)
+        {
+            foreach (PositionNode node in parentNode.Nodes)
+            {
+                if (node == desiredNode)
+                {
+                    parentNode.Nodes.Remove(node);
+                    return true;
+                }
+
+                if (RemoveChildFromNode(desiredNode, node))
+                    return true;
+            }
+
+            return false;
         }
 
         /// <summary>

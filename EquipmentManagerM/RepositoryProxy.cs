@@ -46,9 +46,9 @@ namespace EquipmentManagerM
             return _genericRepository.RemoveRange(entities);
         }
 
-        public void Update(TEntity entity)
+        public Exception Update(TEntity entity)
         {
-            _genericRepository.Update(entity);
+            return _genericRepository.Update(entity);
         }
     }
 }

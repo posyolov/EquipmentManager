@@ -94,25 +94,6 @@ namespace EquipmentManagerVM
         }
 
         /// <summary>
-        /// Remove node by ID in nodes collection
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="nodes"></param>
-        void RemoveNodeFromTree(string name, ObservableCollection<PositionNode> nodes)
-        {
-            foreach (PositionNode node in nodes)
-            {
-                if (node.PositionData.Name == name)
-                {
-                    nodes.Remove(node);
-                    return;
-                }
-
-                RemoveNodeFromTree(name, node.Nodes);
-            }
-        }
-
-        /// <summary>
         /// Execute method for AddRootPositionCommand
         /// </summary>
         /// <param name="parametr"></param>
@@ -160,12 +141,25 @@ namespace EquipmentManagerVM
         {
             List<Position> branchPosData = SelectedNode.GetAllPositionsList();
 
-            Exception res = _positionsRepository.RemoveRange(branchPosData);
+            Exception removeResult = _positionsRepository.RemoveRange(branchPosData);
 
-            if (res == null)
-                RemoveNodeFromTree(SelectedNode.PositionData.Name, PositionsTree);
+            if (removeResult == null)
+            {
+                foreach (PositionNode node in PositionsTree)
+                {
+                    if (node == SelectedNode)
+                    {
+                        PositionsTree.Remove(node);
+                        break;
+                    }
+                    if (node.RemoveChildWholeTree(SelectedNode))
+                        break;
+                }
+            }
             else
-                System.Windows.MessageBox.Show(res.ToString() + "\nЗаплатка! Добавить окно по шаблону MVVM!");
+            {
+                System.Windows.MessageBox.Show(removeResult.GetBaseException().Message + "\nЗаплатка! Добавить окно по шаблону MVVM!");
+            }
         }
 
         /// <summary>
@@ -174,8 +168,9 @@ namespace EquipmentManagerVM
         /// <param name="parametr"></param>
         private void SavePosDataExecute(object parametr)
         {
-            _positionsRepository.Update(SelectedNode.PositionData);
-            //SelectedItem.SetPosData(SelectedItemPosData);
+            var updRes = _positionsRepository.Update(SelectedNode.PositionData);
+            if(updRes != null)
+                System.Windows.MessageBox.Show(updRes.GetBaseException().Message + "\nЗаплатка! Добавить окно по шаблону MVVM!");
         }
 
         /// <summary>

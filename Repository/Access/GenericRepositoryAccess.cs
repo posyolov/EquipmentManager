@@ -52,7 +52,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public void Update(TEntity entity)
+        public Exception Update(TEntity entity)
         {
             throw new NotImplementedException();
         }

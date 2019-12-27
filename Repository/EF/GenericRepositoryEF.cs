@@ -49,12 +49,20 @@ namespace Repository
             }
         }
 
-        public void Update(TEntity entity)
+        public Exception Update(TEntity entity)
         {
-            //using (var context = new EquipmentContainer())
+            try
             {
                 _context.Set<TEntity>().AddOrUpdate(entity);
                 _context.SaveChanges();
+                return null;
+            }
+            catch (Exception ex)
+            {
+
+                //_context.Entry(entity).State = EntityState.Unchanged;
+
+                return ex;
             }
         }
 

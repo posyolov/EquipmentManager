@@ -18,7 +18,7 @@ namespace Repository
 
         IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties);
         void Add(TEntity entity);       //??? добавить результат выполнения ???
-        void Update(TEntity entity);      //??? добавить результат выполнения ???
+        Exception Update(TEntity entity);      //??? добавить результат выполнения ???
         void Remove(TEntity entity);      //??? добавить результат выполнения ???
         Exception RemoveRange(List<TEntity> entities);      //??? добавить результат выполнения ???
         TEntity FindById(int id);
