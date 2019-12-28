@@ -10,30 +10,70 @@
         Title="Создать запись"
         WindowStartupLocation="CenterOwner"
         SizeToContent="WidthAndHeight">
-    
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5 5 5 5"/>
+        </Style>
+    </Window.Resources>
+  
     <i:Interaction.Behaviors>
         <local:CloseWindowBehavior CloseTrigger="{Binding CloseTrigger}" />
-    </i:Interaction.Behaviors>    
-    
-    <StackPanel>
+    </i:Interaction.Behaviors>
 
-        <TextBlock>Дата:</TextBlock>
-        <DatePicker SelectedDate="{Binding JEntry.DateTime}"/>
-        
-        <TextBlock>Позиция:</TextBlock>
-        <TextBlock Text="{Binding JEntry.Position.Name}"/>
-        
-        <TextBlock>Категория:</TextBlock>
-        <ComboBox ItemsSource="{Binding EntryCategories}"
-                  DisplayMemberPath="Title"
-                  SelectedValuePath="Id"
-                  SelectedItem="{Binding JEntry.JournalEntryCategory}">
-        </ComboBox>
+    <StackPanel Margin="10">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0">Время:</TextBlock>
+            <DatePickerTextBox Grid.Row="0" Grid.Column="1" 
+                               Text="{Binding Dt, StringFormat='HH:mm:ss dd.MM.yyy', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               VerticalContentAlignment="Center"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0">Позиция:</TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding JEntry.Position.Name}"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0">Категория:</TextBlock>
+            <ComboBox Grid.Row="2" Grid.Column="1"
+                      ItemsSource="{Binding EntryCategories}"
+                      DisplayMemberPath="Title"
+                      SelectedValuePath="Id"
+                      SelectedItem="{Binding JEntry.JournalEntryCategory}"
+                      VerticalContentAlignment="Center"/>
+
+        </Grid>
+
+        <TextBlock Text="{Binding Dt, StringFormat='HH:mm:ss dd.MM.yyy'}"/>
 
         <TextBlock>Описание:</TextBlock>
-        <TextBox Text="{Binding JEntry.Description}"/>
+        <TextBox Text="{Binding JEntry.Description}"
+                 Height="100"
+                 Width="300"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 HorizontalScrollBarVisibility="Disabled"
+                 VerticalScrollBarVisibility="Auto"/>
 
-        <Button Content="ОК" IsDefault="True" Command="{Binding JournalEntryCreateCommand}"/>
-        <Button Content="Отмена" IsCancel="True"/>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <Button Content="ОК" 
+                    IsDefault="True"
+                    Command="{Binding JournalEntryCreateCommand}"
+                    Width="80"
+                    Margin="10"/>
+            <Button Content="Отмена" 
+                    IsCancel="True"
+                    Width="80"
+                    Margin="10"/>
+        </StackPanel>
     </StackPanel>
 </Window>

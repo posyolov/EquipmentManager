@@ -13,6 +13,14 @@ namespace EquipmentManagerVM
     /// </summary>
     public class JournalEntryCreateVM : ViewModelBase
     {
+
+        public DateTime Dt
+        {
+            get;
+            set;
+        } = DateTime.Now;
+
+
         public event Action<JournalEntry> JournalEntryCreatedEv;
 
         public JournalEntry JEntry { get; set; }
