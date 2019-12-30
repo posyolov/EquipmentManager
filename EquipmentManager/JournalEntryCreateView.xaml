@@ -6,6 +6,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:EquipmentManager"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Создать запись"
         WindowStartupLocation="CenterOwner"
@@ -35,9 +36,10 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0">Время:</TextBlock>
-            <DatePickerTextBox Grid.Row="0" Grid.Column="1" 
-                               Text="{Binding Dt, StringFormat='HH:mm:ss dd.MM.yyy', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               VerticalContentAlignment="Center"/>
+            <xctk:DateTimePicker Grid.Row="0" Grid.Column="1"
+                                 Value="{Binding JEntry.DateTime}"
+                                 Format="Custom"
+                                 FormatString="HH:mm:ss dd.MM.yyy"/>
 
             <TextBlock Grid.Row="1" Grid.Column="0">Позиция:</TextBlock>
             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding JEntry.Position.Name}"/>
@@ -51,8 +53,6 @@
                       VerticalContentAlignment="Center"/>
 
         </Grid>
-
-        <TextBlock Text="{Binding Dt, StringFormat='HH:mm:ss dd.MM.yyy'}"/>
 
         <TextBlock>Описание:</TextBlock>
         <TextBox Text="{Binding JEntry.Description}"
