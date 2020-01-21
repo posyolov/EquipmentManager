@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using Repository;
 using System.Windows.Data;
+using System.ComponentModel;
 
 namespace EquipmentManagerVM
 {
@@ -15,43 +16,54 @@ namespace EquipmentManagerVM
     public class JournalVM : ViewModelBase
     {
         IGenericRepository<JournalEntry> _journalRepos;
-
         ObservableCollection<JournalEntry> _totalJournalEntries;
+        CollectionViewSource _viewJournalEntries;
 
-        public ObservableCollection<TabItem> Tabs { get; }
+        public string PositionFilter { get; set; }
+
+        public ICollectionView FilteredJournalEntries
+        {
+            get
+            {
+                return _viewJournalEntries.View;
+                //return new ObservableCollection<JournalEntry>(_totalJournalEntries.Where(je => je.Position_Name != null && je.Position_Name.StartsWith("T.")));
+            }
+        }
 
         public JournalVM(IGenericRepository<JournalEntry> journalRepository)
         {
             _journalRepos = journalRepository;
             _totalJournalEntries = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.JournalEntryCategory));
+            _viewJournalEntries = new CollectionViewSource();
+            _viewJournalEntries.Source = _totalJournalEntries;
+            _viewJournalEntries.Filter += OnViewJournalEntriesFilter;
 
-            Tabs = new ObservableCollection<TabItem>();
-            CollectionViewSource collectionView;
+            //collectionView.Filter += (s, e) => e.Accepted = ((JournalEntry)e.Item).JournalEntryCategory?.Title == "Отключений";
+            PositionFilter = "T.";
+        }
 
-            collectionView = new CollectionViewSource();
-            collectionView.Source = _totalJournalEntries;
-            Tabs.Add(new TabItem() { Header = "Общий", Content = collectionView });
+        private void OnViewJournalEntriesFilter(object sender, FilterEventArgs e)
+        {
+            if (string.IsNullOrEmpty(PositionFilter))
+            {
+                e.Accepted = true;
+                return;
+            }
 
-            collectionView = new CollectionViewSource();
-            collectionView.Source = _totalJournalEntries;
-            collectionView.Filter += (s, e) => e.Accepted = ((JournalEntry)e.Item).JournalEntryCategory?.Title == "Дежурный";
-            Tabs.Add(new TabItem() { Header = "Дежурный", Content = collectionView });
-
-            collectionView = new CollectionViewSource();
-            collectionView.Source = _totalJournalEntries;
-            collectionView.Filter += (s, e) => e.Accepted = ((JournalEntry)e.Item).JournalEntryCategory?.Title == "Отключений";
-            Tabs.Add(new TabItem() { Header = "Отключений", Content = collectionView });
+            JournalEntry je = e.Item as JournalEntry;
+            if (je.Position_Name.ToUpper().StartsWith(PositionFilter.ToUpper()))
+            {
+                e.Accepted = true;
+            }
+            else
+            {
+                e.Accepted = false;
+            }
         }
 
         public void AddJournalEntry(JournalEntry JournalEntry)
         {
             _totalJournalEntries.Add(JournalEntry);
         }
-    }
-
-    public sealed class TabItem
-    {
-        public string Header { get; set; }
-        public CollectionViewSource Content { get; set; }
     }
 }
