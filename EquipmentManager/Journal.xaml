@@ -33,57 +33,61 @@
 
     <ControlTemplate x:Key="Journal">
 
-        <ListView ItemsSource="{Binding FilteredJournalEntries}">
-            <ListView.View>
-                <GridView>
-                    <GridView.Columns>
+        <StackPanel>
+            <TextBox Width="100" Text="{Binding PositionFilter, UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <GridViewColumn DisplayMemberBinding="{Binding DateTime, ConverterCulture=ru}"
+            <ListView ItemsSource="{Binding FilteredJournalEntries}">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding DateTime, ConverterCulture=ru}"
                                                     HeaderTemplate="{StaticResource filterHeaderTemplate}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                Дата/время
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
+                                <GridViewColumnHeader HorizontalContentAlignment="Stretch">
+                                    Дата/время
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
 
-                        <GridViewColumn DisplayMemberBinding="{Binding IsIncoming}"
+                            <GridViewColumn DisplayMemberBinding="{Binding IsIncoming}"
                                                     HeaderTemplate="{StaticResource filterHeaderTemplate}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                Входящее
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
+                                <GridViewColumnHeader HorizontalContentAlignment="Stretch">
+                                    Входящее
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
 
-                        <GridViewColumn DisplayMemberBinding="{Binding Position.Name}"
+                            <GridViewColumn DisplayMemberBinding="{Binding Position.Name}"
                                                     HeaderTemplate="{StaticResource filterHeaderTemplate}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                Позиция
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
+                                <GridViewColumnHeader HorizontalContentAlignment="Stretch">
+                                    Позиция
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
 
-                        <GridViewColumn DisplayMemberBinding="{Binding PositionStatusBitInfo.Title}"
+                            <GridViewColumn DisplayMemberBinding="{Binding PositionStatusBitInfo.Title}"
                                                     HeaderTemplate="{StaticResource filterHeaderTemplate}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                Статус
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
+                                <GridViewColumnHeader HorizontalContentAlignment="Stretch">
+                                    Статус
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
 
-                        <GridViewColumn DisplayMemberBinding="{Binding JournalEntryCategory.Title}"
+                            <GridViewColumn DisplayMemberBinding="{Binding JournalEntryCategory.Title}"
                                                     HeaderTemplate="{StaticResource filterHeaderTemplate}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                Категория
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
+                                <GridViewColumnHeader HorizontalContentAlignment="Stretch">
+                                    Категория
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
 
-                        <GridViewColumn DisplayMemberBinding="{Binding Description}"
+                            <GridViewColumn DisplayMemberBinding="{Binding Description}"
                                                     HeaderTemplate="{StaticResource filterHeaderTemplate}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                Описание
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
+                                <GridViewColumnHeader HorizontalContentAlignment="Stretch">
+                                    Описание
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
 
-                    </GridView.Columns>
-                </GridView>
-            </ListView.View>
-        </ListView>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
 
     </ControlTemplate>
 

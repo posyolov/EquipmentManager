@@ -16,17 +16,27 @@ namespace EquipmentManagerVM
     public class JournalVM : ViewModelBase
     {
         IGenericRepository<JournalEntry> _journalRepos;
-        ObservableCollection<JournalEntry> _totalJournalEntries;
-        CollectionViewSource _viewJournalEntries;
 
-        public string PositionFilter { get; set; }
+        ObservableCollection<JournalEntry> _totalJournalEntries;
+        ICollectionView _viewJournalEntries;
+
+        string _positionFilter = "A.";
+        public string PositionFilter
+        {
+            get => _positionFilter;
+            set
+            {
+                _positionFilter = value;
+
+                _viewJournalEntries?.Refresh();
+            }
+        }
 
         public ICollectionView FilteredJournalEntries
         {
             get
             {
-                return _viewJournalEntries.View;
-                //return new ObservableCollection<JournalEntry>(_totalJournalEntries.Where(je => je.Position_Name != null && je.Position_Name.StartsWith("T.")));
+                return _viewJournalEntries;
             }
         }
 
@@ -34,30 +44,20 @@ namespace EquipmentManagerVM
         {
             _journalRepos = journalRepository;
             _totalJournalEntries = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.JournalEntryCategory));
-            _viewJournalEntries = new CollectionViewSource();
-            _viewJournalEntries.Source = _totalJournalEntries;
-            _viewJournalEntries.Filter += OnViewJournalEntriesFilter;
 
-            //collectionView.Filter += (s, e) => e.Accepted = ((JournalEntry)e.Item).JournalEntryCategory?.Title == "Отключений";
-            PositionFilter = "T.";
+            _viewJournalEntries = CollectionViewSource.GetDefaultView(_totalJournalEntries);
+            _viewJournalEntries.Filter = JournalEntriesFilter;
         }
 
-        private void OnViewJournalEntriesFilter(object sender, FilterEventArgs e)
+        private bool JournalEntriesFilter(object journalEntry)
         {
-            if (string.IsNullOrEmpty(PositionFilter))
+            if (journalEntry is JournalEntry je)
             {
-                e.Accepted = true;
-                return;
-            }
-
-            JournalEntry je = e.Item as JournalEntry;
-            if (je.Position_Name.ToUpper().StartsWith(PositionFilter.ToUpper()))
-            {
-                e.Accepted = true;
+                return je.Position_Name.ToUpper().StartsWith(PositionFilter.ToUpper());
             }
             else
             {
-                e.Accepted = false;
+                return false;
             }
         }
 
