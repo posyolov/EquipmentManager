@@ -18,52 +18,79 @@ namespace EquipmentManagerVM
         IGenericRepository<JournalEntry> _journalRepos;
 
         ObservableCollection<JournalEntry> _totalJournalEntries;
-        ICollectionView _viewJournalEntries;
 
-        string _positionFilter = "A.";
-        public string PositionFilter
-        {
-            get => _positionFilter;
-            set
-            {
-                _positionFilter = value;
+        public ICollectionView FilteredJournalEntries { get; }
 
-                _viewJournalEntries?.Refresh();
-            }
-        }
-
-        public ICollectionView FilteredJournalEntries
-        {
-            get
-            {
-                return _viewJournalEntries;
-            }
-        }
+        public FilterData FilterPosition { get; set; }
 
         public JournalVM(IGenericRepository<JournalEntry> journalRepository)
         {
             _journalRepos = journalRepository;
             _totalJournalEntries = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.JournalEntryCategory));
 
-            _viewJournalEntries = CollectionViewSource.GetDefaultView(_totalJournalEntries);
-            _viewJournalEntries.Filter = JournalEntriesFilter;
+            FilteredJournalEntries = CollectionViewSource.GetDefaultView(_totalJournalEntries);
+
+            FilterPosition = new FilterData("Позиция", "", FilteredJournalEntries);
+            FilteredJournalEntries.Filter = JournalEntriesFilter;
         }
 
         private bool JournalEntriesFilter(object journalEntry)
         {
+            bool posFiltr = false;
+
             if (journalEntry is JournalEntry je)
             {
-                return je.Position_Name.ToUpper().StartsWith(PositionFilter.ToUpper());
+                if (je.Position_Name != null && FilterPosition != null && FilterPosition.FilterString != null)
+                    posFiltr = !FilterPosition.Enabled || je.Position_Name.ToUpper().StartsWith(FilterPosition.FilterString.ToUpper());
+                else
+                    posFiltr = false;
             }
             else
             {
                 return false;
             }
+
+            return posFiltr;
         }
 
         public void AddJournalEntry(JournalEntry JournalEntry)
         {
             _totalJournalEntries.Add(JournalEntry);
         }
+    }
+
+    public class FilterData
+    {
+        private string _filterString;
+        private bool _enabled;
+        ICollectionView _collectionView;
+
+        public string Title { get; set; }
+        public string FilterString
+        {
+            get => _filterString;
+            set
+            {
+                _filterString = value;
+                _collectionView.Refresh();
+            }
+        }
+        public bool Enabled
+        {
+            get => _enabled;
+            set
+            {
+                _enabled = value;
+                _collectionView.Refresh();
+            }
+        }
+
+        public FilterData(string title, string filterString, ICollectionView collectionView)
+        {
+            Title = title;
+            _filterString = filterString;
+            _collectionView = collectionView;
+        }
+
     }
 }

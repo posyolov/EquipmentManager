@@ -17,77 +17,73 @@
                            Grid.ColumnSpan="2"
                            Margin="0 0 0 3"
                            HorizontalAlignment="Center"
-                           Text="{Binding}">
+                           Text="{Binding Title}">
             </TextBlock>
 
             <CheckBox Grid.Column="0" Grid.Row="1"
                       Margin="3 0 3 0"
                       VerticalAlignment="Center"
-                        />
+                      IsChecked="{Binding Enabled}"  />
             <TextBox Grid.Column="1" Grid.Row="1" 
                      Margin="0 0 0 0"
                      VerticalAlignment="Center"
-                     MinWidth="50"/>
+                     MinWidth="50"
+                     Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
     </DataTemplate>
 
     <ControlTemplate x:Key="Journal">
 
-        <StackPanel>
-            <TextBox Width="100" Text="{Binding PositionFilter, UpdateSourceTrigger=PropertyChanged}"/>
+        <ListView ItemsSource="{Binding FilteredJournalEntries}">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
 
-            <ListView ItemsSource="{Binding FilteredJournalEntries}">
-                <ListView.View>
-                    <GridView>
-                        <GridView.Columns>
-
-                            <GridViewColumn DisplayMemberBinding="{Binding DateTime, ConverterCulture=ru}"
+                        <GridViewColumn DisplayMemberBinding="{Binding DateTime, ConverterCulture=ru}"
                                                     HeaderTemplate="{StaticResource filterHeaderTemplate}">
-                                <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                    Дата/время
-                                </GridViewColumnHeader>
-                            </GridViewColumn>
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch"
+                                                      Content="{Binding FilterData2}"/>
+                        </GridViewColumn>
 
-                            <GridViewColumn DisplayMemberBinding="{Binding IsIncoming}"
+                        <GridViewColumn DisplayMemberBinding="{Binding IsIncoming}"
                                                     HeaderTemplate="{StaticResource filterHeaderTemplate}">
-                                <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                    Входящее
-                                </GridViewColumnHeader>
-                            </GridViewColumn>
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch">
+                                Входящее
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
 
-                            <GridViewColumn DisplayMemberBinding="{Binding Position.Name}"
+                        <GridViewColumn DisplayMemberBinding="{Binding Position.Name}" 
+                                            HeaderTemplate="{StaticResource filterHeaderTemplate}">
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch"
+                                                      Content="{Binding FilterPosition}">
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
+
+                        <GridViewColumn DisplayMemberBinding="{Binding PositionStatusBitInfo.Title}"
                                                     HeaderTemplate="{StaticResource filterHeaderTemplate}">
-                                <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                    Позиция
-                                </GridViewColumnHeader>
-                            </GridViewColumn>
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch">
+                                Статус
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
 
-                            <GridViewColumn DisplayMemberBinding="{Binding PositionStatusBitInfo.Title}"
+                        <GridViewColumn DisplayMemberBinding="{Binding JournalEntryCategory.Title}"
                                                     HeaderTemplate="{StaticResource filterHeaderTemplate}">
-                                <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                    Статус
-                                </GridViewColumnHeader>
-                            </GridViewColumn>
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch">
+                                Категория
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
 
-                            <GridViewColumn DisplayMemberBinding="{Binding JournalEntryCategory.Title}"
+                        <GridViewColumn DisplayMemberBinding="{Binding Description}"
                                                     HeaderTemplate="{StaticResource filterHeaderTemplate}">
-                                <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                    Категория
-                                </GridViewColumnHeader>
-                            </GridViewColumn>
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch">
+                                Описание
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
 
-                            <GridViewColumn DisplayMemberBinding="{Binding Description}"
-                                                    HeaderTemplate="{StaticResource filterHeaderTemplate}">
-                                <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                    Описание
-                                </GridViewColumnHeader>
-                            </GridViewColumn>
-
-                        </GridView.Columns>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </StackPanel>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
     </ControlTemplate>
 
