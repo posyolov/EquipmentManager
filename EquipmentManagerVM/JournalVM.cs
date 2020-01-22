@@ -11,7 +11,7 @@ using System.ComponentModel;
 namespace EquipmentManagerVM
 {
     /// <summary>
-    /// ViewModel для журнала событий
+    /// Journal entries ViewModel
     /// </summary>
     public class JournalVM : ViewModelBase
     {
@@ -21,76 +21,39 @@ namespace EquipmentManagerVM
 
         public ICollectionView FilteredJournalEntries { get; }
 
-        public FilterData FilterPosition { get; set; }
+        public FilterCriteriaString FilterCriteriaPosition { get; }
+        public FilterCriteriaString FilterCriteriaDescription { get; }
 
         public JournalVM(IGenericRepository<JournalEntry> journalRepository)
         {
             _journalRepos = journalRepository;
             _totalJournalEntries = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.JournalEntryCategory));
 
-            FilteredJournalEntries = CollectionViewSource.GetDefaultView(_totalJournalEntries);
+            FilterCriteriaPosition = new FilterCriteriaString("Позиция");
+            FilterCriteriaPosition.CriteriaChanged += () => FilteredJournalEntries.Refresh();
+            FilterCriteriaDescription = new FilterCriteriaString("Описание");
+            FilterCriteriaDescription.CriteriaChanged += () => FilteredJournalEntries.Refresh();
 
-            FilterPosition = new FilterData("Позиция", "", FilteredJournalEntries);
+            FilteredJournalEntries = CollectionViewSource.GetDefaultView(_totalJournalEntries);
             FilteredJournalEntries.Filter = JournalEntriesFilter;
         }
 
         private bool JournalEntriesFilter(object journalEntry)
         {
-            bool posFiltr = false;
-
             if (journalEntry is JournalEntry je)
             {
-                if (je.Position_Name != null && FilterPosition != null && FilterPosition.FilterString != null)
-                    posFiltr = !FilterPosition.Enabled || je.Position_Name.ToUpper().StartsWith(FilterPosition.FilterString.ToUpper());
-                else
-                    posFiltr = false;
+                return FilterCriteriaPosition.ContainsIn(je.Position_Name) && 
+                       FilterCriteriaDescription.ContainsIn(je.Description);
             }
             else
             {
                 return false;
             }
-
-            return posFiltr;
         }
 
         public void AddJournalEntry(JournalEntry JournalEntry)
         {
             _totalJournalEntries.Add(JournalEntry);
         }
-    }
-
-    public class FilterData
-    {
-        private string _filterString;
-        private bool _enabled;
-        ICollectionView _collectionView;
-
-        public string Title { get; set; }
-        public string FilterString
-        {
-            get => _filterString;
-            set
-            {
-                _filterString = value;
-                _collectionView.Refresh();
-            }
-        }
-        public bool Enabled
-        {
-            get => _enabled;
-            set
-            {
-                _enabled = value;
-                _collectionView.Refresh();
-            }
-        }
-
-        public FilterData(string title, string filterString, ICollectionView collectionView)
-        {
-            Title = title;
-            _filterString = filterString;
-            _collectionView = collectionView;
-        }
-
     }
 }

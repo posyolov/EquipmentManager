@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:EquipmentManagerVM;assembly=EquipmentManagerVM">
 
-    <DataTemplate x:Key="filterHeaderTemplate">
+    <DataTemplate x:Key="filterStringHeaderTemplate">
         <Grid ShowGridLines="False">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -28,7 +28,7 @@
                      Margin="0 0 0 0"
                      VerticalAlignment="Center"
                      MinWidth="50"
-                     Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding Criteria, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
     </DataTemplate>
 
@@ -40,44 +40,44 @@
                     <GridView.Columns>
 
                         <GridViewColumn DisplayMemberBinding="{Binding DateTime, ConverterCulture=ru}"
-                                                    HeaderTemplate="{StaticResource filterHeaderTemplate}">
+                                        HeaderTemplate="{StaticResource filterStringHeaderTemplate}">
                             <GridViewColumnHeader HorizontalContentAlignment="Stretch"
                                                       Content="{Binding FilterData2}"/>
                         </GridViewColumn>
 
                         <GridViewColumn DisplayMemberBinding="{Binding IsIncoming}"
-                                                    HeaderTemplate="{StaticResource filterHeaderTemplate}">
+                                        HeaderTemplate="{StaticResource filterStringHeaderTemplate}">
                             <GridViewColumnHeader HorizontalContentAlignment="Stretch">
                                 Входящее
                             </GridViewColumnHeader>
                         </GridViewColumn>
 
                         <GridViewColumn DisplayMemberBinding="{Binding Position.Name}" 
-                                            HeaderTemplate="{StaticResource filterHeaderTemplate}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch"
-                                                      Content="{Binding FilterPosition}">
-                            </GridViewColumnHeader>
+                                        HeaderTemplate="{StaticResource filterStringHeaderTemplate}">
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" 
+                                                  Content="{Binding FilterCriteriaPosition}"/>
+
                         </GridViewColumn>
 
-                        <GridViewColumn DisplayMemberBinding="{Binding PositionStatusBitInfo.Title}"
-                                                    HeaderTemplate="{StaticResource filterHeaderTemplate}">
+                        <GridViewColumn DisplayMemberBinding="{Binding PositionStatusBitInfo.Title}" 
+                                        HeaderTemplate="{StaticResource filterStringHeaderTemplate}">
                             <GridViewColumnHeader HorizontalContentAlignment="Stretch">
                                 Статус
                             </GridViewColumnHeader>
                         </GridViewColumn>
 
                         <GridViewColumn DisplayMemberBinding="{Binding JournalEntryCategory.Title}"
-                                                    HeaderTemplate="{StaticResource filterHeaderTemplate}">
+                                        HeaderTemplate="{StaticResource filterStringHeaderTemplate}">
                             <GridViewColumnHeader HorizontalContentAlignment="Stretch">
                                 Категория
                             </GridViewColumnHeader>
                         </GridViewColumn>
 
                         <GridViewColumn DisplayMemberBinding="{Binding Description}"
-                                                    HeaderTemplate="{StaticResource filterHeaderTemplate}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                Описание
-                            </GridViewColumnHeader>
+                                        HeaderTemplate="{StaticResource filterStringHeaderTemplate}">
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch"
+                                                  Content="{Binding FilterCriteriaDescription}"/>
+
                         </GridViewColumn>
 
                     </GridView.Columns>
