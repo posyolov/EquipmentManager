@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="BoolToVisibilityConverter.cs" />
     <Compile Include="FilteringCriterias\FilterCriteria.cs" />
+    <Compile Include="FilteringCriterias\FilterCriteriaEnumerable.cs" />
+    <Compile Include="FilteringCriterias\FilterCriteriaInterval.cs" />
     <Compile Include="FilteringCriterias\FilterCriteriaString.cs" />
     <Compile Include="JournalEntryCreateVM.cs" />
     <Compile Include="DelegateCommand.cs" />

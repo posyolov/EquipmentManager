@@ -10,8 +10,11 @@ namespace EquipmentManagerVM
             get => _criteria;
             set
             {
-                _criteria = value;
-                CriteriaChangedInvoke();
+                if (value != null)
+                {
+                    _criteria = value;
+                    CriteriaChangedInvoke();
+                }
             }
         }
 
@@ -23,10 +26,13 @@ namespace EquipmentManagerVM
 
         public bool ContainsIn(string sourceString)
         {
-            if(sourceString == null || _criteria == null)
+            if (String.IsNullOrEmpty(_criteria) || !_enabled)
+                return true;
+
+            if (sourceString == null)
                 return false;
 
-            return !_enabled || sourceString.IndexOf(_criteria, StringComparison.OrdinalIgnoreCase) >= 0;
+            return sourceString.IndexOf(_criteria, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
     }

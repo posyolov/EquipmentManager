@@ -1,8 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:EquipmentManagerVM;assembly=EquipmentManagerVM">
+                    xmlns:local="clr-namespace:EquipmentManagerVM;assembly=EquipmentManagerVM"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
 
-    <DataTemplate x:Key="filterStringHeaderTemplate">
+    <DataTemplate x:Key="filterStringHeader">
         <Grid ShowGridLines="False">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -14,10 +16,10 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Margin="0 0 0 3"
-                           HorizontalAlignment="Center"
-                           Text="{Binding Title}">
+                       Grid.ColumnSpan="2"
+                       Margin="0 0 0 3"
+                       HorizontalAlignment="Center"
+                       Text="{Binding Title}">
             </TextBlock>
 
             <CheckBox Grid.Column="0" Grid.Row="1"
@@ -32,6 +34,70 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="filterEnumerableHeader">
+        <Grid ShowGridLines="False">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       Margin="0 0 0 3"
+                       HorizontalAlignment="Center"
+                       Text="{Binding Title}">
+            </TextBlock>
+
+            <CheckBox Grid.Column="0" Grid.Row="1"
+                      Margin="3 0 3 0"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding Enabled}"/>
+            <ComboBox Grid.Column="1" Grid.Row="1"
+                      MinWidth="100"
+                      ItemsSource="{Binding CriteriaList}"
+                      SelectedValuePath="{DynamicResource ResourceKey='ValuePath'}"
+                      SelectedValue="{Binding Criteria}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="filterDTimeIntervalHeader">
+        <Grid ShowGridLines="False">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       Margin="0 0 0 3"
+                       HorizontalAlignment="Center"
+                       Text="{Binding Title}">
+            </TextBlock>
+
+            <CheckBox Grid.Column="0" Grid.Row="1"
+                      Margin="3 0 3 0"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding Enabled}"/>
+            <StackPanel Grid.Column="1" Grid.Row="1" MinWidth="150">
+                <xctk:DateTimePicker Value="{Binding CriteriaBegin}"
+                                 Format="Custom"
+                                 FormatString="HH:mm:ss dd.MM.yyy"/>
+                <xctk:DateTimePicker Value="{Binding CriteriaEnd}"
+                                 Format="Custom"
+                                 FormatString="HH:mm:ss dd.MM.yyy"/>
+            </StackPanel>
+
+        </Grid>
+    </DataTemplate>
+
     <ControlTemplate x:Key="Journal">
 
         <ListView ItemsSource="{Binding FilteredJournalEntries}">
@@ -40,42 +106,48 @@
                     <GridView.Columns>
 
                         <GridViewColumn DisplayMemberBinding="{Binding DateTime, ConverterCulture=ru}"
-                                        HeaderTemplate="{StaticResource filterStringHeaderTemplate}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch"
-                                                      Content="{Binding FilterData2}"/>
+                                        HeaderTemplate="{StaticResource filterDTimeIntervalHeader}">
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                                      Content="{Binding FilterCriteriaDateTime}"/>
                         </GridViewColumn>
 
                         <GridViewColumn DisplayMemberBinding="{Binding IsIncoming}"
-                                        HeaderTemplate="{StaticResource filterStringHeaderTemplate}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch">
+                                        HeaderTemplate="{StaticResource filterStringHeader}">
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                                 Входящее
                             </GridViewColumnHeader>
                         </GridViewColumn>
 
-                        <GridViewColumn DisplayMemberBinding="{Binding Position.Name}" 
-                                        HeaderTemplate="{StaticResource filterStringHeaderTemplate}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" 
+                        <GridViewColumn DisplayMemberBinding="{Binding Position}" 
+                                        HeaderTemplate="{StaticResource filterStringHeader}">
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" 
                                                   Content="{Binding FilterCriteriaPosition}"/>
 
                         </GridViewColumn>
 
-                        <GridViewColumn DisplayMemberBinding="{Binding PositionStatusBitInfo.Title}" 
-                                        HeaderTemplate="{StaticResource filterStringHeaderTemplate}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                Статус
+                        <GridViewColumn DisplayMemberBinding="{Binding PositionStatusBitInfo}" 
+                                        HeaderTemplate="{StaticResource filterEnumerableHeader}">
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                                  Content="{Binding FilterCriteriaStatus}">
+                                <GridViewColumnHeader.Resources>
+                                    <sys:String x:Key="ValuePath">BitNumber</sys:String>
+                                </GridViewColumnHeader.Resources>
                             </GridViewColumnHeader>
                         </GridViewColumn>
 
-                        <GridViewColumn DisplayMemberBinding="{Binding JournalEntryCategory.Title}"
-                                        HeaderTemplate="{StaticResource filterStringHeaderTemplate}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch">
-                                Категория
+                        <GridViewColumn DisplayMemberBinding="{Binding JournalEntryCategory}"
+                                        HeaderTemplate="{StaticResource filterEnumerableHeader}">
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" 
+                                                  Content="{Binding FilterCriteriaCategory}">
+                                <GridViewColumnHeader.Resources>
+                                    <sys:String x:Key="ValuePath">Id</sys:String>
+                                </GridViewColumnHeader.Resources>
                             </GridViewColumnHeader>
                         </GridViewColumn>
 
                         <GridViewColumn DisplayMemberBinding="{Binding Description}"
-                                        HeaderTemplate="{StaticResource filterStringHeaderTemplate}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch"
+                                        HeaderTemplate="{StaticResource filterStringHeader}">
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                                                   Content="{Binding FilterCriteriaDescription}"/>
 
                         </GridViewColumn>

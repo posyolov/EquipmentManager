@@ -10,5 +10,10 @@ namespace Repository
         public int BitNumber { get; set; }
         public bool Enable { get; set; }
         public string Title { get; set; }
+
+        public override string ToString()
+        {
+            return Title;
+        }
     }
 }

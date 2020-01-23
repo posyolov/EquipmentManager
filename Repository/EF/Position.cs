@@ -11,5 +11,10 @@ namespace Repository
         public string ParentName { get; set; }
         public string Title { get; set; }
         public long Status { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

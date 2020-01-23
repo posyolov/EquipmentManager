@@ -37,7 +37,7 @@ namespace EquipmentManagerVM
             PositionsVM.JournalEntryCreateReqEv += OnJournalEntryCreateRequestEv;
             PositionsVM.JournalEntryCreatedEv += OnJournalEntryCreatedEv;
 
-            JournalVM = new JournalVM(_manager.JournalReposProxy);
+            JournalVM = new JournalVM(_manager.JournalReposProxy, _manager.JournalEntryCategoryReposProxy, _manager.PositionStatusBitInfoReposProxy);
         }
 
         /// <summary>
