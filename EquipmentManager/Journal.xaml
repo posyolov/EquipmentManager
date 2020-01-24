@@ -107,27 +107,27 @@
 
                         <GridViewColumn DisplayMemberBinding="{Binding DateTime, ConverterCulture=ru}"
                                         HeaderTemplate="{StaticResource filterDTimeIntervalHeader}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top"
                                                       Content="{Binding FilterCriteriaDateTime}"/>
                         </GridViewColumn>
 
                         <GridViewColumn DisplayMemberBinding="{Binding IsIncoming}"
                                         HeaderTemplate="{StaticResource filterStringHeader}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top">
                                 Входящее
                             </GridViewColumnHeader>
                         </GridViewColumn>
 
                         <GridViewColumn DisplayMemberBinding="{Binding Position}" 
                                         HeaderTemplate="{StaticResource filterStringHeader}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" 
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" 
                                                   Content="{Binding FilterCriteriaPosition}"/>
 
                         </GridViewColumn>
 
                         <GridViewColumn DisplayMemberBinding="{Binding PositionStatusBitInfo}" 
                                         HeaderTemplate="{StaticResource filterEnumerableHeader}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top"
                                                   Content="{Binding FilterCriteriaStatus}">
                                 <GridViewColumnHeader.Resources>
                                     <sys:String x:Key="ValuePath">BitNumber</sys:String>
@@ -137,7 +137,7 @@
 
                         <GridViewColumn DisplayMemberBinding="{Binding JournalEntryCategory}"
                                         HeaderTemplate="{StaticResource filterEnumerableHeader}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" 
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" 
                                                   Content="{Binding FilterCriteriaCategory}">
                                 <GridViewColumnHeader.Resources>
                                     <sys:String x:Key="ValuePath">Id</sys:String>
@@ -147,7 +147,7 @@
 
                         <GridViewColumn DisplayMemberBinding="{Binding Description}"
                                         HeaderTemplate="{StaticResource filterStringHeader}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top"
                                                   Content="{Binding FilterCriteriaDescription}"/>
 
                         </GridViewColumn>

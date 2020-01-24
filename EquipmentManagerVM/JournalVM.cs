@@ -55,10 +55,11 @@ namespace EquipmentManagerVM
         {
             if (journalEntry is JournalEntry entry)
             {
-                return FilterCriteriaPosition.ContainsIn(entry.Position_Name) &&
-                       FilterCriteriaStatus.EqualsTo(entry.PositionStatusBitInfo_BitNumber) &&
-                       FilterCriteriaCategory.EqualsTo(entry.JournalEntryCategory_Id) &&
-                       FilterCriteriaDescription.ContainsIn(entry.Description);
+                return FilterCriteriaDateTime.Include(entry.DateTime) &&
+                    FilterCriteriaPosition.ContainsIn(entry.Position_Name) &&
+                    FilterCriteriaStatus.EqualsTo(entry.PositionStatusBitInfo_BitNumber) &&
+                    FilterCriteriaCategory.EqualsTo(entry.JournalEntryCategory_Id) &&
+                    FilterCriteriaDescription.ContainsIn(entry.Description);
             }
             else
             {

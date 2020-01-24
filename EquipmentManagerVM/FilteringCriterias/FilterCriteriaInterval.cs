@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EquipmentManagerVM
 {
-    public class FilterCriteriaInterval<T> : FilterCriteria
+    public class FilterCriteriaInterval<T> : FilterCriteria where T : IComparable
     {
         private T _criteriaBegin;
         public T CriteriaBegin
@@ -35,6 +35,24 @@ namespace EquipmentManagerVM
         {
             _criteriaBegin = begin;
             _criteriaEnd = end;
+        }
+
+        public bool Include(T value)
+        {
+            if (!_enabled || _criteriaBegin == null && _criteriaEnd == null)
+                return true;
+
+            if (value == null)
+                return false;
+
+            bool result = true;
+
+            if (_criteriaBegin != null && value.CompareTo(_criteriaBegin) < 0 )
+                result = false;
+            if (_criteriaEnd != null && value.CompareTo(_criteriaEnd) > 0)
+                result = false;
+
+            return result;
         }
     }
 }
