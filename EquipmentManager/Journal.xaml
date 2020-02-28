@@ -98,6 +98,29 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="filterEmptyHeader">
+        <Grid ShowGridLines="False">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0"
+                       Margin="0 0 0 3"
+                       HorizontalAlignment="Center"
+                       Text="{Binding Title}">
+            </TextBlock>
+
+            <CheckBox Grid.Column="0" Grid.Row="1"
+                      Margin="3 0 3 0"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding Enabled}"  />
+        </Grid>
+    </DataTemplate>
+
     <ControlTemplate x:Key="Journal">
 
         <ListView ItemsSource="{Binding FilteredJournalEntries}">
@@ -112,10 +135,9 @@
                         </GridViewColumn>
 
                         <GridViewColumn DisplayMemberBinding="{Binding IsIncoming}"
-                                        HeaderTemplate="{StaticResource filterStringHeader}">
-                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top">
-                                Входящее
-                            </GridViewColumnHeader>
+                                        HeaderTemplate="{StaticResource filterEmptyHeader}">
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" 
+                                                  Content="{Binding FilterCriteriaActive}"/>
                         </GridViewColumn>
 
                         <GridViewColumn DisplayMemberBinding="{Binding Position}" 
@@ -152,6 +174,11 @@
 
                         </GridViewColumn>
 
+                        <GridViewColumn DisplayMemberBinding="{Binding Position.Status}">
+                            <GridViewColumnHeader HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top"/>
+
+                        </GridViewColumn>
+                        
                     </GridView.Columns>
                 </GridView>
             </ListView.View>

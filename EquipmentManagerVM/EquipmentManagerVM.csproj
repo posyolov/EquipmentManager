@@ -48,7 +48,9 @@
     <Compile Include="FilteringCriterias\FilterCriteria.cs" />
     <Compile Include="FilteringCriterias\FilterCriteriaEnumerable.cs" />
     <Compile Include="FilteringCriterias\FilterCriteriaInterval.cs" />
+    <Compile Include="FilteringCriterias\FilterCriteriaActiveStatus.cs" />
     <Compile Include="FilteringCriterias\FilterCriteriaString.cs" />
+    <Compile Include="FilteringCriterias\FilterCriteriaValue.cs" />
     <Compile Include="JournalEntryCreateVM.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="MainMenuVM.cs" />

@@ -22,6 +22,7 @@ namespace EquipmentManagerVM
         public ICollectionView FilteredJournalEntries { get; }
 
         public FilterCriteriaInterval<DateTime> FilterCriteriaDateTime { get; }
+        public FilterCriteriaActiveStatus FilterCriteriaActive { get; }
         public FilterCriteriaString FilterCriteriaPosition { get; }
         public FilterCriteriaEnumerable FilterCriteriaStatus { get; }
         public FilterCriteriaEnumerable FilterCriteriaCategory { get; }
@@ -29,11 +30,11 @@ namespace EquipmentManagerVM
 
         public JournalVM(IGenericRepository<JournalEntry> journalRepository, IGenericRepository<JournalEntryCategory> journalEntryCategories, IGenericRepository<PositionStatusBitInfo> positionStatusBitInfo)
         {
-            _journalRepos = journalRepository;
-            _totalJournalEntries = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.JournalEntryCategory));
-
             FilterCriteriaDateTime = new FilterCriteriaInterval<DateTime>("Дата/время", DateTime.Now, DateTime.Now);
             FilterCriteriaDateTime.CriteriaChanged += () => FilteredJournalEntries.Refresh();
+
+            FilterCriteriaActive = new FilterCriteriaActiveStatus("Активно");
+            FilterCriteriaActive.CriteriaChanged += () => FilteredJournalEntries.Refresh();
 
             FilterCriteriaPosition = new FilterCriteriaString("Позиция");
             FilterCriteriaPosition.CriteriaChanged += () => FilteredJournalEntries.Refresh();
@@ -47,6 +48,9 @@ namespace EquipmentManagerVM
             FilterCriteriaDescription = new FilterCriteriaString("Описание");
             FilterCriteriaDescription.CriteriaChanged += () => FilteredJournalEntries.Refresh();
 
+            _journalRepos = journalRepository;
+            _totalJournalEntries = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.JournalEntryCategory));
+
             FilteredJournalEntries = CollectionViewSource.GetDefaultView(_totalJournalEntries);
             FilteredJournalEntries.Filter = JournalEntriesFilter;
         }
@@ -55,11 +59,19 @@ namespace EquipmentManagerVM
         {
             if (journalEntry is JournalEntry entry)
             {
-                return FilterCriteriaDateTime.Include(entry.DateTime) &&
-                    FilterCriteriaPosition.ContainsIn(entry.Position_Name) &&
-                    FilterCriteriaStatus.EqualsTo(entry.PositionStatusBitInfo_BitNumber) &&
-                    FilterCriteriaCategory.EqualsTo(entry.JournalEntryCategory_Id) &&
-                    FilterCriteriaDescription.ContainsIn(entry.Description);
+                if (entry.Position == null)
+                {
+                    return false;// true;
+                }
+                else
+                {
+                    return FilterCriteriaDateTime.Include(entry.DateTime) &&
+                        FilterCriteriaActive.StatusBitActive(entry, _totalJournalEntries) &&
+                        FilterCriteriaPosition.ContainsIn(entry.Position_Name) &&
+                        FilterCriteriaStatus.EqualsTo(entry.PositionStatusBitInfo_BitNumber) &&
+                        FilterCriteriaCategory.EqualsTo(entry.JournalEntryCategory_Id) &&
+                        FilterCriteriaDescription.ContainsIn(entry.Description);
+                }
             }
             else
             {
@@ -70,6 +82,12 @@ namespace EquipmentManagerVM
         public void AddJournalEntry(JournalEntry JournalEntry)
         {
             _totalJournalEntries.Add(JournalEntry);
+            FilteredJournalEntries.Refresh();
+
+            ////_totalJournalEntries.Clear();
+            ////_totalJournalEntries.Add()
+            ////_totalJournalEntries = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.JournalEntryCategory));
+            ////FilteredJournalEntries.Refresh();
         }
     }
 }
