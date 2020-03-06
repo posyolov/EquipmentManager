@@ -1,6 +1,7 @@
 ﻿using Repository;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace EquipmentManagerVM
 {
@@ -35,6 +36,13 @@ namespace EquipmentManagerVM
                 return false;
 
             if ((entry.Position.Status & (1 << entry.PositionStatusBitInfo_BitNumber)) == 0)
+                return false;
+
+            if (entries.Any(e =>
+             e.Position_Name == entry.Position_Name
+             && e.PositionStatusBitInfo_BitNumber == entry.PositionStatusBitInfo_BitNumber
+             && e.IsIncoming == entry.IsIncoming
+             && e.DateTime > entry.DateTime))
                 return false;
 
             return true;

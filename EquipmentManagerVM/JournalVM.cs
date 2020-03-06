@@ -49,7 +49,7 @@ namespace EquipmentManagerVM
             FilterCriteriaDescription.CriteriaChanged += () => FilteredJournalEntries.Refresh();
 
             _journalRepos = journalRepository;
-            _totalJournalEntries = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.JournalEntryCategory));
+            _totalJournalEntries = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.JournalEntryCategory, s => s.PositionStatusBitInfo));
 
             FilteredJournalEntries = CollectionViewSource.GetDefaultView(_totalJournalEntries);
             FilteredJournalEntries.Filter = JournalEntriesFilter;
@@ -81,13 +81,13 @@ namespace EquipmentManagerVM
 
         public void AddJournalEntry(JournalEntry JournalEntry)
         {
-            _totalJournalEntries.Add(JournalEntry);
-            FilteredJournalEntries.Refresh();
+            var data = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.JournalEntryCategory, s => s.PositionStatusBitInfo));
+            _totalJournalEntries.Clear();
+            foreach (JournalEntry item in data)
+                _totalJournalEntries.Add(item);
 
-            ////_totalJournalEntries.Clear();
-            ////_totalJournalEntries.Add()
-            ////_totalJournalEntries = new ObservableCollection<JournalEntry>(_journalRepos?.GetWithInclude(p => p.Position, c => c.JournalEntryCategory));
-            ////FilteredJournalEntries.Refresh();
+            //_totalJournalEntries.Add(JournalEntry);
+            FilteredJournalEntries.Refresh();
         }
     }
 }
